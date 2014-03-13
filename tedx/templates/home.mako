@@ -32,16 +32,17 @@
   
   <div class="sidebarDer">
     <div id="logos">
+      <!--
       <h3>${_(u'idea')}:</h3>	
       <a href="http://tedxzaragoza.com"><img src="/images/TEDx_logo.png" alt="Logo TEDx Zaragoza" /></a>
+      -->
       <h3>${_(u'developed')}:</h3>
-      <a href="http://bifi.es"><img src="/images/BIFI_logo.png" alt="Logo BIFI" /></a>
       <a href="http://www.ibercivis.es"><img src="/images/logo_fundacion.png" alt="Logo Fundación Ibercivis" /></a>
     </div>
 
     <h3>${_(u'follow_us')}:</h3>
-    <a href="http://www.facebook.com/FeelicityApp" target="_blank"><img src="/images/facebook.png"  class="left social" /></a>
-    <a href="http://www.twitter.com/FeelicityApp" target="_blank"><img src="/images/twitter.png" class="left social" /></a>
+    <a href="http://www.facebook.com/Ibercivis" target="_blank"><img src="/images/facebook.png"  class="left social" /></a>
+    <a href="http://www.twitter.com/Ibercivis" target="_blank"><img src="/images/twitter.png" class="left social" /></a>
     
     <h3>${_(u'available')}:</h3>
     <a href="http://itunes.apple.com/app/feelicity/id452958224?mt=8" target="_blank"><img src="/images/imovil.png" class="left" /></a>

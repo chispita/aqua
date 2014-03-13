@@ -4,14 +4,14 @@
     <head>
         <title>Feelicity - ${next.title()}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<meta name="Keywords" content="geotagging, geolocalización, social network, red social, mapa"/>
-	<meta name="Description" content="Feelicity lets you tag places and events sharing them with your friends. You can tag places virtually \
+	<meta name="Keywords" content="quality, water, geotagging, geolocalización, social network, red social, mapa"/>
+    <meta name="Description" content="Aqua ibercivis lets you tag water quality places and sharing them with your friends.\
 										  by selecting a place in a map  \
-										  . With this app you can share places, images and videos as well as comment \
+                                          . With this app you can share water qualitys, images and videos as well as comment \
 										  on other people posts."/> 
-	<meta name="Author" content="BIFI,Tedx"/>
-	<meta name="Identifier" scheme="URI" content="http://www.tedx.com"/>
-	<meta name="page-topic" content="geotagging, geolocalización, social network, red social,mapa"/>
+                                          <meta name="Author" content="Ibercivis"/>
+	<meta name="Identifier" scheme="URI" content="http://aqua.ibercivis.es"/>
+    <meta name="page-topic" content="water,quality,geotagging, geolocalización, social network, red social,mapa"/>
 	<meta name="audience" content="All"/>
 	<meta name="Rating" content="General"/>
 	<meta name="Distribution" content="Global"/>
