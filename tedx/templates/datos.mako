@@ -7,7 +7,7 @@
     <a href="http://www.zaragoza.es"><img src="/images/zaragoza.jpg" alt="Ayuntamiento de Zaragoza" /></a>
     
     <h3>${_(u'Financiado por')}:</h3>
-    <a href="http://www.fecyt.es"><img src="/images/fecyt.jpg" alt="Logo BIFI" /></a>
+    <a href="http://www.fecyt.es"><img src="/images/fecyt.jpg" alt="Logo FECYT" /></a>
 </div>
 
 <h3>${_(u'Siguenos')}:</h3>
