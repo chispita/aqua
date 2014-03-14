@@ -45,15 +45,15 @@ class Place(object):
                 self.country = country
         self.created_on = datetime.datetime.now()
         self.last_update = datetime.datetime.now()
-        
-        
-    
+
+
+
     def generate_password(self, max=16, chars=string.letters + string.digits):
         new_string = ''
         for i in range(max):
             new_string = new_string + choice(chars)
         return new_string
-        
+
     def add_comment(self, user, content, title=None):
         db_comment = Comment(self, user, content, title)
         self.last_update = datetime.datetime.now()
@@ -61,24 +61,24 @@ class Place(object):
         user.comments.append(db_comment)
         meta.Session.add(self)
         meta.Session.commit()
-        
+
         return db_comment
-    
+
     def add_scoring(self, user, value):
         existing_score = meta.Session.query(Place_scoring).filter(and_(Place_scoring.place_id == self.id,Place_scoring.user_id == user.id)).first()
         if not existing_score:
             db_scoring = Place_scoring(self, user, value)
-        
+
             return db_scoring
         else:
             return None
-        
+
     def add_tag(self, tag):
         db_tag = Place_tag(self, tag)
-        
+
         return db_tag
-    
+
     def add_visit(self):
         self.visits += 1
-        
+
         meta.Session.commit()
