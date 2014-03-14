@@ -318,7 +318,7 @@
 
 	<div id="dialog-more-info" title="Más información sobre el estudio">
 	  <p style="font-size:14px; text-align: justify;">
-	    El ayuntamiento de la la ciudad de Zaragoza realiza a través de su Instituto Municipal de Salud Pública un control de la calidad del agua periódico y los resultados analíticos pueden ser consultados <a href="http://www.zaragoza.es/ciudad/IMSP/sanidad/listado_IMSP" target="_blank">aquí</a>. Este control se realiza según los parámetros definidos en el Real Decreto 140/2003 y sus modificaciones.
+	    El ayuntamiento de la la ciudad de Zaragoza realiza a través de su Instituto Municipal de Salud Pública un control de la calidad del agua periódico y los resultados analíticos pueden ser consultados <a href="http://www.zaragoza.es/ciudad/IMSP/sanidad/listado_IMSP" target="blank">aquí</a>. Este control se realiza según los parámetros definidos en el Real Decreto 140/2003 y sus modificaciones.
         <br />
         Uno de los parámetros de control, cuyo nivel permite mantener “a raya” a los contaminantes microbiológicos es el cloro, incluso a concentraciones muy bajas tiene una importante actividad biocida. Conservar los límites de concentración del clore en nuestros grifos, fuentes, etc, estimados por legislación y suficientes para inhibir el crecimiento microbiano, es una tarea a veces no demasiado fácil.
         <br />
