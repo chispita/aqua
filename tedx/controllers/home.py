@@ -19,7 +19,9 @@ from sqlalchemy import orm, and_, desc, select, func
 class HomeController(BaseController):
 
     def index(self):
-        log.debug('Holita')
+        function = 'def index'
+        log.debug(function)
+        log.debug('%s - city:%s, country:%s' % (function, self.prm('city'), self.prm('country')))
         if self.prm('city') and self.prm('country'):
             c.city = self.prm('city').decode('utf8')
             c.country = self.prm('country').decode('utf8')
@@ -113,6 +115,7 @@ class HomeController(BaseController):
         total_places = meta.Session.query(Place).count()
         db_results = []
         num_results = 0
+        '''
         if mode == 'search':
             string = max(self.prm('search_string').split(), key=len)
             latitude = self.prm('latitude')
@@ -179,6 +182,7 @@ class HomeController(BaseController):
             else:
                 h.toJSON({'status': 'NOK', 'message': _(u"user_not_found"), 'error_code': 0})
 
+        '''
         results = []
         #date = datetime.datetime.now()
 
