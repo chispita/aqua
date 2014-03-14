@@ -78,8 +78,14 @@
       </div>
 
     <div id="contenedor">
-	<div id="cabecera">
-	  <div id="idioma" style="margin-top: 10px;">
+     <div id="cabecera">
+         <div id="idioma" style="margin-top: 10px;">
+            %if not c.user:
+                 ${_(u'Login')}
+             %else:
+                 ${_(u'hello')} <a href="/my_account"><span class="username">${c.user.nickname}</span></a>
+                <a href="javascript:logout();">${_(u'Salir')}</a>
+            %endif
 	    <a href="javascript: change_language('es')">Español</a> / <a href="javascript: change_language('en')">English</a>
 	  </div>
 	  <div id="logotipo" style="float:left; margin">
@@ -100,11 +106,12 @@
 	      </div>
 	    </form>
 	  </div>
-	  % else:
+  % else:
+      <!--
 	  <div id="login" class="right">
 	  	<div id="logLeft" class="bordeHalf">
 		  	<h2>${_(u'hello')} <a href="/my_account"><span class="username">${c.user.nickname}</span></a>!</h2>
-		  	<span class="logOut"><a href="javascript:logout();">Salir</a></span>
+            <span class="logOut"><a href="javascript:logout();">Salir</a></span>
 		  	<div id="placesUp" class="stat"></div>
 		  	<div id="commentsUp" class="stat"></div>
 		  	<div id="visitsUp" class="stat"></div>
@@ -113,7 +120,8 @@
 	  	
 	  	<img src="${c.user.avatar}_mid.png" width=136 height=136 alt=${c.user.nickname} />
 	  	
-	  </div>
+        </div>
+      -->
 	  %endif
 
 	  <div id="MenuTop">
@@ -127,12 +135,12 @@
 	  <div class="map_legend">
 	    <div id="queMapa">
 	      
-	      %if not c.user:
-	      ${_(u'what_map')|n}
-	      %else:
-	      <h2 class="mom">${_(u'new_place')}</h2>
-	
-	      <form id="new-instant-form" action="/content/fast_new_instant" enctype="multipart/form-data">
+	    %if not c.user:
+	        ${_(u'what_map')|n}
+        %else:
+           <!-- Formulario Flotante  -->
+	      <h2 class="mom">${_(u'new_place')}</h2>	    
+        <form id="new-instant-form" action="/content/fast_new_instant" enctype="multipart/form-data">
 		<label for="new-instant-txtName">${_(u'title')}: <input type="text" id="new-instant-txtName" name="new-instant-txtName" placeholder="${_(u'Nombre')}"></input></label>
 		<br /><br />
 		<label for="new-instant-txtDescription">${_(u'description')}:<textarea id="new-instant-txtDescription" name="new-instant-txtDescription" placeholder="${_(u'Descripción')}"></textarea></label>
@@ -143,10 +151,6 @@
 		  <input size="12" type="file" id="new-instant-image" name="new-instant-image" /> 
 		</div>
 		<br />
-		<div>
-		  <img src="/images/iconoYoutube.png" alt="Añadir video" /> <label>${_(u'youtube')}:</label>
-		  <input type="text" id="new-instant-youtube" name="new-instant-youtube" />
-		</div>
 		<input type="hidden" id="new-instant-txtLatitude" name="new-instant-txtLatitude" />
 		<input type="hidden" id="new-instant-txtLongitude" name="new-instant-txtLongitude" />
 		<input type="hidden" id="new-instant-city" name="new-instant-city"/>
@@ -294,72 +298,17 @@
 	  <p>Feelicity nace como un proyecto dentro de las actividades que se están organizando con motivo del I <a href="http://www.TEDxZaragoza.com" target="blank">TEDxZaragoza</a> , que se celebrará, en Zaragoza (España), el próximo 5 de Noviembre de 2011, en el que se debatirá sobre “El Futuro de la Felicidad”.</p>
 	  
 	  <p>Para conseguir que lo que “sólo” era una “idea feliz” de un grupo de soñadores, se convirtiera en un proyecto real, operativo, en tiempo record, y darlo a conocer de forma que tú - y otra mucha gente como tú de todos los rincones del mundo - llegara hasta aquí, ha sido necesaria la colaboración de un GRAN equipo de personas. Mención especial merece el equipo del <a href="http://www.BIFI.es" target="blank">BIFI</a> - el Instituto de Biocomputación y Física de Sistemas Complejos de la Universidad de Zaragoza - responsables de la parte técnica del proyecto, de la programación de la web y de las aplicaciones móviles y, si entre todos damos de alta un número suficiente de momentos y lugares felices, de analizar los datos y extraer de ellos conclusiones científicas sobre lo que nos hace felices.</p>
+
+      <mako:include file="equipo.mako"/>
 	  
-	  <p>El equipo que ha hecho posible que exista Feelicity está compuesto por:</p>
-	  
-	  
-	  <div class="team_member">
-	    <div style="float:left;"><a href="http://www.fernandoval.es/" target="blank">Fernando Val </a></div>
-	    <div style="float:left; width:25px;clear:left;"><img src="/images/twitter.png" width="25px" height="25px"/></div><div style="float:left; margin-top:6px;"><a href="http://www.twitter.com/aaromnido" target="blank">@aaromnido</a></div>
-	    <div style="float:left; clear:left;">Diseño visual para web y iphone</div>
-	  </div>
-	  <div class="team_member">
-	    <div style="float:left;"><a href="http://www.mamenpradel.com/" target="blank">Mamen Pradel </a></div>
-	    <div style="float:left; width:25px;clear:left;"><img src="/images/twitter.png" width="25px" height="25px"/></div><div style="float:left; margin-top:6px;"><a href="http://www.twitter.com/pensieve" target="blank">@Pensieve</a></div>
-	    <div style="float:left; clear:left;">Diseño Visual y de Interacción</div>
-	  </div>
-	  
-	  <div class="team_member">
-	    <div style="float:left;"><a href="http://www.sonicbyte.com/" target="blank">Pablo Jimeno </a></div>
-	    <div style="float:left; width:25px;clear:left;"><img src="/images/twitter.png" width="25px" height="25px"/></div><div style="float:left; margin-top:6px;"><a href="http://www.twitter.com/pablojimeno" target="blank">@PabloJimeno</a></div>
-	    <div style="float:left; clear:left;">Conceptualización y Diseño web</div>
-	  </div>
-	  
-	  <div class="team_member">
-	    <div style="float:left;"><a href="http://www.sonicbyte.com/" target="blank">Rodrigo Noales </a></div>
-	    <div style="float:left; width:25px;clear:left;"><img src="/images/twitter.png" width="25px" height="25px"/></div><div style="float:left; margin-top:6px;"><a href="http://www.twitter.com/rodrigonoales" target="blank">@RodrigoNoales</a></div>
-	    <div style="float:left; clear:left;">Diseño web</div>
-	  </div>
-	  <div class="team_member">
-	    <div style="float:left;"><a href="http://www.ceconbe.es" target="blank">Lucas Aisa</a></div>
-	    <div style="float:left; width:25px;clear:left;"><img src="/images/twitter.png"/ width="25px" height="25px"></div><div style="float:left; margin-top:6px;"><a href="http://www.twitter.com/CalvoConBarba" target="blank">@CalvoConBarba</a></div>
-	      <div style="float:left; clear:left;">Comunicación y Redes Sociales</div>
-	    </div>
-	  </div>
 	  <br />
 	  <div style="clear:both;">
 	    <button id="dialog-team-btnAccept">
 	      Aceptar
 	    </button>
 	  </div>
-	</div>
-	<div id="dialog-about" title="${_(u'Acerca de')}">
-	  <div>
-	    <p>¿De qué va ésto?</p>
-	    <p>¿Cansado de que la cara del mundo que nos muestran los medios de comunicación sea siempre triste y gris? ¿Harto de que tus buenos momentos, aquellos lugares donde has vivido momentos felices, se pierdan en el recuerdo? ¿Te gustaría construir tu propio archivo de lugares y momentos felices para que estén siempre vivos y poder así compartirlos con el mundo?</p>
-	    <p>Pues eso es Feelicity. Un lugar donde ir recogiendo todas las cosas buenas que nos pasan, para conservarlas, para compartirlas, y entre todos construir un nuevo tipo de mapa del mundo, basado en las personas y en lo que les hace felices. Ni más, ni menos. ¿Estás viviendo ahora mismo un momento feliz? Regístralo para que nunca se pierda. ¿Estás pasando por un lugar que te trae buenos recuerdos? Regístralo y revive ese momento siempre que quieras entrando en la web !! ¿Te imaginas poder coger un taxi y decirle “llévenos a “El banco de mi primer beso” con “El hospital donde nació mi primer hijo”, por favor” ? Sería maravilloso, ¿no crees? Sería una perfecta muestra de <a href="http://translate.google.com/#en|es|felicity" target="_blank">Felicity</a>, que  nos permitiría verdaderamente <a href="http://translate.google.com/#en|es|feel%20the%20city" target="_blank">“Feel the city” </a>... ;)</p>
-	    <p>Centrémonos todos en los buenos momentos. Cambiemos el foco hacia lo positivo, y disfrutemos de las cosas buenas que nos pasan en la vida. Posiblemente nuestra vida será mejor si todos lo hacemos así...</p>
-	    <p>Sed Felices !!</p>
-	  </div>
-	  <div class="powered">
-	    Powered By
-	    <a href="http://www.streetrs.com" style="text-align:center;">Streetrs</a>
-	  </div>
-	  <br />
-	  <button id="dialog-about-btnAccept">
-	    ${_(u'accept')}
-	  </button>
-	</div>
-	<div id="dialog-message" title="Feelicity">
-	  <div id="dialog-content-message"></div>
-	  <button id="dialog-message-btnAccept">${_(u'Aceptar')}</button>
-	</div>
-	
-	<div id="dialog-disclaimer" title="${_('Disclaimer')}">
-	  <p>
-	    Feelicity y las entidades asociadas a la misma no se hacen responsables de las opiniones escritas por los usuarios de esta página web así como de los posibles contenidos fraudulentos que se puedan subir a la misma.
-	  </p>
-	</div>
+  </div>
+  <mako: include file="about.mako"/>
 
 	<div id="dialog-more-info" title="Más información sobre el estudio">
 	  <p style="font-size:14px; text-align: justify;">
