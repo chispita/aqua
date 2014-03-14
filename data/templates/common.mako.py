@@ -4,8 +4,8 @@ UNDEFINED = runtime.UNDEFINED
 __M_dict_builtin = dict
 __M_locals_builtin = locals
 _magic_number = 6
-_modified_time = 1340618450.6849279
-_template_filename=u'/var/www/feelicity/20120625120040/tedx/templates/common.mako'
+_modified_time = 1394727178.75563
+_template_filename=u'/var/www/feelicity/current/tedx/templates/common.mako'
 _template_uri=u'/common.mako'
 _template_cache=cache.Cache(__name__, _modified_time)
 _source_encoding='utf-8'
@@ -26,13 +26,13 @@ def render_body(context,**pageargs):
         __M_writer(u'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> \n<html xmlns="http://www.w3.org/1999/xhtml">\n    <head>\n        <title>Feelicity - ')
         # SOURCE LINE 5
         __M_writer(escape(next.title()))
-        __M_writer(u'</title>\n        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>\n\t<meta name="Keywords" content="geotagging, geolocalizaci\xf3n, social network, red social, mapa"/>\n\t<meta name="Description" content="Feelicity lets you tag places and events sharing them with your friends. You can tag places virtually ')
+        __M_writer(u'</title>\n        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>\n\t<meta name="Keywords" content="quality, water, geotagging, geolocalizaci\xf3n, social network, red social, mapa"/>\n    <meta name="Description" content="Aqua ibercivis lets you tag water quality places and sharing them with your friends.')
         # SOURCE LINE 9
         __M_writer(u'\t\t\t\t\t\t\t\t\t\t  by selecting a place in a map  ')
         # SOURCE LINE 10
-        __M_writer(u'\t\t\t\t\t\t\t\t\t\t  . With this app you can share places, images and videos as well as comment ')
+        __M_writer(u'                                          . With this app you can share water qualitys, images and videos as well as comment ')
         # SOURCE LINE 11
-        __M_writer(u'\t\t\t\t\t\t\t\t\t\t  on other people posts."/> \n\t<meta name="Author" content="BIFI,Tedx"/>\n\t<meta name="Identifier" scheme="URI" content="http://www.tedx.com"/>\n\t<meta name="page-topic" content="geotagging, geolocalizaci\xf3n, social network, red social,mapa"/>\n\t<meta name="audience" content="All"/>\n\t<meta name="Rating" content="General"/>\n\t<meta name="Distribution" content="Global"/>\n        \n\t<link rel="shortcut icon" href="/images/favicon.ico" />\n        <link rel="stylesheet" type="text/css" href="/css/common.css" />\n        <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.8.9.custom.css" />\n        <link rel="stylesheet" type="text/css" href="/css/jquery.fileupload-ui.css" />\n        \n\t<script type="text/javascript" src="/js/jquery-1.6.2.min.js"></script>\n        <script type="text/javascript" src="/js/jquery.json-2.2.min.js"></script>\n        <script type="text/javascript" src="/js/geo.js" charset="utf-8"></script>\n        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>\n        <script type="text/javascript" src="/js/common.js"></script>\n        <script type="text/javascript" src="/common/translation"></script>\n        <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js"></script>\n\t<script type="text/javascript" src="/js/jquery.form.js"></script>\n\n        ')
+        __M_writer(u'\t\t\t\t\t\t\t\t\t\t  on other people posts."/> \n                                          <meta name="Author" content="Ibercivis"/>\n\t<meta name="Identifier" scheme="URI" content="http://aqua.ibercivis.es"/>\n    <meta name="page-topic" content="water,quality,geotagging, geolocalizaci\xf3n, social network, red social,mapa"/>\n\t<meta name="audience" content="All"/>\n\t<meta name="Rating" content="General"/>\n\t<meta name="Distribution" content="Global"/>\n        \n\t<link rel="shortcut icon" href="/images/favicon.ico" />\n        <link rel="stylesheet" type="text/css" href="/css/common.css" />\n        <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.8.9.custom.css" />\n        <link rel="stylesheet" type="text/css" href="/css/jquery.fileupload-ui.css" />\n        \n\t<script type="text/javascript" src="/js/jquery-1.6.2.min.js"></script>\n        <script type="text/javascript" src="/js/jquery.json-2.2.min.js"></script>\n        <script type="text/javascript" src="/js/geo.js" charset="utf-8"></script>\n        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>\n        <script type="text/javascript" src="/js/common.js"></script>\n        <script type="text/javascript" src="/common/translation"></script>\n        <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js"></script>\n\t<script type="text/javascript" src="/js/jquery.form.js"></script>\n\n        ')
         # SOURCE LINE 33
         __M_writer(escape(next.head()))
         __M_writer(u'\n\n        <script type="text/javascript">\n\t  $(document).ready( function() {\n')

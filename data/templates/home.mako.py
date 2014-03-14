@@ -4,8 +4,8 @@ UNDEFINED = runtime.UNDEFINED
 __M_dict_builtin = dict
 __M_locals_builtin = locals
 _magic_number = 6
-_modified_time = 1340618450.6471241
-_template_filename='/var/www/feelicity/20120625120040/tedx/templates/home.mako'
+_modified_time = 1394727123.5106449
+_template_filename='/var/www/feelicity/current/tedx/templates/home.mako'
 _template_uri='/home.mako'
 _template_cache=cache.Cache(__name__, _modified_time)
 _source_encoding='utf-8'
@@ -37,7 +37,7 @@ def render_body(context,**pageargs):
         __M_writer(u'\n\n')
         # SOURCE LINE 19
         __M_writer(u'\n\n')
-        # SOURCE LINE 54
+        # SOURCE LINE 55
         __M_writer(u'\n')
         return ''
     finally:
@@ -56,20 +56,20 @@ def render_content(context):
         __M_writer(u'</h3>\n    <div id="users"></div>  \n  </div>\n  \n  <div class="content_center">\n    <h3>')
         # SOURCE LINE 28
         __M_writer(escape(_(u'happy_moments')))
-        __M_writer(u'</h3>\n    <div id="list"></div>\n    <div id="srToolsDown"></div>\n  </div>\n  \n  <div class="sidebarDer">\n    <div id="logos">\n      <h3>')
-        # SOURCE LINE 35
+        __M_writer(u'</h3>\n    <div id="list"></div>\n    <div id="srToolsDown"></div>\n  </div>\n  \n  <div class="sidebarDer">\n    <div id="logos">\n      <!--\n      <h3>')
+        # SOURCE LINE 36
         __M_writer(escape(_(u'idea')))
-        __M_writer(u':</h3>\t\n      <a href="http://tedxzaragoza.com"><img src="/images/TEDx_logo.png" alt="Logo TEDx Zaragoza" /></a>\n      <h3>')
-        # SOURCE LINE 37
+        __M_writer(u':</h3>\t\n      <a href="http://tedxzaragoza.com"><img src="/images/TEDx_logo.png" alt="Logo TEDx Zaragoza" /></a>\n      -->\n      <h3>')
+        # SOURCE LINE 39
         __M_writer(escape(_(u'developed')))
-        __M_writer(u':</h3>\n      <a href="http://bifi.es"><img src="/images/BIFI_logo.png" alt="Logo BIFI" /></a>\n      <a href="http://www.ibercivis.es"><img src="/images/logo_fundacion.png" alt="Logo Fundaci\xf3n Ibercivis" /></a>\n    </div>\n\n    <h3>')
-        # SOURCE LINE 42
+        __M_writer(u':</h3>\n      <a href="http://www.ibercivis.es"><img src="/images/logo_fundacion.png" alt="Logo Fundaci\xf3n Ibercivis" /></a>\n    </div>\n\n    <h3>')
+        # SOURCE LINE 43
         __M_writer(escape(_(u'follow_us')))
-        __M_writer(u':</h3>\n    <a href="http://www.facebook.com/FeelicityApp" target="_blank"><img src="/images/facebook.png"  class="left social" /></a>\n    <a href="http://www.twitter.com/FeelicityApp" target="_blank"><img src="/images/twitter.png" class="left social" /></a>\n    \n    <h3>')
-        # SOURCE LINE 46
+        __M_writer(u':</h3>\n    <a href="http://www.facebook.com/Ibercivis" target="_blank"><img src="/images/facebook.png"  class="left social" /></a>\n    <a href="http://www.twitter.com/Ibercivis" target="_blank"><img src="/images/twitter.png" class="left social" /></a>\n    \n    <h3>')
+        # SOURCE LINE 47
         __M_writer(escape(_(u'available')))
         __M_writer(u':</h3>\n    <a href="http://itunes.apple.com/app/feelicity/id452958224?mt=8" target="_blank"><img src="/images/imovil.png" class="left" /></a>\n    <a href="https://market.android.com/details?id=com.bifi.feelicity" target="_blank"><img src="/images/androidmovil.png" class="left" /></a>\n\n    <h3>')
-        # SOURCE LINE 50
+        # SOURCE LINE 51
         __M_writer(escape(_(u'happy_cities')))
         __M_writer(u':</h3>\n    <div id="happy_cities"></div>\n  </div>\n\n')
         return ''
