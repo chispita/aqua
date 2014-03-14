@@ -54,25 +54,6 @@
                         % endif
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                        ${_(u'sex')}*:
-                        </td>
-                        <td width="250" align="left">
-                        % if not c.user:
-						<div class="sexcontainer">
-							<div for="man" class="sex">
-								${_(u'man')}
-							</div>
-							<input name="sex" type="radio" value="V" style="width:15px;"/>
-							<div for="woman" class="sex">
-								${_(u'woman')}
-							</div>
-							<input name="sex" type="radio" value="M" style="width:15px;"/>
-						</div>
-						%endif
-                        </td>
-                    </tr>
                 </table>
                 <a href="javascript:void(0);" style="float:right; margin-top: 20px; color:white; text-decoration:none;" onclick="register();" class="accion">${_(u'save')}</a>
                 <div class="clear">
