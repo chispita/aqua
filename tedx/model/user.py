@@ -42,23 +42,18 @@ followers_table.append_column(sa.Column("follower", sa.ForeignKey('Users.id'), n
 followers_table.append_column(sa.Column("followed", sa.ForeignKey('Users.id'), nullable=False))
 
 class User(object):
-    def __init__(self, email, password, nickname, sex, type=None, latitude=None, longitude=None):
+    def __init__(self, email, password, nickname,  type=None, latitude=None, longitude=None):
         self.id = generate_id(self)
         while meta.Session.query(User).filter_by(id = self.id).first() != None:
             self.id = generate_id(self)
         self.email = email
         self.password = hashlib.md5(password).hexdigest()
         self.nickname = nickname
-        self.sex = sex
         self.type = type
         self.latitude = latitude
         self.longitude = longitude
         self.created_on = datetime.datetime.now()
-        if self.sex:
-            self.avatar = "/images/generate/avatar-masc"
-        else:
-            self.avatar = "/images/generate/avatar-fem"
-
+        self.avatar = "/images/generate/avatar-masc"
         meta.Session.add(self)
         meta.Session.commit()
 
