@@ -11,7 +11,8 @@
     <mako:def name="init()">
     </mako:def>
     <mako:def name="content()">
-        <div id="manchaIzda">
+    <div id="manchaIzda">
+            Holita
             <div class="register">
                 <table>
                     <tr>
