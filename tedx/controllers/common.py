@@ -106,7 +106,7 @@ class CommonController(BaseController):
                 msg = MIMEMultipart()
                 msg['From'] = gmail_user
                 msg['To'] = db_user.email
-                msg['Subject'] = _(u'Nueva contraseña de Feelicity')
+                msg['Subject'] = _(u'Nueva contraseña de AQUA')
                 msg.attach(MIMEText(_(u'Nuevo password: ') + unicode(new_password, 'utf-8')))
 
                 mailServer = smtplib.SMTP('smtp.gmail.com', 587)
