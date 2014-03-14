@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <title>Feelicity - ${next.title()}</title>
+        <title>AQUA - ${next.title()}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<meta name="Keywords" content="quality, water, geotagging, geolocalización, social network, red social, mapa"/>
     <meta name="Description" content="Aqua ibercivis lets you tag water quality places and sharing them with your friends.\
@@ -114,7 +114,7 @@
             <span class="logOut"><a href="javascript:logout();">Salir</a></span>
 		  	<div id="placesUp" class="stat"></div>
 		  	<div id="commentsUp" class="stat"></div>
-		  	<div id="visitsUp" class="stat"></div>
+		  	<!--div id="visitsUp" class="stat"></div-->
 		  	<div id="likeUp" class="stat"></div>	
 	  	</div>
 	  	
@@ -165,7 +165,7 @@
 	</div>
 
 	<div id="buscarMapa" class="left  clear">
-	  <label for="srch" style="float:left;padding:5px 0px;"><input type="text" id="search_string" placeholder="Buscar momentos felices" onkeydown="if ((event.which && event.which == 13) || (event.keyCode && event.keyCode == 13)) {search_query();}"></input></label>
+	  <label for="srch" style="float:left;padding:5px 0px;"><input type="text" id="search_string" placeholder="Buscar muestras" onkeydown="if ((event.which && event.which == 13) || (event.keyCode && event.keyCode == 13)) {search_query();}"></input></label>
 	  <a href="javascript:void(0);" onclick="search_query();" class="left accion bordeSoft">${_(u'search')}</a>
 	  <a href="javascript:void(0);" onclick="get_current_position(on_position_success, on_position_error);" class="left accion bordeSoft" id="geo">${_(u'geolocation')}</a>
 	  
@@ -262,7 +262,7 @@
 	  ${_(u'cancel')}
 	</button>
       </div>
-      <div id="dialog-contact" title="${_(u'Contacta con el equipo de Feelicity')}">
+      <div id="dialog-contact" title="${_(u'Contacta con el equipo de AQUA')}">
 	<label for="dialog-contact-txtName" class="form-label">
 	  ${_(u'Nombre')}:
 	</label>
@@ -295,9 +295,15 @@
       </div>
       <div id="dialog-team" title="${_(u'Equipo')}">
 	<div>
-	  <p>Feelicity nace como un proyecto dentro de las actividades que se están organizando con motivo del I <a href="http://www.TEDxZaragoza.com" target="blank">TEDxZaragoza</a> , que se celebrará, en Zaragoza (España), el próximo 5 de Noviembre de 2011, en el que se debatirá sobre “El Futuro de la Felicidad”.</p>
-	  
-	  <p>Para conseguir que lo que “sólo” era una “idea feliz” de un grupo de soñadores, se convirtiera en un proyecto real, operativo, en tiempo record, y darlo a conocer de forma que tú - y otra mucha gente como tú de todos los rincones del mundo - llegara hasta aquí, ha sido necesaria la colaboración de un GRAN equipo de personas. Mención especial merece el equipo del <a href="http://www.BIFI.es" target="blank">BIFI</a> - el Instituto de Biocomputación y Física de Sistemas Complejos de la Universidad de Zaragoza - responsables de la parte técnica del proyecto, de la programación de la web y de las aplicaciones móviles y, si entre todos damos de alta un número suficiente de momentos y lugares felices, de analizar los datos y extraer de ellos conclusiones científicas sobre lo que nos hace felices.</p>
+	  <p>Para este proyecto, Ibercivis se beneficia de la experiencia de este grupo de profesionales:
+        <b>Francisco Sanz</b>, tiene relación directa con la comunidad científica para brindarles la plataforma Ibercivis que permite contactar con la ciudadanía y la ciencia ciudadana. Desarrollador de herramientas para este nuevo tipo de ciencia. Divulgador en distintos foros acerca de computación y ciencia ciudadana.
+        <br />
+        <b>Carlos Val</b> es desarrollador de infraestructuras de ciencia ciudadana. Encargado de las relaciones con entidades externas para desarrollar proyectos de ciencia ciudadana.
+        <br />
+        <b>Eduardo Lostal Lanza</b> es desarrollador de aplicaciones web y móvil para proyectos de ciencia ciudadana. Presente en distintos congresos relacionados con el ámbito de la ciencia ciudadana. Director de proyectos fin de carrera relacionados con ciencia ciudadana.
+        <br />
+        <b>M.Carmen Ibáñez Hernández</b> es encargada de la sección de divulgación y difusión dentro de la fundación así como organizadora de eventos de ciencia ciudadana, cuenta con 5 años de experiencia desarrollando actividades con la ciudadanía.
+      </p>
 
       <mako:include file="equipo.mako"/>
 	  
@@ -312,11 +318,13 @@
 
 	<div id="dialog-more-info" title="Más información sobre el estudio">
 	  <p style="font-size:14px; text-align: justify;">
-	    Desde el departamento de Bioinformación y Biología de sistemas del IACS se está realizando un estudio científico de la risa. Hasta ahora no se ha establecido la relación entre las distintas clases de risa y los estados emocionales. La risa apareció mucho antes que el habla, y la hemos estado usando como respuesta y expresión de múltiples situaciones y estados. Pero no deja de ser una señal acústica, muy parecida al lenguaje pero con una serie de características propias, temporales y frecuenciales, con una gran variabilidad. Esa variabilidad se utiliza para llevar información al oyente qué nos ha hecho reír y cómo nos sentimos. Según el ritmo y la melodía, es decir, según la duración y espaciado de la carcajada y sus frecuencias, se puede indicar si nos ha sorprendido gratamente algo, si nos gusta una persona o su forma de ser o si queremos incluir o excluír a alguien de nuestro grupo social.
-	  </p>
-
-	  <p style="font-size: 14px; text-align: justify;">
-	    El poder clasificar y agrupar automáticamente esos tipos de risa serviría para entender un poco mejor nuestro comportamiento emocional. Pero el principal inconveniente es la imposibilidad de reproducir risas naturales y espontáneas en el laboratorio. Por eso, toda grabación de una situación alegre, feliz, cómica, nos ayudaría mucho. Con el móvil y simplemente una pequeña descripción del contexto (saludando a viejos amigos, riéndome con la pareja, ante un buen chiste), y si es posible sin mucho ruido o conversaciones de fondo, aportarías una información importantísima.
+	    El ayuntamiento de la la ciudad de Zaragoza realiza a través de su Instituto Municipal de Salud Pública un control de la calidad del agua periódico y los resultados analíticos pueden ser consultados <a href="http://www.zaragoza.es/ciudad/IMSP/sanidad/listado_IMSP" target="_blank">aquí</a>. Este control se realiza según los parámetros definidos en el Real Decreto 140/2003 y sus modificaciones.
+        <br />
+        Uno de los parámetros de control, cuyo nivel permite mantener “a raya” a los contaminantes microbiológicos es el cloro, incluso a concentraciones muy bajas tiene una importante actividad biocida. Conservar los límites de concentración del clore en nuestros grifos, fuentes, etc, estimados por legislación y suficientes para inhibir el crecimiento microbiano, es una tarea a veces no demasiado fácil.
+        <br />
+        Sería lógico suponer que un aumento en la concentración de cloro disponible en una solución traería un aumento correspondiente en la actividad biocida. Esta suposición puede ser verdad, mientras que otros factores, tales como el pH, la temperatura y el contenido de materia orgánica se mantengan constantes.
+        <br />
+        El poder biocida del cloro depende mucho de su no disociación en solución acuosa que está directamente relacionada al pH. Un aumento en el pH diminuye sustancialmente la actividad biocida del cloro, y una disminución del pH aumenta esa actividad en la misma proporción. Desde principios del siglo XX, se demostró esta dependencia del pH en la formación del ácido hipocloroso, forma más eficaz de la actividad biocida de los compuestos clorados, y por consiguiente, en la eficacia del cloro.
 	  </p>
 	  <br />
 	</div>
