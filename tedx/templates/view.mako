@@ -64,12 +64,6 @@
 		    ${_(u'image')}
 		  </a>
 		</div>
-		<div id="botonYoutube">
-		  <a class="estiloAzul" href="javascript:new_youtube_link();">
-		    <img src="/images/iconoYoutube.png" alt="Enlazar con un video de YouTube." longdesc="Click aquí para enlazar con un video de YouTube." />
-		    ${_(u'youtube')}
-		  </a>
-		</div>
 	      </div>
 	      
 	      <div id="link" title="link">
