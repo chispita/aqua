@@ -28,6 +28,8 @@ class HomeController(BaseController):
         return render('/home.mako')
 
     def _order_elements_by_date(self, element1, element2):
+        function = 'def _order_elements_by_date'
+        log.debug('%s - city:%s, country:%s' % (function, self.prm('city'), self.prm('country')))
         if element1.last_update < element2.last_update:
             return 1
         elif element1.last_update == element2.last_update:
@@ -36,6 +38,8 @@ class HomeController(BaseController):
             return -1
 
     def _order_elements_by_scorings(self, element1, element2):
+        function = 'def _order_elements_by_scorings'
+        log.debug(function)
         if (element1.positive_scorings - element1.negative_scorings) < (element2.positive_scorings - element2.negative_scorings):
             return 1
         elif (element1.positive_scorings - element1.negative_scorings) == (element2.positive_scorings - element2.negative_scorings):
@@ -44,6 +48,8 @@ class HomeController(BaseController):
             return -1
 
     def _order_elements_by_visits(self, element1, element2):
+        function = 'def _order_elements_by_visits'
+        log.debug(function)
         if element1.visits < element2.visits:
             return 1
         elif element1.visits == element2.visits:
@@ -52,6 +58,8 @@ class HomeController(BaseController):
             return -1
 
     def _order_elements_by_comments(self, element1, element2):
+        function = 'def _order_elements_by_comments'
+        log.debug(function)
         if len(element1.comments) < len(element2.comments):
             return 1
         elif len(element1.comments) == len(element2.comments):
@@ -60,6 +68,8 @@ class HomeController(BaseController):
             return -1
 
     def _order_elements_by_contents(self, element1, element2):
+        function = 'def _order_elements_by_contents'
+        log.debug(function)
         if element1['user_contents'] < element2['user_contents']:
             return 1
         elif element1['user_contents'] == element2['user_contents']:
@@ -69,6 +79,9 @@ class HomeController(BaseController):
 
 
     def search(self):
+        function = 'def search'
+        log.debug(function)
+
         #date = datetime.datetime.now()
         mode = 'map'
         if self.prm('mode'):
@@ -115,7 +128,36 @@ class HomeController(BaseController):
         total_places = meta.Session.query(Place).count()
         db_results = []
         num_results = 0
+
+        log.debug('%s - mode:%s' %(function, mode))
+
+        if mode == 'map':
+            ''' Main query for the map '''
+            max_latitude = self.prm('max_latitude')
+            min_latitude = self.prm('min_latitude')
+            max_longitude = self.prm('max_longitude')
+            min_longitude = self.prm('min_longitude')
+
+            db_results = meta.Session.query(Place).filter(
+                    and_(
+                        Place.empty==False,
+                        Place.latitude.between(min_latitude, max_latitude),
+                        Place.longitude.between(min_longitude, max_longitude))
+                    ).order_by(desc(Place.last_update)).limit(page_size).offset(index)
+
+            num_results = meta.Session.query(Place).filter(
+                    and_(
+                        Place.empty==False,
+                        Place.latitude.between(min_latitude, max_latitude),
+                        Place.longitude.between(min_longitude, max_longitude))).count()
+
+            log.debug('%s mode:%s' % (function, mode))
+            log.debug('%s db:%s' % (function, db_results))
+            log.debug('%s db:%s' % (function, num_results))
+
+
         '''
+
         if mode == 'search':
             string = max(self.prm('search_string').split(), key=len)
             latitude = self.prm('latitude')
@@ -184,9 +226,9 @@ class HomeController(BaseController):
 
         '''
         results = []
-        #date = datetime.datetime.now()
-
+        log.debug('%s - antes de loop' % (function))
         for db_result in db_results:
+            log.debug('%s - db_result:%s' % (function, db_result))
             if len(db_result.comments)>0:
                 last_updater_name =  db_result.comments[-1].user.nickname
             else:
@@ -226,7 +268,6 @@ class HomeController(BaseController):
             if result not in results:
                 results.append(result)
             index += 1
-        #print datetime.datetime.now() - date
         user_id = ""
         if c.user:
             user_id = c.user.id

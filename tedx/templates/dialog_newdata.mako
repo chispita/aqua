@@ -2,16 +2,16 @@
 <h2 class="mom">${_(u'new_place')}</h2>	    
     <form id="new-instant-form" action="/content/fast_new_instant" enctype="multipart/form-data">
         <label for="new-instant-txtName">${_(u'title')}:<br /> 
-            <input type="text" id="new-instant-txtName" name="new-instant-txtName" placeholder="${_(u'Nombre')}"></input></label><br />
+        <input type="text" id="new-instant-txtName" name="new-instant-txtName" placeholder="${_(u'Nombre')}"></input></label><br />
 
         <label for="new-instant-txtValuePH">${_(u'pH')}:<br />
-            <input type="text" id="new-instant-txtValuePH" name="new-instant-txtValuePH" placeholder="${_(u'pH')}"></input></label><br />
+        <input type="text" id="new-instant-txtValuePH" name="new-instant-txtValuePH" placeholder="${_(u'pH')}"></input></label><br />
 
         <label for="new-instant-txtValueCloro">${_(u'Cloro')}:<br />
-            <input type="text" id="new-instant-txtValueCloro" name="new-instant-txtValueCloro" placeholder="${_(u'Cloro')}"></input></label><br />
+        <input type="text" id="new-instant-txtValueCloro" name="new-instant-txtValueChlorine" placeholder="${_(u'Cloro')}"></input></label><br />
 
-    <label for="new-instant-txtValueTemp">${_(u'Temperatura')}:<br />
-            <input type="text" id="new-instant-txtValueTemp" name="new-instant-txtValueTemp" placeholder="${_(u'Temperatura')}"></input></label><br />
+        <label for="new-instant-txtValueTemp">${_(u'Temperatura')}:<br />
+        <input type="text" id="new-instant-txtValueTemp" name="new-instant-txtValueTemperature" placeholder="${_(u'Temperatura')}"></input></label><br />
 
         <label for="new-instant-txtDescription">${_(u'description')}:</br>
         <textarea id="new-instant-txtDescription" name="new-instant-txtDescription" placeholder="${_(u'Descripción')}"></textarea></label>
