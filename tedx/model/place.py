@@ -27,7 +27,6 @@ place_table.append_column(sa.Column("country", sa.types.String(128)))
 place_table.append_column(sa.Column("last_update", sa.types.DateTime))
 place_table.append_column(sa.Column("ph", sa.types.Numeric(2,1)))
 place_table.append_column(sa.Column("chlorine", sa.types.Numeric(3,1)))
-place_table.append_column(sa.Column("temperature", sa.types.Numeric(2,1)))
 
 class Place(object):
     def __init__(self, user, latitude, longitude, city, country, name=None):
@@ -79,8 +78,7 @@ class Place(object):
         self.visits += 1
         meta.Session.commit()
 
-    def add_water(self, ph, chlorine, temperature):
+    def add_water(self, ph, chlorine):
         self.ph = ph
         self.chlorine = chlorine
-        self.temperature = temperature
         meta.Session.commit()

@@ -258,19 +258,11 @@ class ContentController(BaseController):
 
         ph = self.prm('new-instant-txtValuePH')
         chlorine = self.prm('new-instant-txtValueChlorine')
-        temperature = self.prm('new-instant-txtValueTemperature')
-
-        log.debug('%s - latitude:%s' % (function, latitude))
-        log.debug('%s - longitude:%s' % (function, longitude))
-
-        log.debug('%s - pH:%s' % (function, ph))
-        log.debug('%s - cloro:%s' % (function, chlorine))
-        log.debug('%s - temperature:%s' % (function, temperature))
 
         if not c.user:
             return h.toJSON({'status': 'NOK', 'message': _(u'you_must_login_to_add_content'), 'error_code': 1})
 
-        '''
+
         if city is None or country is None or city== "" or country == "":
             g = geocoders.Google(domain='maps.google.es')
             point = [latitude,longitude]
@@ -278,18 +270,11 @@ class ContentController(BaseController):
             address = new_place.split(',')
             city = address[-2].split(" ")[-1]
             country = address[-1]
-        '''
-
 
         ''' Save Values '''
         place = c.user.add_place(latitude, longitude, None, None, title)
-        log.debug('%s - save place:%s' % (function,place))
-
         db_comment = place.add_comment(c.user, content, title)
-        log.debug('%s - save comment:%s' % (function,db_comment))
-
-        db_water = place.add_water(ph, chlorine, temperature)
-        log.debug('%s - save water:%s' % (function, db_water))
+        db_water = place.add_water(ph, chlorine)
 
         if (image_link != None and image_link != ""):
             name = image_link.name

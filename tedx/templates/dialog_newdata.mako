@@ -10,9 +10,6 @@
         <label for="new-instant-txtValueCloro">${_(u'Cloro')}:<br />
         <input type="text" id="new-instant-txtValueCloro" name="new-instant-txtValueChlorine" placeholder="${_(u'Cloro')}"></input></label><br />
 
-        <label for="new-instant-txtValueTemp">${_(u'Temperatura')}:<br />
-        <input type="text" id="new-instant-txtValueTemp" name="new-instant-txtValueTemperature" placeholder="${_(u'Temperatura')}"></input></label><br />
-
         <label for="new-instant-txtDescription">${_(u'description')}:</br>
         <textarea id="new-instant-txtDescription" name="new-instant-txtDescription" placeholder="${_(u'Descripción')}"></textarea></label>
         <div class="clear"></div>
