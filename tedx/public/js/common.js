@@ -9,6 +9,12 @@ var max_zoom = 17;
 var green_marker = new google.maps.MarkerImage("/images/icono-maps.png", new google.maps.Size(30, 45), new google.maps.Point(0, 0), new google.maps.Point(15, 25));
 var red_marker = new google.maps.MarkerImage("/images/icono-maps.png", new google.maps.Size(30, 45), new google.maps.Point(0, 0), new google.maps.Point(15, 25));
 
+var drop_yellow = new google.maps.MarkerImage("/images/drop_yellow.png", new google.maps.Size(30, 45), new google.maps.Point(0, 0), new google.maps.Point(15, 25));
+var drop_red    = new google.maps.MarkerImage("/images/drop_red.png",    new google.maps.Size(30, 45), new google.maps.Point(0, 0), new google.maps.Point(15, 25));
+var drop_blue   = new google.maps.MarkerImage("/images/drop_blue.png",   new google.maps.Size(30, 45), new google.maps.Point(0, 0), new google.maps.Point(15, 25));
+var drop_green  = new google.maps.MarkerImage("/images/drop_green.png",  new google.maps.Size(30, 45), new google.maps.Point(0, 0), new google.maps.Point(15, 25));
+
+
 var geolocated = false;
 var current_position_marker;
 var refresh_location_timer;
@@ -461,51 +467,38 @@ var get_places = function() {
                         results[i].user_name +
                         '</a></td></tr>';
 
-                        
-
-                        html += '<tr><td><b>' +
-                        _("last_update") +
-                        ':</b></td><td>' +
-                        results[i].last_update +
-                        ' por ' +
-                        results[i].last_updater_name +
-                        '</td></tr>\
-                        <tr><td><b>' +
-                        _("comments") +
-                        ':</b></td><td>' +
-                        results[i].num_comments +
-                        '</td></tr>\
-                        <tr><td><b>' +
-                        _("visits") +
-                        ':</b></td><td>' +
-                        results[i].visits +
-                        '</td></tr>\
-                        <tr><td><b>' +
-                        _("scoring") +
-                        ':</b></td><td>0</td></tr>';
-                        
+                        html += 
+                        '<tr><td><b>' + _("last_update") + ':</b></td>' +
+                        '<td>' + results[i].last_update + '</td>' +
+                        '<tr><td><b>' + _("pH") + ':</b></td>' + 
+                        '<td>' + results[i].ph + '</td></tr>' +
+                        '<tr><td><b>' + _("Chlorine") + ':</b></td>' + 
+                        '<td>' + results[i].chlorine + '</td></tr>' + 
+                        '<tr><td><b>' + _("Temperature") + ':</b></td>' + 
+                        '<td>' + results[i].temperature + '</td></tr>';
                         if (results[i].comment_image != null){
                         	html += '<tr><td><img src ="' + results[i].comment_image +'_small.jpg"/></td></tr>\
                         	</table>';
                         } else {
                         	html += '</table>';
                         }
-                        
-
-                        // Place the instant on the google map ???
-                        var marker = drawn_places[results[i].place_id];
-                        if (marker == undefined) {
-                            marker = red_marker;
+                        if( results[i].ph >= 8)
+                            marker = drop_green;
+                        else if ( results[i].ph >= 6)
+                            marker = drop_blue;
+                        else if ( results[i].ph >= 4)                                
+                            marker = drop_red;
+                        else
+                            marker = drop_yellow;
                             
-                            marker = create_marker({
+                        marker = create_marker({
                                 position: new google.maps.LatLng(results[i].latitude, results[i].longitude),
                                 icon: marker,
                                 map: map
                             }, infowindow, html);
-                            markers_array.push(marker);
+                        markers_array.push(marker);
 
-                            drawn_places[results[i].place_id] = marker;
-                        }
+                        drawn_places[results[i].place_id] = marker;
 
                         if (list_mode) {
                             var context = {
