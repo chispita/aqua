@@ -34,7 +34,7 @@ class RegisterController(BaseController):
         if db_user is not None or nickname in reserved_nicknames:
             return h.toJSON({"status": "NOK", "message": _(u"nickname_already_registered"), 'error_code': 0})
 
-        c.user = User(email, password, nickname, sex, latitude, longitude)
+        c.user = User(email, password, nickname, latitude, longitude)
 
         session['user_id'] = c.user.id
         session.save()
