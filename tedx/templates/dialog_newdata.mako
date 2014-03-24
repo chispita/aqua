@@ -1,7 +1,7 @@
 ## Dialog New Data
 <h2 class="mom">${_(u'new_place')}</h2>	    
     <form id="new-instant-form" action="/content/fast_new_instant" enctype="multipart/form-data">
-        <label for="new-instant-txtName">${_(u'title')}:<br /> 
+        <label for="new-instant-txtName">${_(u'Lugar de la muestra')}:<br /> 
         <input type="text" id="new-instant-txtName" name="new-instant-txtName" placeholder="${_(u'Nombre')}"></input></label><br />
 
         <label for="new-instant-txtValuePH">${_(u'pH')}:<br />

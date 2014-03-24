@@ -1,5 +1,5 @@
 <div id="logos">
-    <h3>${_(u'Un proyecto de ciencia ciudadana de')}:</h3>
+    <h3>${_(u'Un proyecto de ciencia ciudadana de')}</h3>
     <a href="http://www.ibercivis.es"><img src="/images/logo_fundacion.png" alt="Logo Fundación Ibercivis" /></a>
 
     <h3>${_(u'Con la colaboración de')}:</h3>
