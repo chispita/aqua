@@ -146,8 +146,6 @@ var get_place_data = function() {
                 place.user_name +
                 '</a></td></tr>';
 
-                
-
                 html += '<tr><td><b>' +
                 _("last_update") +
                 ':</b></td><td>' +
@@ -163,7 +161,7 @@ var get_place_data = function() {
                 <tr><td><b>' +
                 _("visits") +
                 ':</b></td><td>' +
-                place.visits +
+                place.visits + 
                 '</td></tr>\
                 <tr><td><b>' +
                 _("scoring") +

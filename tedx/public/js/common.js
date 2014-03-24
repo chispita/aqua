@@ -311,11 +311,11 @@ var view_more = function() {
 			ul.append($('<li style="width:85px;"><a href="/view/place?id=' + results[i].place_id +'">' + results[i].num_comments + ' ' +_("comment") +'</a></li>'));
 		}
 		ul.append($('<li style="width:65px;"><a href="#" onclick="add_place_scoring_home(\''+results[i].place_id+'\',1);">' + results[i].positive_scorings + ' '  +_("like") +' </a></li>'));
-		if (results[i].visits != "1") {
-			ul.append($('<li style="width:85px;"><div style="padding-left:5px;" >' + results[i].visits + ' ' +_("visits") +'</div></li>'));
-		} else {
-			ul.append($('<li style="width:85px;"><div style="padding-left:5px;" >' + results[i].visits + ' ' +_("visit") +'</div></li>'));
-		}
+		//if (results[i].visits != "1") {
+		//	ul.append($('<li style="width:85px;"><div style="padding-left:5px;" >' + results[i].visits + ' ' +_("visits") +'</div></li>'));
+		//} else {
+		//	ul.append($('<li style="width:85px;"><div style="padding-left:5px;" >' + results[i].visits + ' ' +_("visit") +'</div></li>'));
+		//}
 		div2.append(ul);
 		div.append(div2);
 
@@ -431,7 +431,11 @@ var get_places = function() {
                     		// Instant description
                     		div.append($('<p>'+ results[i].comment_content+'</p>'));
                     		// Instant date
-                    		var div2 = $('<div class="momentoCont left clear"><p class="clear">'+ results[i].last_update +'</p></div>');
+                    		var div2 = $('<div class="momentoCont left clear"><p class="clear">'+  results[i].last_update +'</p></div>');
+                    		var div3 = $('<div class="momentoCont left clear"><p class="clear">'+ _("ph") + ': ' +  results[i].ph + ' ' +  _("chlorine") + ': ' + results[i].chlorine + '</p></div>');
+
+                            div.append(div3);
+
                     		// Number of comments, likes and visits
                     		var ul = $('<ul class="clear"></ul>');
                     		if (results[i].num_comments != "1") {
@@ -439,12 +443,12 @@ var get_places = function() {
                     		} else {
                     			ul.append($('<li style="width:85px;"><a href="/view/place?id=' + results[i].place_id +'">' + results[i].num_comments + ' ' +_("comment") +'</a></li>'));
                     		}
-                    		ul.append($('<li style="width:65px;"><a href="#" onclick="add_place_scoring_home(\''+results[i].place_id+'\',1);">' + results[i].positive_scorings + ' '  +_("like") +' </a></li>'));
-                    		if (results[i].visits != "1") {
-                    			ul.append($('<li style="width:85px;"><div style="padding-left:5px;" >' + results[i].visits + ' ' +_("visits") +'</div></li>'));
-                    		} else {
-                    			ul.append($('<li style="width:85px;"><div style="padding-left:5px;" >' + results[i].visits + ' ' +_("visit") +'</div></li>'));
-                    		}
+                    		ul.append($('<li style="width:65px;"><a href="#" onclick="add_place_scoring_home(\''+results[i].place_id+'\',1);">' + results[i].positive_scorings + ' '  +_("like") +' </a></li>')); 
+                    		//if (results[i].visits != "1") {
+                    		//	ul.append($('<li style="width:85px;"><div style="padding-left:5px;" >' + results[i].visits + ' ' +_("visits") +'</div></li>'));
+                    		//} else {
+                    		//	ul.append($('<li style="width:85px;"><div style="padding-left:5px;" >' + results[i].visits + ' ' +_("visit") +'</div></li>'));
+                    		//}
                     		div2.append(ul);
                     		div.append(div2);
 	        	    
