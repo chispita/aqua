@@ -226,7 +226,7 @@ class HomeController(BaseController):
 
         '''
         results = []
-        log.debug('%s - antes de loop' % (function))
+        #log.debug('%s - antes de loop' % (function))
         for db_result in db_results:
             log.debug('%s - db_result:%s' % (function, db_result))
             if len(db_result.comments)>0:
@@ -264,13 +264,17 @@ class HomeController(BaseController):
                     "positive_scorings": len(db_result.positive_scorings),
                     "comment_image" : comment_image,
                     "visits": db_result.visits,
+                    "ph": db_result.ph,
+                    "chlorine": db_result.chlorine,
                     "last_update": db_result.last_update.strftime('%d/%m/%Y %H:%M:%S')}
             if result not in results:
+                #log.debug('%s - result:%s' % (function, result))
                 results.append(result)
             index += 1
         user_id = ""
         if c.user:
             user_id = c.user.id
+
         return h.toJSON({
             'status': 'OK',
             'pages': int(math.ceil(float(num_results) / float(page_size))),

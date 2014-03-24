@@ -263,13 +263,13 @@ class ContentController(BaseController):
             return h.toJSON({'status': 'NOK', 'message': _(u'you_must_login_to_add_content'), 'error_code': 1})
 
 
-        if city is None or country is None or city== "" or country == "":
-            g = geocoders.Google(domain='maps.google.es')
-            point = [latitude,longitude]
-            (new_place,new_point) = g.reverse(point)
-            address = new_place.split(',')
-            city = address[-2].split(" ")[-1]
-            country = address[-1]
+        #if city is None or country is None or city== "" or country == "":
+        #    g = geocoders.Google(domain='maps.google.es')
+        #    point = [latitude,longitude]
+        #    (new_place,new_point) = g.reverse(point)
+        #    address = new_place.split(',')
+        #    city = address[-2].split(" ")[-1]
+        #    country = address[-1]
 
         ''' Save Values '''
         place = c.user.add_place(latitude, longitude, None, None, title)
