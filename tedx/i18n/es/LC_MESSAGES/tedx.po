@@ -434,7 +434,7 @@ msgstr "Entrar"
 
 #: tedx/templates/common.mako:101
 msgid "login_question"
-msgstr "¿No participas en el mapa de calidad del agua?"
+msgstr "¿Quieres subir tu propia medida de análisis?"
 
 #: tedx/templates/common.mako:102 tedx/templates/register.mako:4
 msgid "register"
@@ -465,10 +465,7 @@ msgstr ""
 "muy largos, queremos que nos ayudes a controlar si los niveles de"
 "cloro en nuestros grifos son  los adecuados para el consumo. Aquí"
 "puedes compartir el resultado de analizar el agua de tu casa, o el"
-"de la fuente de tu parque, el que encuentre en tus viajes...</p><div "
-"style=\"margin:35px 35px;\"><a href=\"javascript: register_user();\" "
-"class=\"registro\" \"bordeSoft\" style=\"text-transform: uppercase;\" "
-"id=\"grande\">registrarse</a></div>"
+"de la fuente de tu parque, el que encuentre en tus viajes..."
 
 #: tedx/templates/common.mako:146
 msgid "title"
