@@ -340,4 +340,10 @@ class ContentController(BaseController):
             meta.Session.add(db_file)
             meta.Session.commit()
 
-        return h.toJSON({'status': 'OK', 'message': _(u'Nueva muestra guardada correctamente.'), 'comment_id': db_comment.id, 'place_id': place.id})
+        log.debug('%s - Grabada correctamente' % function)
+
+        return h.toJSON({
+            'status': 'OK',
+            'message': _(u'Nueva muestra guardada correctamente.'),
+            'comment_id': db_comment.id,
+            'place_id': place.id})

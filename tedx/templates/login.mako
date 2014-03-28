@@ -2,7 +2,8 @@
 <%inherit file="common.mako"/>
 <%def name="title()">${_(u'register')}</%def>
 
-<%def name="head()"></%def>
+<%def name="head()">
+</%def>
 
 <%def name="init()"></%def>
 
@@ -10,32 +11,45 @@
 <%def name="MainContent()">
 
     <div id="queMapa">
+
         <div align="right"><a href="/" class="close-icon"></a></div>
 
-        <h2>${_(u'Formulario de Registro')}</h2>
-        <form id="form1" method="post" action="/common/form_register" >
-            <label for="new-session-txtName">${_(u'Nombre')}:<br />
-                <input type="text"  name="nickname" maxlength="32" placeholder="${_(u'nombre')}"> </input>
+        <h2>${_(u'Inicio de sesion')}</h2>
+
+        <form id="form1" method="post" action="/common/form_login" >
+
+
+            <label for="new-session-txtName">${_(u'Email')}:<br />
+                <input type="text"  name="login_email" id="login_email"></input>
             </label><br/>
-            <label for="new-session-txtEmail">${_(u'Email')}:<br />
-                <input type="text" name="email"  maxlength="256" placeholder="${_(u'email')}"> </input>
+
+            <label for="new-session-txtPassword">${_(u'Password')}:<br />
+            ${_(u'password')}
+            <input type="password" name="login_password" id="login_password" onkeydown="if ((event.which && event.which == 13) || (event.keyCode && event.keyCode == 13)) {$('#form1').submit();}"></input>
             </label><br/>
-            <label for="new-session-txtPassword">${_(u'Contraseña')}:<br />
-                <input type="password"  name="password"  maxlength="32"></input>
-            </label><br/>
-            <label for="new-session-txtPassword">${_(u'Repite la Contraseña')}:<br />
-                <input type="password" name="password2" maxlength="32"></input>
-            </label><br/>
+
+
+            </br></br>
+            <div class="centerize">
+                <a href="#" onclick="$('#form1').submit();"  class="accion bordeSoft">${_(u'log_in')}</a>
+            </div>
+
+            </br></br>
+            <div class="centerize">
+                <a href="/register" class="accion bordeSoft" id="new-instant-btnSend">${_(u'Registrarse')}</a>
+            </div> 
+            </br></br>
+            <div class="centerize">
+                <a href="/forgotpassword" class="accion bordeSoft" id="new-instant-btnSend">${_(u'Recuperar contraseña')}</a>
+            </div
         </form>
 
-        <br><br>
-        <div class="centerize">
-            <a href="#" onclick="$('#form1').submit();" class="accion bordeSoft">${_(u'Aceptar')}</a>
-        </div>
 
         <div class="clear"></div>
         </div>
-    </%def>
+</%def>
+
+
 
 <%def name="content()">
     <div class="sidebarIzq">

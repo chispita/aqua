@@ -10,27 +10,20 @@
 <%def name="MainContent()">
 
     <div id="queMapa">
+
         <div align="right"><a href="/" class="close-icon"></a></div>
 
-        <h2>${_(u'Formulario de Registro')}</h2>
-        <form id="form1" method="post" action="/common/form_register" >
-            <label for="new-session-txtName">${_(u'Nombre')}:<br />
-                <input type="text"  name="nickname" maxlength="32" placeholder="${_(u'nombre')}"> </input>
-            </label><br/>
+        <h2>${_(u'Recuperar contraseña')}</h2>
+        <form id="form1" method="post" action="/common/form_forgotten_password">
+
+            <p>${_(u'Introduce el email con el que te registraste y te enviaremos tu nueva contraseña allí.')}</p>
             <label for="new-session-txtEmail">${_(u'Email')}:<br />
                 <input type="text" name="email"  maxlength="256" placeholder="${_(u'email')}"> </input>
             </label><br/>
-            <label for="new-session-txtPassword">${_(u'Contraseña')}:<br />
-                <input type="password"  name="password"  maxlength="32"></input>
-            </label><br/>
-            <label for="new-session-txtPassword">${_(u'Repite la Contraseña')}:<br />
-                <input type="password" name="password2" maxlength="32"></input>
-            </label><br/>
         </form>
-
         <br><br>
         <div class="centerize">
-            <a href="#" onclick="$('#form1').submit();" class="accion bordeSoft">${_(u'Aceptar')}</a>
+        <a href="#" onclick="$('#form1').submit();" class="accion right bordeSoft">${_(u'Enviar')}</a>
         </div>
 
         <div class="clear"></div>
