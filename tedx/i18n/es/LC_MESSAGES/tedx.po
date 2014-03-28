@@ -466,6 +466,11 @@ msgstr ""
 "cloro en nuestros grifos son  los adecuados para el consumo. Aquí"
 "puedes compartir el resultado de analizar el agua de tu casa, o el"
 "de la fuente de tu parque, el que encuentre en tus viajes..."
+"<div style=\"margin:35px 35px;\"><a href=\"javascript: register_user();\" "
+"class=\"accion right bordeSoft" style=\"text-transform: uppercase;\" "
+"id=\"grande\">entrar</a><a href=\"javascript: register_start();\" "
+"class=\"accion left bordeSoft" style=\"text-transform: uppercase;\" "
+"id=\"grande\">registrarse</a></div>"
 
 #: tedx/templates/common.mako:146
 msgid "title"
