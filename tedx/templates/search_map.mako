@@ -7,7 +7,10 @@
     <a href="javascript:void(0);" onclick="get_current_position(on_position_success, on_position_error);" class="left accion bordeSoft" id="geo">${_(u'geolocation')}</a>
     %if c.user:
         <div class="derecha">
-            <a href="/newdata" onclick="get_current_position(on_position_success, on_position_error);" class="left accion bordeSoft" id="geo">${_(u'Nueva Muestra')}</a>
+            <a href="/places/new" class="left accion bordeSoft" id="geo">${_(u'Nueva Muestra')}</a>
+
+            <a href="/account/profile/">${c.user.nickname}</a>
+
         </div>
     %endif:
 </div>

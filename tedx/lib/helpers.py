@@ -7,6 +7,11 @@ available to Controllers. This module is available to templates as 'h'.
 #from webhelpers.html.tags import checkbox, password
 
 import simplejson
+from routes import url_for
+from webhelpers.html.tags import link_to
+
+from webhelpers.html.tags import *
+from webhelpers.html.tags import file
 
 
 def toJSON(obj):
@@ -15,12 +20,12 @@ def toJSON(obj):
 def generate_vcard(user, path, size):
     enc = Encoder()
     w = size
-    
+
     vcard_text = "BEGIN:VCARD\n" + \
     "VERSION:3.0\n" + \
     "N:" + user.nickname + "\n" + \
     "EMAIL;TYPE=PREF,INTERNET:" + user.email + "\n"
-    
+
     if user.name or user.surnames:
         vcard_text += "FN:"
         if user.name:
@@ -28,10 +33,10 @@ def generate_vcard(user, path, size):
         if user.surnames:
             vcard_text += " " + user.surnames
         vcard_text += "\n"
-        
+
     if user.description:
         vcard_text += "NOTE:" + user.description + "\n"
-        
+
     if user.address or user.city or user.country:
         vcard_text += "ADR:"
         if user.address:
@@ -41,8 +46,8 @@ def generate_vcard(user, path, size):
         if user.country:
             vcard_text += " " + user.country
         vcard_text += "\n"
-    
+
     vcard_text += "END:VCARD"
-    
+
     qr = enc.encode(vcard_text.encode("utf8"), {'width': w, 'mode': 2})
     qr.save(path)
