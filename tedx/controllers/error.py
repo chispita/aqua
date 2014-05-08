@@ -6,7 +6,7 @@ from pylons.controllers.util import forward
 from pylons.middleware import error_document_template
 from webhelpers.html.builder import literal
 
-from tedx.lib.base import BaseController
+from tedx.lib.base import BaseController, render
 
 class ErrorController(BaseController):
 
@@ -21,6 +21,9 @@ class ErrorController(BaseController):
     """
 
     def document(self):
+
+        return render('/404.mako')
+
         """Render the error document"""
         resp = request.environ.get('pylons.original_response')
         content = literal(resp.body) or cgi.escape(request.GET.get('message', ''))

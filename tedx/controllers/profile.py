@@ -4,6 +4,9 @@ import Image
 
 from tedx.lib.base import *
 from pylons.i18n import _
+from functions import *
+
+from webhelpers import paginate
 
 import logging
 log = logging.getLogger(__name__)
@@ -11,36 +14,54 @@ log = logging.getLogger(__name__)
 class ProfileController(BaseController):
 
     def index(self):
+        function='profile index'
+        log.debug(function)
+
         c.db_user = c.user
+        log.debug('%s - user:%s' % (function, c.user.nickname))
         return render('/profile.mako')
-    
+
     def view(self, nickname):
+        function='def view'
+        log.debug(function)
         c.db_user = meta.Session.query(User).filter(and_(User.nickname==nickname,User.deleted_on==None)).first()
-        return render('/profile.mako')
-        
+
+        page = 1
+        if request.GET.has_key('page'):
+            page = request.GET['page']
+        c.places_map = getProfilePlaces(nickname)
+
+        c.places = paginate.Page(
+            getProfilePlaces(nickname),
+            page = page,
+            items_per_page=5)
+
+        c.nickname = nickname
+        return render('/accounts/profile.mako')
+
     def get_profile_data(self):
         user_id = self.prm("user_id")
-        
+
         db_user = meta.Session.query(User).filter_by(id=user_id).first()
         if db_user:
-            
+
             return h.toJSON({"status": "OK", "id": db_user.id, "nickname": db_user.nickname, "email": db_user.email,
                                       'description': db_user.description,
                                      'latitude': db_user.latitude, 'longitude': db_user.longitude, "avatar": db_user.avatar})
         else:
             return h.toJSON({"status": "NOK", "message": _(u"couldnt_get_info"), 'error_code': 0})
-        
+
     def following(self):
         current_user = meta.Session.query(User).filter(User.id == self.prm("user_id")).first()
         if not current_user:
             return simplejson.dumps({'status': 'NOK', 'message':_(u'you_must_be_logged'), 'error_code': 1})
-        
+
         following = []
         for followed in current_user.following:
             following.append({"id": followed.id, "email": followed.email, "nickname": followed.nickname})
-        
+
         return simplejson.dumps({ "status": "OK", "users": following })
-    
+
     def get_relations(self):
         current_user = meta.Session.query(User).filter(User.id == self.prm("user_id")).first()
         if current_user:
@@ -56,4 +77,4 @@ class ProfileController(BaseController):
         else:
             return h.toJSON({"status": "NOK", "message": _(u"couldnt_get_info"), 'error_code': 1})
 
-    
+

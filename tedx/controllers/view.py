@@ -7,6 +7,7 @@ from pylons.i18n import _
 import math, cgi
 
 import logging
+from  functions import *
 log = logging.getLogger(__name__)
 
 from sqlalchemy import and_
@@ -14,30 +15,37 @@ from sqlalchemy import and_
 class ViewController(BaseController):
 
     def index(self):
+        log.debug('holita')
         c.mode = 'list'
         c.latitude = self.prm('latitude')
         c.longitude = self.prm('longitude')
         c.password = self.prm('password')
         return redirect(url(controller=''))
 
+    #def detail(self, id):
+    #    function = 'def detail'
+    #    log.debug(function)
+    #    c.place  = meta.Session.query(Place).filter_by(id=id).first()
+    #    return render('/places/view.mako')
+
     def place(self):
         function = 'def place'
         log.debug(function)
+
+        '''
         c.mode = 'place'
         c.place_id = self.prm('id')
         c.latitude = self.prm('latitude')
         c.longitude = self.prm('longitude')
         c.password = self.prm('password')
 
-        db_place = meta.Session.query(Place).filter_by(id=c.place_id).first()
-        log.debug('%s - db_place:%s' % (function, db_place))
-        log.debug('%s - ph:%s' % (function, db_place.ph))
-
-
-        c.place = db_place
-
+        c.place  = meta.Session.query(Place).filter_by(id=c.place_id).first()
         c.bicolor = 'gray'
-        return render('/view.mako')
+        '''
+
+        c.place  = meta.Session.query(Place).filter_by(id=id).first()
+
+        return render('/places/view.mako')
 
     def comment(self):
         c.mode = 'comment'

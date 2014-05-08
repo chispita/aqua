@@ -44,21 +44,36 @@ class ContentController(BaseController):
 
 
     def new_place(self):
+        function = 'new place'
+        log.debug( function )
+        log.debug('%s - datos:%s' % (function, self))
+
         place_name = self.prm('place_name')
         latitude = self.prm('latitude')
         longitude = self.prm('longitude')
-        comment_title = self.prm('comment_title')
+        comment_title = self.prm('place_name')
         comment_content = self.prm('comment_content')
         place_tags = self.prm('place_tags')
         city = self.prm('city')
         country = self.prm('country')
 
+        ph = self.prm('ph')
+        chlorine = self.prm('chlorine')
+
         edit_place_id = self.prm('edit_place_id')
 
+        log.debug('%s - latitude:%s' % (function, latitude))
+        log.debug('%s - longigude:%s' % (function, longitude))
+        log.debug('%s - place_name:%s' % (function, place_name))
+
         if not c.user:
+            log.debug('%s - user:%s' % (function, c.user))
             return h.toJSON({'status': 'NOK', 'message': _(u'you_must_login_to_add_content'), 'error_code': 1})
 
+        log.debug('%s - user:%s' % (function, c.user.nickname))
+
         if edit_place_id:
+            log.debug('%s - edit place' % (function))
             place = meta.Session.query(Place).filter(Place.id == edit_place_id).first()
             if not place or place.user != c.user:
                 return h.toJSON({'status': 'NOK', 'message': _(u'error'), 'error_code': 1})
@@ -68,17 +83,20 @@ class ContentController(BaseController):
                 place.latitude = latitude
                 place.longitude = longitude
         else:
+            log.debug('%s - new place' % (function))
             if city is None or country is None or city== "" or country == "":
-                g = geocoders.Google(domain='maps.google.es')
-                point = [latitude,longitude]
-                (new_place,new_point) = g.reverse(point)
-                address = new_place.split(',')
-                city = address[-2].split(" ")[-1]
-                country = address[-1]
 
+                log.debug('%s - geoposicion vacia' % (function))
+                #g = geocoders.Google(domain='maps.google.es')
+                #point = [latitude,longitude]
+                #(new_place,new_point) = g.reverse(point)
+                #address = new_place.split(',')
+                #city = address[-2].split(" ")[-1]
+                #country = address[-1]
+
+            log.debug('%s - antes de grabar' % (function))
             place = c.user.add_place(latitude, longitude, city, country, place_name)
-
-
+            db_water = place.add_water(ph, chlorine)
 
         tags = []
         if place_tags is not None:
@@ -108,12 +126,19 @@ class ContentController(BaseController):
         db_comment = place.add_comment(c.user, "", "")
         return h.toJSON({'status': 'OK', 'message':place.id })
 
-
     def new_comment(self):
+        function = 'new_comment'
+        log.debug(function)
         place_id = self.prm('place_id')
         comment_title = self.prm('comment_title')
-        comment_content = self.prm('comment_content')
+        #comment_content = self.prm('comment_content')
         comment_tags = self.prm('comment_tags')
+
+        log.debug('%s - place_id:%s' % (function, place_id))
+        #log.debug('%s - latitude:%' % (function, latitude))
+        #log.debug('%s - longitude:%s' % (function, longitude))
+        log.debug('%s - comment_title:%s' % (function, comment_title))
+        log.debug('%s - comment_content:%s' % (function, comment_content))
 
         if not c.user:
             return h.toJSON({'status': 'NOK', 'message': _(u'you_must_login_to_add_content'), 'error_code': 1})
@@ -121,6 +146,7 @@ class ContentController(BaseController):
         db_place = meta.Session.query(Place).filter_by(id=place_id).first()
 
         if not db_place:
+            log.debug('%s no place' % (function))
             return h.toJSON({'status': 'NOK', 'message': _(u'no_place_associated'), 'error_code': 0})
 
         if not comment_content:
@@ -260,16 +286,17 @@ class ContentController(BaseController):
         chlorine = self.prm('new-instant-txtValueChlorine')
 
         if not c.user:
+            log.debug('%s - user' % function)
             return h.toJSON({'status': 'NOK', 'message': _(u'you_must_login_to_add_content'), 'error_code': 1})
 
 
-        #if city is None or country is None or city== "" or country == "":
-        #    g = geocoders.Google(domain='maps.google.es')
-        #    point = [latitude,longitude]
-        #    (new_place,new_point) = g.reverse(point)
-        #    address = new_place.split(',')
-        #    city = address[-2].split(" ")[-1]
-        #    country = address[-1]
+        if city is None or country is None or city== "" or country == "":
+            g = geocoders.Google(domain='maps.google.es')
+            point = [latitude,longitude]
+            (new_place,new_point) = g.reverse(point)
+            address = new_place.split(',')
+            city = address[-2].split(" ")[-1]
+            country = address[-1]
 
         ''' Save Values '''
         place = c.user.add_place(latitude, longitude, None, None, title)

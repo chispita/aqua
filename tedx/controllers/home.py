@@ -2,6 +2,8 @@
 
 from tedx.lib.base import *
 from pylons.i18n import _
+from functions import *
+from webhelpers import paginate
 import simplejson
 
 
@@ -21,15 +23,27 @@ class HomeController(BaseController):
     def index(self):
         function = 'def index'
         log.debug(function)
-        log.debug('%s - city:%s, country:%s' % (function, self.prm('city'), self.prm('country')))
+        #log.debug('%s - city:%s, country:%s' % (function, self.prm('city'), self.prm('country')))
         if self.prm('city') and self.prm('country'):
             c.city = self.prm('city').decode('utf8')
             c.country = self.prm('country').decode('utf8')
+
+        page = 1
+        if request.GET.has_key('page'):
+            page = request.GET['page']
+
+        c.LastPlaces = paginate.Page(
+            getLastPlaces(),
+            page = page,
+            items_per_page=5)
+
+        c.AllPlaces = getAllPlaces()
+
         return render('/home.mako')
 
     def _order_elements_by_date(self, element1, element2):
         function = 'def _order_elements_by_date'
-        log.debug('%s - city:%s, country:%s' % (function, self.prm('city'), self.prm('country')))
+        #log.debug('%s - city:%s, country:%s' % (function, self.prm('city'), self.prm('country')))
         if element1.last_update < element2.last_update:
             return 1
         elif element1.last_update == element2.last_update:
@@ -39,7 +53,7 @@ class HomeController(BaseController):
 
     def _order_elements_by_scorings(self, element1, element2):
         function = 'def _order_elements_by_scorings'
-        log.debug(function)
+        #log.debug(function)
         if (element1.positive_scorings - element1.negative_scorings) < (element2.positive_scorings - element2.negative_scorings):
             return 1
         elif (element1.positive_scorings - element1.negative_scorings) == (element2.positive_scorings - element2.negative_scorings):
@@ -49,7 +63,7 @@ class HomeController(BaseController):
 
     def _order_elements_by_visits(self, element1, element2):
         function = 'def _order_elements_by_visits'
-        log.debug(function)
+         #log.debug(function)
         if element1.visits < element2.visits:
             return 1
         elif element1.visits == element2.visits:
@@ -59,7 +73,7 @@ class HomeController(BaseController):
 
     def _order_elements_by_comments(self, element1, element2):
         function = 'def _order_elements_by_comments'
-        log.debug(function)
+        #log.debug(function)
         if len(element1.comments) < len(element2.comments):
             return 1
         elif len(element1.comments) == len(element2.comments):
@@ -69,7 +83,7 @@ class HomeController(BaseController):
 
     def _order_elements_by_contents(self, element1, element2):
         function = 'def _order_elements_by_contents'
-        log.debug(function)
+        #log.debug(function)
         if element1['user_contents'] < element2['user_contents']:
             return 1
         elif element1['user_contents'] == element2['user_contents']:
@@ -77,10 +91,9 @@ class HomeController(BaseController):
         else:
             return -1
 
-
     def search(self):
         function = 'def search'
-        log.debug(function)
+        #log.debug(function)
 
         #date = datetime.datetime.now()
         mode = 'map'
@@ -143,7 +156,10 @@ class HomeController(BaseController):
                         Place.empty==False,
                         Place.latitude.between(min_latitude, max_latitude),
                         Place.longitude.between(min_longitude, max_longitude))
-                    ).order_by(desc(Place.last_update)).limit(page_size).offset(index)
+                    ).order_by(desc(Place.last_update))
+
+                    #).order_by(desc(Place.last_update)).limit(page_size).offset(index)
+
 
             num_results = meta.Session.query(Place).filter(
                     and_(
@@ -151,9 +167,13 @@ class HomeController(BaseController):
                         Place.latitude.between(min_latitude, max_latitude),
                         Place.longitude.between(min_longitude, max_longitude))).count()
 
-            log.debug('%s mode:%s' % (function, mode))
-            log.debug('%s db:%s' % (function, db_results))
+            #log.debug('%s mode:%s' % (function, mode))
+            #log.debug('%s db:%s' % (function, db_results))
             log.debug('%s db:%s' % (function, num_results))
+
+        if mode == 'last':
+            num_results = 5
+            db_results = meta.Session.query(Place).filter(Place.empty==False).order_by(desc(Place.last_update)).limit(5)
 
 
         '''
@@ -228,7 +248,6 @@ class HomeController(BaseController):
         results = []
         #log.debug('%s - antes de loop' % (function))
         for db_result in db_results:
-            log.debug('%s - db_result:%s' % (function, db_result))
             if len(db_result.comments)>0:
                 last_updater_name =  db_result.comments[-1].user.nickname
             else:

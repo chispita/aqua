@@ -9,19 +9,21 @@ log = logging.getLogger(__name__)
 class UserController(BaseController):
 
     def index(self):
+        function = 'index'
+        log.debug(function)
         return redirect(url(controller=''))
 
     def following(self):
         current_user = c.user
         if not current_user:
             return simplejson.dumps({'status': 'NOK', 'message':_(u'you_must_be_logged'), 'error_code': 1})
-        
+
         following = []
         for followed in current_user.following:
             following.append({"id": followed.id, "email": followed.email, "nickname": followed.nickname})
-        
+
         return simplejson.dumps({ "status": "OK", "users": following })
-    
+
     def follow(self):
         current_user = c.user
         if not current_user:
@@ -47,7 +49,7 @@ class UserController(BaseController):
         current_user = c.user
         if not current_user:
             return simplejson.dumps({'status': 'NOK', 'message':_(u'you_must_be_logged'), 'error_code': 1})
-        
+
         id = request.params.get('id')
 
         ## Si no han enviado el id, devolvemos un error

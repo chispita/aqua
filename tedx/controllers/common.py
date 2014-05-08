@@ -25,34 +25,22 @@ class CommonController(BaseController):
 
     def login(self):
         function = 'form_login'
-        email = self.prm('login_email')
-        password = self.prm('login_password')
+        log.debug(function)
+
+        email = self.prm('email')
+        password = self.prm('password')
+        log.debug('%s - email:%s password:%s' % (function, email, password))
 
         db_user = meta.Session.query(User).filter(or_(User.email==email, User.nickname==email)).first()
 
         if db_user is None or db_user.password != hashlib.md5(password).hexdigest():
+            log.debug('%s validado' % (function))
             return h.toJSON({"status": "NOK", "message": _(u"login_error"), "error_code": 0})
         else:
+            log.debug('%s error'  % (function))
             session['user_id'] = db_user.id
             session.save()
             return h.toJSON({"status": "OK"})
-
-    def form_login(self):
-        ''' Formulario de login '''
-        function = 'form_login'
-
-        email = self.prm('login_email')
-        password = self.prm('login_password')
-
-        db_user = meta.Session.query(User).filter(or_(User.email==email, User.nickname==email)).first()
-
-        if db_user is None or db_user.password != hashlib.md5(password).hexdigest():
-            c.message = _(u"login_error")
-            return render("/login.mako")
-        else:
-            session['user_id'] = db_user.id
-            session.save()
-            return redirect(url(controller=''))
 
     def form_register(self):
         ''' Formulario de registro de nuevo usuario'''
@@ -61,7 +49,7 @@ class CommonController(BaseController):
 
         email = self.prm('email')
         password = self.prm('password')
-        password2 = self.prm('password1')
+        password2 = self.prm('password2')
         nickname = self.prm('nickname')
         latitude = self.prm('latitude')
         longitude = self.prm('longitude')
@@ -105,7 +93,7 @@ class CommonController(BaseController):
 
             return h.toJSON({"status": "OK"})
         else:
-            return h.toJSON({"status": "NOK", "error_code": 1})
+             return h.toJSON({"status": "NOK", "error_code": 1})
 
 
     def translate(self):
@@ -113,7 +101,6 @@ class CommonController(BaseController):
 
     def translation(self):
         return render('/i18n.js')
-
 
     def get_tags(self):
         a = select([Comment_tag.tag_id, func.count(Comment_tag.tag_id)], group_by=[Comment_tag.tag_id], order_by = [desc(func.count(Comment_tag.tag_id))])
@@ -128,50 +115,22 @@ class CommonController(BaseController):
         return h.toJSON({'status': 'OK', 'tags':tags})
 
     def change_language(self):
+        function = 'change_language'
+        log.debug('%s: %s' % ( function, self.prm('selected_lang')))
+
         session['lang'] = self.prm('selected_lang')
         session.save()
         set_lang(session['lang'])
 
         return h.toJSON({ 'status': 'OK' })
 
-    def form_forgotten_password(self):
-        email = self.prm('email')
-        db_user = meta.Session.query(User).filter(User.email==email).first()
-        if (db_user is None):
-            c.message = _(u'No se ha encontrado un usuario con ese correo electrónico.')
-            return render("/forgotpassword.mako")
-        else:
-            # Create and save the new password
-            size = 9
-            new_password = ''.join([choice(string.letters + string.digits) for i in range(size)])
-            db_user.password = hashlib.md5(new_password).hexdigest()
-            meta.Session.commit()
-
-            # Send the email
-            try:
-                gmail_user = 'smile@feelicity.es' # REFACTOR: [JUANJO] Moverlo a algun sitio de configuracion
-                gmail_pwd = '9G*rY2Vrr'
-
-                msg = MIMEMultipart()
-                msg['From'] = gmail_user
-                msg['To'] = db_user.email
-                msg['Subject'] = _(u'Nueva contraseña de AQUA')
-                msg.attach(MIMEText(_(u'Nuevo password: ') + unicode(new_password, 'utf-8')))
-
-                mailServer = smtplib.SMTP('smtp.gmail.com', 587)
-                mailServer.ehlo()
-                mailServer.starttls()
-                mailServer.ehlo()
-                mailServer.login(gmail_user, gmail_pwd)
-                mailServer.sendmail(gmail_user, db_user.email, msg.as_string())
-                mailServer.close()
-            except SMTPRecipientsRefused:
-                c.message = _(u'No se ha podido enviar el correo electrónico a la dirección indicada. Intentelo de nuevo más tarde.')
-
-            return render("/home.mako")
-
     def forgotten_password(self):
+        function = 'forgotten_password'
+        log.debug(function)
+
         email = self.prm('email')
+
+        log.debug('%s - email:%s' % (function, email))
         db_user = meta.Session.query(User).filter(User.email==email).first()
         if (db_user is None):
             return h.toJSON({ 'status': 'NOK', 'message': _(u'No se ha encontrado un usuario con ese correo electrónico.') })
@@ -184,7 +143,7 @@ class CommonController(BaseController):
 
             # Send the email
             try:
-                gmail_user = 'smile@feelicity.es' # REFACTOR: [JUANJO] Moverlo a algun sitio de configuracion
+                gmail_user = 'aqua@ibercivis.es' # REFACTOR: [JUANJO] Moverlo a algun sitio de configuracion
                 gmail_pwd = '9G*rY2Vrr'
 
                 msg = MIMEMultipart()
@@ -193,9 +152,9 @@ class CommonController(BaseController):
                 msg['Subject'] = _(u'Nueva contraseña de AQUA')
                 msg.attach(MIMEText(_(u'Nuevo password: ') + unicode(new_password, 'utf-8')))
 
-                mailServer = smtplib.SMTP('smtp.gmail.com', 587)
+                mailServer = smtplib.SMTP('smtp.ibercivis.es', 25)
                 mailServer.ehlo()
-                mailServer.starttls()
+                #mailServer.starttls()
                 mailServer.ehlo()
                 mailServer.login(gmail_user, gmail_pwd)
                 mailServer.sendmail(gmail_user, db_user.email, msg.as_string())
@@ -203,7 +162,7 @@ class CommonController(BaseController):
             except SMTPRecipientsRefused:
                 return h.toJSON( { 'status': 'NOK', 'message': _(u'No se ha podido enviar el correo electrónico a la dirección indicada. Intentelo de nuevo más tarde.') } )
 
-            return h.toJSON({ 'status': 'OK'})
+            return h.toJSON( { 'status': 'OK', 'message': _(u'Se ha enviado el correo a la dirección indicada.') } )
 
     def get_happy_cities(self):
         db_query = select([Place.city, Place.country, func.count(Place.id)], group_by=[Place.city,Place.country], order_by = [desc(func.count(Place.id))])
@@ -221,18 +180,17 @@ class CommonController(BaseController):
         content = self.prm('content')
 
         try:
-            gmail_user = 'smile@feelicity.es' # REFACTOR: [JUANJO] Moverlo a algun sitio de configuracion
+            gmail_user = 'aqua@ibercivis.es' # REFACTOR: [JUANJO] Moverlo a algun sitio de configuracion
             gmail_pwd = '9G*rY2Vrr'
-
             msg = MIMEMultipart()
             msg['From'] = email
             msg['To'] = gmail_user
             msg['Subject'] = name + '<' + email + '>'
             msg.attach(MIMEText(content))
 
-            mailServer = smtplib.SMTP('smtp.gmail.com', 587)
+            mailServer = smtplib.SMTP('smtp.ibercivis.es', 25)
             mailServer.ehlo()
-            mailServer.starttls()
+            #mailServer.starttls()
             mailServer.ehlo()
             mailServer.login(gmail_user, gmail_pwd)
             mailServer.sendmail(email, gmail_user, msg.as_string())
