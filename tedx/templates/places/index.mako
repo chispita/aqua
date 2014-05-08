@@ -1,4 +1,4 @@
-<%inherit file="common.mako"/>
+<%inherit file="../common.mako"/>
 <%namespace name="functions"  file="/functions.mako"/>
 
 <%def name="title()"> ${_(u'Home')}</%def>
@@ -7,7 +7,7 @@
     <script type="text/javascript">
         function map_load() {
             // Acercamos el zoom lo mas cerca posible
-            % for place in c.AllPlaces :
+            % for place in c.ListPlaces :
                 html =  '<table>' +
                     '<tr><td><a class="cloud_strong">${_(u'lugar')}:</a></td>' +
                     '<td><a class="estiloAzul" href="/places/${place.id}">${place.name}</a>'+
@@ -63,18 +63,17 @@
 
 <%def name="content()">
     <div class="sidebarIzq">
-        <%include file="information/teachers.mako"/>
+        <%include file="../information/teachers.mako"/>
     </div>
 
     <div class="content_center">
         <h3>${_(u'Ultimas muestras enviadas')}</h3>
+        ${functions.list_places(c.ListPlaces)}
 
-        ${functions.list_places(c.LastPlaces)}
-
-        ${c.LastPlaces.pager('Page $page: $link_previous $link_next ~4~')}
+        ${c.ListPlaces.pager('Page $page: $link_previous $link_next ~4~')}
     </div>
                                                                     
     <div class="sidebarDer">
-        <%include file="information/datos.mako"/>
+        <%include file="../information/datos.mako"/>
     </div>
 </%def>
