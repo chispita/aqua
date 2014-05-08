@@ -45,7 +45,12 @@ body {
 h1, h2, h3, h4, h5, p   				{ font-family:Arial, Helvetica, sans-serif; }
 h1										{ padding:5px;font-size:20px; color:#000;}
 h2										{ padding:5px;font-size:18px; color:#000;}
-h3										{text-transform:uppercase; font-size: 14px; color:#369; padding-bottom: 10px; border-bottom: 1px solid #999;}
+h3										{   text-transform:uppercase; 
+                                            font-size: 14px; 
+                                            color:#369; 
+                                            padding-top:10px;
+                                            padding-bottom: 5px; 
+                                            border-bottom: 1px solid #999;}
 h4										{ padding:5px;font-size:14px; color:#000;color:#369; text-transform:uppercase;}
 h5										{ padding:5px;font-size:12px; color:#000;}
 p										{ padding:5px;font-size:11px; color:#000;}
@@ -92,6 +97,24 @@ a.misStreetrs:hover {
 /* Bottom para la �ltima imagen, estado :active o presionado. */
 a.misStreetrs:active {
     background-position: bottom;
+}
+
+/* Bocadillos de información sobre el mapa */
+.cloud_header{
+    font-size: 14px;
+    font-weight: bold;
+    padding: 0 0 0 0;
+    margin: 0 0 0 0;
+}
+
+.cloud_sub{
+    padding: 0 0 0 0;
+    margin: 5px 0 0 0;
+}
+
+.cloud_strong{
+    font-size: 12px;
+    font-weight: bold;
 }
 
 .centerize {
@@ -302,6 +325,34 @@ a.estiloBlanco {
 
 .map_legend {z-index:20;position: absolute; }
 
+#MsgOverMap { 
+    height:390px; 
+    width: 910px;  
+    position:absolute; 
+    top:15px; 
+    left: 15px; 
+    padding: 15px 25px; 
+    background: rgba(255,255,255,0.8);
+    border:1px;
+    border-color:#87b8f4;
+    border-style:solid;
+    border-radius:10px;
+    }    
+
+#MsgOverMap .close-icon{
+    display:block;
+    box-sizing:border-box;
+    width:20px;
+    height:20px;
+    border-width:3px;
+    border-style: solid;
+    border-color:#87b8f4;
+    border-radius:100%;
+    background: -webkit-linear-gradient(-45deg, transparent 0%, transparent 46%, white 46%,  white 56%,transparent 56%, transparent 100%), -webkit-linear-gradient(45deg, transparent 0%, transparent 46%, white 46%,  white 56%,transparent 56%, transparent 100%);
+    background-color:#87b8f4;
+    box-shadow:0px 0px 5px 2px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+}
 #queMapa { 
     height:390px; 
     width: 220px;  
@@ -370,8 +421,8 @@ a.estiloBlanco {
     overflow: visible;
     clear: left;
     float: right;
-    background-color: #cccccc;
     z-index:7;
+
 }
 #barra_login{
     margin-top:40px;
@@ -379,10 +430,19 @@ a.estiloBlanco {
     text-align:right;
     font-size:large;
     font-family: "Helvetica Neue";
-    color:black;
+    background: rgba(255,255,255,0.8);
+    padding: 15px 25px; 
+    border:1px;
+    border-color: #87b8f4;
+    border-style: solid;
+    border-radius: 10px;
     text-decoration:none;
 }
-.logolink{text-decoration:none;}
+
+.logolink{
+    text-decoration:none;
+    color:black;
+}
 
 #login {
     width: 450px;
@@ -497,11 +557,12 @@ a.estiloBlanco {
 	margin:0 0 5px 15px;
 	color: #fff;
 	border: 2px 
-	double #3E7988;
+	double #87b8f4;;
 	font-weight: bold; 
 	font-size: 12px;
 	/*float:right; */
-	background: #87b8f4;
+	/*background: #87b8f4;*/
+    background: #1a5eb2;
     text-decoration:none;
 	/*background-image: -moz-linear-gradient(top, #3E7988, #2A5762); 
 	background-image: -webkit-gradient(linear, center top, center bottom, from(#3E7988), to(#2A5762));*/
@@ -1128,12 +1189,19 @@ a.estiloBlanco {
     color:black;
 }
 #barraFooter a {
-	font-weight: bold; font-size: 12px; color:#369;text-decoration:none;	
+    font-size: 12px; 
+    color:#369;
+    text-decoration:none;	
+}
+
+#dataVision
+{
+  font-size: 24px;
 }
 
 #notification {
     display: none; 
-    background: #F90; 
+    background: #87b8f4;
     padding:0.5em 0.5em 1em 0.5em; 
     position:relative
 }

@@ -176,14 +176,17 @@ var video_extensions = {
 };
 
 var common_init = function() {
+    console.log('common_init');
     map = create_map();
 
     var tiles_listener = google.maps.event.addListener(map, "tilesloaded", function() {
         google.maps.event.removeListener(tiles_listener);
 
+        // Situa el mapa en la geoposicion segun el navegador 
         //get_current_position(on_position_success, on_position_error);
         //refresh_location_timer = setInterval('get_current_position(refresh_position);', refresh_location_delay);
 
+        console.log('google maps');
         google.maps.event.addListener(map, 'click', function(event) {
             clearInterval(refresh_location_timer);
             if (current_position_marker) {
@@ -207,16 +210,20 @@ var common_init = function() {
 };
 
 var refresh_results = function() {
+    console.log('refresh_results');
     page = 1;
     var latlngbounds = map.getBounds();
     max_latitude = latlngbounds.getNorthEast().lat();
     max_longitude = latlngbounds.getNorthEast().lng();
     min_latitude = latlngbounds.getSouthWest().lat();
     min_longitude = latlngbounds.getSouthWest().lng();
-    get_places();
+    console.log('get places: refresh_results');
+    //get_places();
+    
 };
 
 var refresh_position = function(p) {
+    console.log('refresh_position');
     if (current_position_marker != null) {
         latitude = p.coords.latitude;
         longitude = p.coords.longitude;
@@ -225,6 +232,7 @@ var refresh_position = function(p) {
 };
 
 var on_position_error = function() {
+    console.log('on_position_error');
     $.ajax({
         url: '/my_account/get_position',
         type: 'GET',
@@ -244,12 +252,14 @@ var on_position_error = function() {
 };
 
 var on_position_success = function(p) {
+    console.log('on_position_sucess');
     latitude = p.coords.latitude;
     longitude = p.coords.longitude;
     show_current_position();
 };
 
 var show_current_position = function() {
+    console.log('show_current_position');
     geolocated = true;
 
     if (current_position_marker == null){
@@ -275,7 +285,7 @@ var show_current_position = function() {
 };
 
 var setPos = function(city,country){
-	var geocoder = new google.maps.Geocoder();
+    console.log('setPos');
 	var address = city + ' ' + country;
 	if (geocoder) {
 		geocoder.geocode( { 'address': address}, function(results, status) {
@@ -299,14 +309,17 @@ var getDropQuality = function(ph, chlorine){
 var getDropImage = function(value){
 
     if (value >= 6)
-        return "drop_blue";
-    else if(value >=4)
         return "drop_green";
+    else if(value >=4)
+        return "drop_blue";
     else
         return "drop_brown";
 }
 
 var view_more = function() {
+
+    console.log('view_more');
+
 	var results = global_places.results;
 	$('#list').empty();
 	for (var i = 0; i < results.length; i++) {
@@ -342,7 +355,116 @@ var view_more = function() {
 	}
 };
 
+var get_places_map = function() {
+
+    console.log('get places_map');
+    mode = 'map';
+
+    places_request = $.ajax({
+        url: '/home/search',
+        type: 'GET',
+        async: true,
+        cache: false,
+        data: {
+            'mode':  mode,
+            'search_type':  search_type,
+            'result_type':  result_type,
+            'search_string': search_string,
+            'max_latitude': max_latitude,
+            'min_latitude': min_latitude,
+            'max_longitude': max_longitude,
+            'min_longitude': min_longitude,
+            'profile_id': profile_id,
+            'latitude' : latitude,
+            'longitude' : longitude,
+            'range_query' : range_query,
+            'order': order,
+            'page': page,
+            'page_size': page_size
+        },
+        success: function(responseText) {
+            //delete_overlays(markers_array);
+            var response = $.parseJSON(responseText);
+            global_places = response;
+            if (response.status == 'OK') {
+
+                var results = response.results;
+                if (results.length > 0) {
+                    for (var i = 0; i < results.length; i++) {
+                        console.log('pintar valor');
+
+                        // Place marker html
+                        if (results[i].place_id != "") {
+                            name = '<a class="cloud_header" href="/view/place?id=' + results[i].place_id + '&latitude=' + latitude + '&longitude=' + longitude + '">' + results[i].place_name + '</a>';
+                        } else {
+                            name = results[i].place_name;
+                        }
+
+                        var html = '<table>\
+                            <tr><td colspan="2">'+
+                            name+'</td></tr><tr><td><a class="cloud_strong">' +
+                            _("author") +
+                            ':</a</td><td><a class="cloud_header" href="/' + results[i].user_name + '">' +
+                            results[i].user_name +
+                            '</a></td></tr>';
+
+                        html += 
+                            '<tr><td><a class="cloud_strong">' + _("last_update") + ':</a></td>' +
+                            '<td><a class="cloud_strong">' + results[i].last_update + '</a></td>' +
+                            '<tr><td><a class="cloud_strong">' + _("pH") + ':</a></td>' + 
+                            '<td><a class="cloud_sub">' + results[i].ph + '</a></td></tr>' +
+                            '<tr><td><a class="cloud_strong">' + _("Chlorine") + ':</a></td>' + 
+                            '<td><a class="cloud_sub">' + results[i].chlorine + '</a></td></tr>'
+
+                        if (results[i].comment_image != null){
+                            html += '<tr><td><img src ="' + results[i].comment_image +'_small.jpg"/></td></tr>\
+                            </table>';
+                        } else {
+                            html += '</table>';
+                        }
+
+                        if( results[i].ph >= 6)
+                            marker = drop_blue;
+                        else if ( results[i].ph >= 4)
+                            marker = drop_green;
+                        else
+                            marker = drop_brown;
+
+                        marker = create_marker({
+                            position: new google.maps.LatLng(results[i].latitude, results[i].longitude),
+                            icon: marker,
+                            map: map
+                            }, infowindow, html);
+
+                        //markers_array.push(marker);
+                    
+                        //if (list_mode) {
+                        //    var context = {
+                        //        id: results[i].place_id,
+                        //        marker: marker
+                        //    };
+
+                        //    var handler = function( event ) {
+                        //        google.maps.event.trigger(this.marker, 'click');
+                        //        $('html, body').animate({scrollTop:$('#map').offset().top}, 'slow');
+                        //    };
+                        //}
+                    }
+                }
+            }
+        }
+    });
+
+};
+
+var get_places_last = function() {
+    console.log('get places_last');
+    mode = 'last';
+    get_places();
+}
+
 var get_places = function() {
+    console.log('get places');
     if (places_request) {
         places_request.abort();
     }
@@ -476,7 +598,7 @@ var get_places = function() {
                     
                     // Place marker html
                     if (results[i].place_id != "") {
-                        name = '<a class="estiloAzul" href="/view/place?id=' + results[i].place_id + '&latitude=' + latitude + '&longitude=' + longitude + '">' + results[i].place_name + 'hoit</a>';
+                        name = '<a class="estiloAzul" href="/view/place?id=' + results[i].place_id + '&latitude=' + latitude + '&longitude=' + longitude + '">' + results[i].place_name + '</a>';
                     } else {
                         name = results[i].place_name;
                     }
@@ -503,33 +625,7 @@ var get_places = function() {
                     } else {
                         html += '</table>';
                     }
-                    if( results[i].ph >= 6)
-                        marker = drop_green;
-                    else if ( results[i].ph >= 4)
-                            marker = drop_blue;
-                        else
-                            marker = drop_brown;
 
-                        marker = create_marker({
-                                position: new google.maps.LatLng(results[i].latitude, results[i].longitude),
-                                icon: marker,
-                                map: map
-                            }, infowindow, html);
-                        markers_array.push(marker);
-
-                        drawn_places[results[i].place_id] = marker;
-
-                        if (list_mode) {
-                            var context = {
-                                id: results[i].place_id,
-                                marker: marker
-                             };
-
-                             var handler = function( event ) {
-                                google.maps.event.trigger(this.marker, 'click');
-                                $('html, body').animate({scrollTop:$('#map').offset().top}, 'slow');
-                            };
-                         }
                 }
                 if (results.length > 5) {
             		$('#list').append($('<div class="item"><a href="javascript:void(0);" class="registro bordesoft" style="float:right;color:white;" onclick="view_more();">Ver más</a></div>'));
@@ -566,17 +662,37 @@ var get_places = function() {
 
 var get_page = function(new_page) {
     page = new_page;
-    get_places();
+    console.log('get places: get_page');
+    //get_places();
 }
 
 var get_page_size = function(new_page_size) {
     page_size = new_page_size;
-    get_places();
+    console.log('get places: get_page_size');
+    //get_places();
 }
 
 var tedx_alert = function(message) {
 	$('#dialog-content-message').html(message);
 	$("#dialog-message").dialog("open");
+};
+
+
+var forgotten_password = function(){
+    console.log('forgot_password'); 
+    $.ajax({
+        url: '/common/forgotten_password',
+        type: 'GET',
+        async: true,
+        cache: false,
+        data: {
+            'email': $('#email').attr('value'),
+        },
+        success: function(responseText) {
+            var response = $.parseJSON(responseText);
+            tedx_alert(response.message);
+        }
+    });
 };
 
 var login = function() {
@@ -617,104 +733,41 @@ var logout = function() {
 }
 
 
-// Forgotten password
-$(function() {
-    $("#dialog-forgotten-password").dialog({
-	modal: true,
-	autoOpen: false
-    });
-
-    $('#dialog-forgotten-password-btnAccept').button();
-    $('#dialog-forgotten-password-imgLoading').hide();
-    $('#dialog-forgotten-password-btnAccept').click(function() {
-	$('#dialog-forgotten-password-imgLoading').show();
-	$.ajax({
-	    url: '/common/forgotten_password',
-	    type: 'GET',
-	    async: true,
-	    cache: false,
-	    data: { 'email' : $('#dialog-forgotten-password-txtEmail').attr('value') },
-	    success: function(responseText) {
-		var response = $.parseJSON(responseText);
-		if (response.status == 'NOK') {
-		    tedx_alert(response.message);
-		} else {
-		    $("#dialog-forgotten-password").dialog("close");
-		    tedx_alert('Se ha enviado el email con la contraseña correctamente.');
-		}
-		 $('#dialog-forgotten-password-imgLoading').hide();
-	    }
-	});
-    });
-
-    $('#dialog-forgotten-password-btnCancel').button();
-    $('#dialog-forgotten-password-btnCancel').click(function() {
-	$('#dialog-forgotten-password-imgLoading').hide();
-	$("#dialog-forgotten-password").dialog("close");
-    });
-});
-
-var forgot_password = function() {
-    $("#dialog-forgotten-password").dialog("open");
-};
-
 // Registration
 $(function() {
-    $("#dialog-registration").dialog({
-	modal: true,
-	autoOpen: false
-    });
+    $('#new-session-form').ajaxForm({
+        type: 'post',
+        clearForm: true,
+        beforeSubmit: function(formData, jqForm, options) 
+        {
+	        if (!$('#new-session-txtName').attr('value')) {
+	            tedx_alert(_("nickname_cannot_be_null"));
+	            return;
+            }
 
-    $('#dialog-registration-btnAccept').button();
-    $('#dialog-registration-imgLoading').hide();
-    $('#dialog-registration-btnAccept').click(function() {
-	if (!$('#dialog-registration-txtEmail').attr('value')) {
-	    tedx_alert(_("email_cannot_be_null"));
-	    return;
-	}
-	if (!$('#dialog-registration-txtContra').attr('value')) {
-	    tedx_alert(_("password_cannot_be_null"));
-	    return;
-	}
-	if ($('#dialog-registration-txtContra').attr('value') != $('#dialog-registration-txtContraConfirmation').attr('value')) {
-	    tedx_alert(_("wrong_password_confirmation"));
-	    return;
-	}
-	if (!$('#dialog-registration-txtNickname').attr('value')) {
-	    tedx_alert(_("nickname_cannot_be_null"));
-	    return;
-	}
+            if (!$('#new-session-txtEmail').attr('value')) {
+	            tedx_alert(_("email_cannot_be_null"));
+	            return;
+	        }
 
-	$('#dialog-registration-imgLoading').show();
-	$.ajax({
-	    url: '/register/save',
-	    type: 'GET',
-	    async: true,
-	    cache: false,
-	    data: { 'email' : $('#dialog-registration-txtEmail').attr('value'),
-		    'password' : $('#dialog-registration-txtContra').attr('value'),
-		    'nickname' : $('#dialog-registration-txtNickname').attr('value'),
-		    'sex' : $('input[name=dialog-registration-rdSex]:checked').val()
-		  },
-	    success: function(responseText) {
-		var response = $.parseJSON(responseText);
-		if (response.status == 'NOK') {
-		    tedx_alert(response.message);
-		} else {
-		    $("#dialog-registration").dialog("close");
-		    tedx_alert(response.message);
-		    window.location = '/';
-		}
-		$('#dialog-registration-imgLoading').hide();
-	    }
-	});
-    });
+	        if (!$('#new-session-txtPassword').attr('value')) {
+	            tedx_alert(_("password_cannot_be_null"));
+	            return;
+	        }
 
-    $('#dialog-registration-btnCancel').button();
-    $('#dialog-registration-btnCancel').click(function() {
-	$('#dialog-registration-imgLoading').hide();
-	$("#dialog-registration").dialog("close");
-    });
+	        if ($('#new-session-txtPassword').attr('value') != $('#new-session-txtPassword').attr('value')) {
+	            tedx_alert(_("wrong_password_confirmation"));
+	            return;
+	        }
+        },
+        success: function(responseText) {
+            var response = $.parseJSON(responseText);
+            if (response.status == 'OK'){
+                $('#notification').fadeToggle('slow');
+                window.location = '/';
+            } else
+                tedx_alert(response.message);
+        }                                                                                                                                                                })
 });
 
 var register_user = function() {
@@ -909,18 +962,25 @@ $(function() {
 	clearForm: true,
 	beforeSubmit: function(formData, jqForm, options) {
 	    if (!$('#new-instant-txtName').attr('value')) {
-		tedx_alert(_("place_name_cannot_be_null"));
-		return false;
-	    }
+		    tedx_alert(_("place_name_cannot_be_null"));
+		    return false;
+            }
+	    if (!$('#new-instant-txtValuePH').attr('value')) {
+		    tedx_alert(_("ph_content_cannot_be_null"));
+		    return false;
+            }
+	    if (!$('#new-instant-txtValueCloro').attr('value')) {
+		    tedx_alert(_("cloro_content_cannot_be_null"));
+		    return false;
+            }
 	    if (!$('#new-instant-txtDescription').attr('value')) {
-		tedx_alert(_("comment_content_cannot_be_null"));
-		return false;
-	    }
+		    tedx_alert(_("comment_content_cannot_be_null"));
+		    return false;
+            }
 	    
 	    if (latitude == null || longitude == null) {
     		tedx_alert(_("location_cannot_be_null"));
-    		return false;
-	    }
+    		return false;}
 	    
 	    var geocoder = new google.maps.Geocoder();
 	    var latlng = new google.maps.LatLng(latitude, longitude);
@@ -994,6 +1054,11 @@ var new_happy_instant = function() {
     $('#new-instant-form').submit();
 };
 
+var new_session = function() {
+    console.log('new session');
+    $('#new-session-form').submit();
+}
+
 var share_on_twitter = function() {
 
 };
@@ -1014,28 +1079,6 @@ var search_query = function() {
     }
 };
 
-var create_map = function() {
-    var myOptions = {
-        zoom: 13,
-        mapTypeControl: true,
-        mapTypeControlOptions: {
-            style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-	    position: google.maps.ControlPosition.BOTTOM_LEFT
-        },
-        navigationControl: true,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        center: new google.maps.LatLng(41.65, -0.88)
-        
-    };
-    var map = new google.maps.Map($('#map')[0], myOptions);
-    google.maps.event.addListenerOnce(map, 'idle', function() {
-        for(var it in google.maps.MapTypeId) {
-            map.mapTypes[google.maps.MapTypeId[it]].minZoom = 3;
-            map.mapTypes[google.maps.MapTypeId[it]].maxZoom = 17;
-        }
-    });
-    return map;
-};
 
 var get_current_position = function(on_position_success, on_position_error) {
     if (geo_position_js.init()) {
@@ -1137,7 +1180,8 @@ var add_place_scoring_home = function(place,value) {
             var response = $.parseJSON(responseText);
             if (response.status == 'OK') {
                 tedx_alert(_("scoring_successfully_saved"));
-                get_places();
+                console.log('get_places: scoring');
+                //get_places();
                 //get_place_data();
             } else {
                 tedx_alert(response.message);

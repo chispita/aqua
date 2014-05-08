@@ -4,8 +4,9 @@ init = function() {
     }
     list_mode = true;
     get_comment_tags();
-    get_places();
-    
+    //get_places();
+    //get_places_last();
+    //get_places_map(); 
     
     var dragend_listener = google.maps.event.addListener(map, "dragend", function() {
         refresh_results();

@@ -3,13 +3,11 @@ var wait_for_avatar;
 init = function(){
 	list_mode = true;
     
-   
-    
     mode = "profile";
     profile_id = user_id;
-    get_places();
-    get_stats();
-    get_details();
+    //get_places();
+    //get_stats();
+    //get_details();
 }
 
 
@@ -23,18 +21,14 @@ get_details = function() {
         success: function(responseText) {
             var response = $.parseJSON(responseText);
             if (response.status = "OK") {
-                $('#avatarPerfil').empty();
-                $('#avatarPerfil').append($('<img src="'+response.avatar+'_mid.png?d='+ new Date().getTime()+'" alt="'+response.user_name+'"/>'));
-                if (response.user_nickname) {
-                	$('#nickname_profile').html('');
-                	$('#nickname_profile').append($('<a href="#" class="clear">'+ response.user_nickname+'</a>'));
-                	$('#nickname').attr('value',response.user_nickname);
-                }
-                if (response.user_description){
-                	 $('#description').attr('value',response.user_description);
-                }
-                	
-                
+
+                $('#profile_nickname').html( response.user_nickname);
+                $('#profile_email').html( response.user_mail);
+
+                $('#nickname').attr('value', response.user_nickname);
+                $('#email').attr('value', response.user_mail );
+
+
             }
         }
     });
@@ -98,6 +92,8 @@ get_stats = function(){
                 if (response.visits != "1")      $('#visits').html(response.visits + " Visitas");
                 else							 $('#visits').html(response.visits + " Visita");
                 $('#likes').html(response.positive_scorings + " Me gusta");
+
+                $('#comments1').attr('value', 'holitita');
                  
                 //$('#videos_stats').html(response.videos);
                 //$('#images_stats').html(response.images);
@@ -269,49 +265,56 @@ change_password = function(){
 }
 
 save = function(){
-	if ( ($('old_password') == null) || ((($('password1') + $('password2')) != "") && $('password1').value == $('password2').value)) {
-     	$.ajax({
-	        url: '/my_account/save',
-	        type: 'GET',
-	        async: true,
-	        cache: false,
-	        data: {
-	            'email': $('#email').attr('value'),
-				'old_password': $('#password1').attr('value'),
-				'password': $('#password2').attr('value'),
-				'nickname': $('#nickname').attr('value'),
-				'latitude': latitude,
-				'longitude': longitude,
-				'description': $('#description').attr('value'),
-				'user_tags': $('#user_tags').attr('value')
-	        },
-	        success: function(responseText){
-				var response = $.parseJSON(responseText);
-	            if (response.status == 'OK') {
-	            	var re = /\.[^.]+$/;
-	                var ext = $('#avatar').attr('value').toLowerCase().match(re);
-		            if ($('#avatar').attr('value')!= ""){    
-	                	if (!image_extensions[ext]) {
-		                    alert(_("file_selected_is_not_an image"));
-		        		} else {
-		        			$('#form_avatar').submit();
-		        			wait_for_avatar = setInterval('check_avatar("'+response.message+'")', 1000);
-		        			
-		        		}
-		            }else{
-		            	tedx_alert(response.message);
-		            	window.location = '/my_account';
-		            }
+
+    // Comprobaciones previas de los valores introducidos
+    if(!$('#nickname').attr('value')){
+        $('#message_text').text(_("error_changing_nickname"));
+        $('#notification').fadeToggle('slow');
+        return;}
+
+    if(!$('#email').attr('value')){
+        $('#message_text').text(_("error_changing_email"));
+        $('#notification').fadeToggle('slow');
+        return;}
+    
+    if(!$('#password1').attr('value')){
+        $('#message_text').text(_("error_changing_password1"));
+        $('#notification').fadeToggle('slow');
+        return;}
+
+    if(!$('#password2').attr('value')){
+        $('#message_text').text(_("error_changing_password2"));
+        $('#notification').fadeToggle('slow');
+        return;}
+
+    // Llamada a la logica de la funcion
+    $.ajax({
+	    url: '/account/save',
+	    type: 'GET',
+	    async: true,
+	    cache: false,
+	    data: {
+	        'email': $('#email').attr('value'),
+			'old_password': $('#password1').attr('value'),
+			'password': $('#password2').attr('value'),
+			'nickname': $('#nickname').attr('value'),
+			'latitude': latitude,
+			'longitude': longitude,
+			'description': $('#description').attr('value'),
+			'user_tags': $('#user_tags').attr('value')
+	    },
+	    success: function(responseText){
+		    var response = $.parseJSON(responseText);
+
+	        if (response.status == 'OK') {
+		        window.location = '/';
 	            }
-	            else {
-	                tedx_alert(response.message);
-	            }
-	            get_details();
-	        }
-	    });
-	} else {
-		tedx_alert(_("error_changing_password"));
-	}
+	        else {
+                $('#message_text').text(response.message);
+                $('#notification').fadeToggle('slow');
+                }
+            }
+	});
 }
 
 upload_avatar = function() {

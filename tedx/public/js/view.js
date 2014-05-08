@@ -7,182 +7,49 @@ var link_exp = /v=([a-z0-9-_]+)/i;
 var place_page = 1;
 var place_page_size = 10;
 var video_player;
+var holita;
 
 init = function() {
-    if (user_id) {
-        get_comment_tags();
-        $('#link').dialog({
-            autoOpen: false,
-            buttons: {
-                "Add": function() {
-                    if ($('#youtube_link').attr('value').match(youtube_exp)) {
-                        var random_id = random_string(3);
-                        var type = "youtube";
-                        files_ids.push(random_id);
-                        input = '<form id="form' + random_id + '" enctype="multipart/form-data" target="file_upload_iframe" method="post" action="/content/upload_file">' +
-                            _(type) +
-                            ': <input id="' +
-                            random_id +
-                            '" type="text" readonly size="35" value="'+$('#youtube_link').attr('value')+'" name="file"></input>\
-<input type="button" onclick="$(\'#form'+random_id+'\').remove();" value="Eliminar"></input>\
-<input type="hidden" name="type" value="' + type + '"></input>\
-</form>';
-                        $(input).appendTo($('#files'));
+    console.log('view.js init');
+    //if (user_id) {
+    //    get_comment_tags();
+    //    $('#link').dialog({
+    //        autoOpen: false,
+    //        buttons: {
+    //            "Add": function() {
+    //                if ($('#youtube_link').attr('value').match(youtube_exp)) {
+    //                    var random_id = random_string(3);
+    //                    var type = "youtube";
+    //                    files_ids.push(random_id);
+    //                    input = '<form id="form' + random_id + '" enctype="multipart/form-data" target="file_upload_iframe" method="post" action="/content/upload_file">' +
+    //                        _(type) +
+    //                        ': <input id="' +
+    //                        random_id +
+    //                        '" type="text" readonly size="35" value="'+$('#youtube_link').attr('value')+'" name="file"></input>\
+//<input type="button" onclick="$(\'#form'+random_id+'\').remove();" value="Eliminar"></input>\
+//<input type="hidden" name="type" value="' + type + '"></input>\
+//</form>';
+    //                    $(input).appendTo($('#files'));
 			
-                        $('#youtube_link').attr('value', '');
-                        $('#link').hide();
-                    } else {
-                        tedx_alert(_("url_is_not_valid"));
-                    }
-                    $( this ).dialog( "close" );
+    //                    $('#youtube_link').attr('value', '');
+    //                    $('#link').hide();
+    //                } else {
+    //                    tedx_alert(_("url_is_not_valid"));
+    //                }
+    //                $( this ).dialog( "close" );
 		    
-                },
-                Cancel: function() {
-                    $( this ).dialog( "close" );
-                }
-            }
-        });
-    }
-    get_place_data();
+    //            },
+    //            Cancel: function() {
+    //                $( this ).dialog( "close" );
+    //            }
+    //        }
+    //    });
+    //}
+    //get_place_data();
+    //draw_drop( latitude, longitude );
 }
 
-var get_place_data = function() {
-    $.ajax({
-        url: '/view/get_place_data',
-        type: 'GET',
-        async: true,
-        cache: false,
-        data: {
-            'id': place_id,
-            'page': place_page,
-            'page_size': place_page_size,
-            'latitude': latitude,
-            'longitude': longitude
-        },
-        success: function(responseText) {
-            var response = $.parseJSON(responseText);
-            if (response.status == 'OK') {
-                var place = response.place;
-                var results = response.comments;
-		
-                if (mode == 'map') {
-                    map.setCenter(new google.maps.LatLng(place.latitude, place.longitude));
-                    map.setZoom(max_zoom);
-                 }
-		
-                // Place comments
-                var comments = $('#list');
-                comments.empty();
 
-                // Translated strings that are repeated
-                var notify_string = _("notify");
-                var download_sticker_string = _("download_sticker");
-                var download_video_string = _("download_video");
-                var remove_string = _("remove");
-               
-                // Add main place
-                var sample = $('<div id="muestra-item"></div>');
-                sample.append($('<div class="imagen"><img src="' + '/images/' + getDropImage(place.ph) + '.png'  + '"/><br>' + _("ph") + ': ' + place.ph + '<br> ' +  _("Cl") + ': ' + place.chlorine + '</div>'));
-
-                sample.append($('<div class="descripcion"><h4>' +  place.place_name +'</h4></a><p>' + place.comment_content + '<br>' + place.last_update + '<br></p></div>'));
-
-                if( place.comment_image != null)
-                    sample.append($('<img class="imagen" src="' + place.comment_image  + '_small.jpg" /></a>'));
-                sample.append($('<div class="clear"></div>'));
-
-                comments.append(sample); 
-                //comments.append('<h4 class="left clear comm"><br>' +  _("Comentarios") + '</h4>');
-
-                // Place comments
-                for (var i = 0; i < results.length; i++) {
-		            // After the happy instant we should place the comments title
-                    var comment_data = results[i];
-                    var comment_description = '';
-                    if (comment_data.comment_content != undefined){
-                        comment_description = replace_links(comment_data.comment_content);}
-
-                    var comment = $('<div id="muestra-item"></div>');
-                    comment.append($('<div class="imagen">&nbsp;</div>'));
-                    comment.append($('<div class="descripcion"><h4>' +  comment_data.user_name +'</h4></a><p>' + comment_description  + '<br>' +  comment_data.last_update + '<br></p></div>'));
-
-                    // Faltaria poner la imagen
-                    comment.append($('<div class="clear"></div>'));
-                    comments.append(comment);
-                }
-
-                // Place marker html
-                if (place.place_id != "") {
-                    name = '<a class="estiloAzul" href="/view/place?id=' + place.place_id + '&latitude=' + latitude + '&longitude=' + longitude + '">' + place.place_name + '</a>';
-                } else {
-                    name = results[i].place_name;
-                }
-                var html = '<table>\
-                <tr><td colspan="2">'+
-                name+'</td></tr>\
-                <tr><td><b>' +
-                _("author") +
-                ':</b></td><td><a class="estiloAzul" href="/' + place.user_name + '">' +
-                place.user_name +
-                '</a></td></tr>';
-
-                html += '<tr><td><b>' +
-                _("last_update") +
-                ':</b></td><td>' +
-                place.last_update +
-                ' por ' +
-                place.last_updater_name +
-                '</td></tr>\
-                <tr><td><b>' +
-                _("comments") +
-                ':</b></td><td>' +
-                place.num_comments +
-                '</td></tr>\
-                <tr><td><b>' +
-                _("visits") +
-                ':</b></td><td>' +
-                place.visits + 
-                '</td></tr>\
-                <tr><td><b>' +
-                _("scoring") +
-                ':</b></td><td>'+place.positive_scorings+'</td></tr>';
-                
-                if (place. comment_image != null){
-                	html += '<tr><td><img src ="' + place.comment_image +'_small.jpg"/></td></tr>\
-                	</table>';
-                } else {
-                	html += '</table>';
-                }
-
-                var marker = drawn_places[place.place_id];
-                if (marker == undefined) {
-                    
-
-                    var marker;
-                    if (place.ph >= 6)
-                        marker = drop_blue;
-                    else if (place.ph >=4)
-                        marker = drop_green;
-                    else 
-                        marker = drop_brown;
-                    
-
-                    var marker = create_marker({
-                        position: new google.maps.LatLng(place.latitude, place.longitude),
-                        icon: marker,
-                        //shadow: marker_shadow,
-                        map: map
-                    }, infowindow, html);
-                    markers_array.push(marker);
-
-                    drawn_places[place.place_id] = marker;
-                }
-            } else {
-                tedx_alert(response.message);
-                document.location = '/';
-            }
-        }
-    });
-}
 
 replace_links = function(content) {
     var links = content.match(regex);
@@ -257,6 +124,7 @@ create_actions = function(place, comment, i) {
 };
 
 get_place_page = function(new_page) {
+    console.log('get_place_page');
     place_page = new_page;
     get_place_data();
 }
@@ -469,12 +337,15 @@ add_tag = function(tag) {
 }
 
 new_comment = function() {
+    console.log('new_comment');
     if (!$('#comment_content').attr('value')) {
+        console.log('nulito');
         tedx_alert(_("comment_content_cannot_be_null"));
         return;
     }
-    $('#loading_div').show();
-    $('#new_comment_div').hide();
+    console.log('new_comment_before');
+    //$('#loading_div').show();
+    //$('#new_comment_div').hide();
     $.ajax({
         url: '/content/new_comment',
         type: 'GET',
@@ -488,6 +359,7 @@ new_comment = function() {
             'comment_content': $('#comment_content').attr('value'),
             'comment_tags': $('#comment_tags').attr('value')
         },
+
         success: function(responseText) {
             var response = $.parseJSON(responseText);
             if (response.status == 'OK') {
@@ -498,6 +370,7 @@ new_comment = function() {
             clear_fields();
         }
     });
+    console.log('new_comment_despues');
 }
 
 clear_fields = function() {
