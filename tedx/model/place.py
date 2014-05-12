@@ -47,6 +47,10 @@ class Place(object):
         self.created_on = datetime.datetime.now()
         self.last_update = datetime.datetime.now()
 
+    def remove(self):
+        self.deleted_on = datetime.datetime.now()
+        meta.Session.commit()
+
     def generate_password(self, max=16, chars=string.letters + string.digits):
         new_string = ''
         for i in range(max):

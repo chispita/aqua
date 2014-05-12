@@ -32,31 +32,32 @@ class Comment(object):
         self.title = title
         self.created_on = datetime.datetime.now()
         self.last_update = datetime.datetime.now()
-        
-        
-        
+
     pass
+
+    def remove(self):
+        self.deleted_on = datetime.datetime.now()
+        meta.Session.commit()
 
     def add_scoring(self, user, value):
         existing_score = meta.Session.query(Comment_scoring).filter(and_(Comment_scoring.comment_id == self.id,Comment_scoring.user_id == user.id)).first()
         if not existing_score:
             db_scoring = Comment_scoring(self, user, value)
-        
+
             return db_scoring
         else:
-            return None 
-        
+            return None
+
     def add_file(self, type, name):
         file = File(self, type, name)
-        
+
         meta.Session.add(self)
         meta.Session.commit()
-        
+
         return file
 
-        
+
     def add_tag(self, tag):
         db_tag = Comment_tag(self, tag)
-        
+
         return db_tag
-    
