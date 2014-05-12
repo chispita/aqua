@@ -193,11 +193,13 @@ var common_init = function() {
                 current_position_marker.setPosition(event.latLng);
                 latitude = current_position_marker.getPosition().lat().toFixed(precision);
                 longitude = current_position_marker.getPosition().lng().toFixed(precision);
+
             } else {
                 latitude = event.latLng.lat();
                 longitude = event.latLng.lng();
                 show_current_position();
             }
+            showPositionPage();
         });
         // Check if the init function exists
         if (typeof init == 'function') {
@@ -258,11 +260,14 @@ var on_position_success = function(p) {
     show_current_position();
 };
 
+
 var show_current_position = function() {
     console.log('show_current_position');
     geolocated = true;
 
     if (current_position_marker == null){
+        console.log('show_current_position null');
+
 	    current_position_marker = create_marker({
 	        position: new google.maps.LatLng(latitude,longitude),
 	        map: map,
@@ -274,15 +279,27 @@ var show_current_position = function() {
 	    }, infowindow, _("you_are_here"));
     }
     var listener = google.maps.event.addListener(current_position_marker, "dragend", function() {
+
+        console.log('show_current_position listener');
+
         clearInterval(refresh_location_timer);
         latitude = current_position_marker.getPosition().lat().toFixed(precision);
         longitude = current_position_marker.getPosition().lng().toFixed(precision);
     });
     if (mode == 'map') {
+
+        console.log('show_current_position map');
+
         map.setCenter(current_position_marker.getPosition());
         map.setZoom(max_zoom);
     }
 };
+
+var showPositionPage = function(){
+    console.log('pongo valores');
+    $('#placelongitude').val(longitude);
+    $('#placelatitude').val(latitude);
+}
 
 var setPos = function(city,country){
     console.log('setPos');
@@ -298,22 +315,6 @@ var setPos = function(city,country){
 	    }
 		});
 	}
-}
-// Get Water Quality based on ph and chlorine
-var getDropQuality = function(ph, chlorine){
-
-
-}
-
-// Get Drop Image
-var getDropImage = function(value){
-
-    if (value >= 6)
-        return "drop_green";
-    else if(value >=4)
-        return "drop_blue";
-    else
-        return "drop_brown";
 }
 
 var view_more = function() {
@@ -1081,6 +1082,7 @@ var search_query = function() {
 
 
 var get_current_position = function(on_position_success, on_position_error) {
+    console.log('get_current_position');
     if (geo_position_js.init()) {
         geo_position_js.getCurrentPosition(on_position_success, on_position_error, {
             enableHighAccuracy: true,
@@ -1102,6 +1104,7 @@ var delete_overlays = function() {
 };
 
 var create_marker = function(options, infowindow, infowindowHTML) {
+    console.log('create_marker');
     var marker = new google.maps.Marker(options);
 
     infowindow.close();
