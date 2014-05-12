@@ -46,6 +46,16 @@ def make_map(config):
 
     map.connect('/places/new',                  controller='places',  action='new')
     map.connect('/places/save',                 controller='places',  action='save')
+    map.connect('/places/result',               controller='places',  action='result')
+
+
+    map.connect('/places/{place_id}/comments/new',  controller='comments',  action='new')
+    map.connect('/places/{place_id}/comments/{id}', controller='comments',  action='detail')
+    map.connect('/places/{place_id}/comments/{id}/edit', controller='comments',  action='edit')
+    map.connect('/places/{place_id}/comments/{id}/delete', controller='comments',  action='delete')
+
+
+
     map.connect('/places/{id}/edit',            controller='places',  action='edit')
     map.connect('/places/{id}/delete',          controller='places',  action='delete')
     map.connect('/places/{id}',                 controller='places',  action='detail')
