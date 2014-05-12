@@ -6,23 +6,75 @@ import formencode
 from functions import *
 from webhelpers import paginate
 
+#from pylons.controllers.util import redirect
+#from routes import url_for
+
 from tedx.lib.base import *
 from pylons.i18n import _
 
-#from pylons.decorators import validate
-#from pylons.decorators.rest import dispatch_
+from pylons.decorators.rest import dispatch_on
+from pylons.decorators import validate
+from formencode.validators import Invalid, FancyValidator
+from formencode.validators import Int, DateConverter, String, OneOf
+from formencode.variabledecode import NestedVariables
 
+#from formencode import variabledecode
+from formencode import htmlfill
+#from formencode.foreach import ForEach
+#from formencode.api import NoDefault
+
+from tedx.lib.validators import BaseSchema
 
 import logging
 log = logging.getLogger(__name__)
 
 from sqlalchemy import func
 
-class PlaceForm(formencode.Schema):
-    allow_extra_fields = True
-    filter_extra_fields = True
-    email = formencode.validators.Email(not_empty=True)
-    date = formencode.validators.DateConverter(not_empty=True)
+class ChlorineValidator(FancyValidator):
+    def _to_python(self, value, state):
+        try:
+            ph = float(value or 0)
+        except:
+            raise Invalid(_(u'Intrdoduce un valor valido'), value, state)
+            return value
+
+        ph = float(value or 0)
+        if ph <0 or ph >2:
+            raise Invalid(_(u'Debe de estar entre 0 y 2'), value, state)
+            return value
+
+class PhValidator(FancyValidator):
+    def _to_python(self, value, state):
+        try:
+            ph = float(value or 0)
+        except:
+            raise Invalid(_(u'Intrdoduce un valor valido'), value, state)
+            return value
+
+        ph = float(value or 0)
+        if ph <0 or ph >14:
+            raise Invalid(_(u'Debe de estar entre 0 y 14'), value, state)
+            return value
+
+class PlaceSchema(BaseSchema):
+    function='NewPlaceSchema'
+    log.debug(function)
+
+    name=String(not_empty=True)
+    description=String(not_empty=True)
+    ph = PhValidator(not_empty=True)
+    chlorine = ChlorineValidator(not_empty=True)
+
+class NewPlaceSchema(BaseSchema):
+    function='NewPlaceSchema'
+    log.debug(function)
+
+    place = PlaceSchema()
+    pre_validators = [NestedVariables]
+
+class UpdatePlaceSchema(BaseSchema):
+    place = PlaceSchema()
+    pre_validators = [NestedVariables]
 
 class PlacesController(BaseController):
 
@@ -50,84 +102,245 @@ class PlacesController(BaseController):
         log.debug(function)
 
         c.place  = meta.Session.query(Place).filter_by(id=id).first()
+
+        page = 1
+        if request.GET.has_key('page'):
+            page = request.GET['page']
+
+        c.ListComments = paginate.Page(
+            getCommentsPlace(c.place.id),
+            page = page,
+            items_per_page=5)
+
         return render('/places/detail.mako')
 
-
-    #@dispatch_on(POST="_new")
-    ##def new(self, cat_id=None):
+    @dispatch_on(POST="_new")
     def new(self):
         function = 'new'
         log.debug(function)
-        form=render('/places/new.mako')
 
-        return form
+        if c.user is None:
+            abort(401)
+
+        defaults = None
         '''
-        if cat_id is None:
-            return form
-        else:
-            return htmlfill.render(form, {
-                'product.category': cat_id,
-                'product.category_id': cat_id})
+        Podemos poner valores por defecto
+        defaults = {
+                    'place.ph': '5',
+                    'place.chlorine':'1.1',
+                    }
         '''
 
-    '''
-    @validate(schema=NewProductSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
-    '''
+        form = render('/places/new.mako')
+        return htmlfill.render(form, defaults)
 
+    @validate(schema=NewPlaceSchema(), form='new', post_only=False, on_get=True, variable_decode=True)
     def _new(self):
         function = '_new'
         log.debug(function)
 
-        results = self.form_result['place']
+        #results = self.form_result['place']
+        #log.debug('%s - results:%s' % (function, results))
 
-        #c.product = Product(**results)
-        #meta.Session.add(c.product)
-        #meta.Session.commit()
+        # Recuperamos los datos
+        title = self.prm('place.name')
+        content = self.prm('place.description')
 
-        h.flash("Muestra creada")
-        #redirect_to(action='view', id=c.product.id)
+        ph = self.prm('place.ph')
+        chlorine = self.prm('place.chlorine')
 
-    #def new(self):
-    #    ''' New Place '''
-    #    function = 'new'
-    #    log.debug(function)
+        latitude = float(self.prm('place.latitude') or 0)
+        longitude = float(self.prm('place.longitude') or 0)
 
-    #    return render('/places/new.mako')
+        image_link = request.params.get('place.image')
+        log.debug('%s - image-link:%s' % ( function, str(image_link)))
 
-        return render('/places/index.mako')
+        myfile = self.prm('place.image')
+
+        #log.debug('%s - image-filename:%s' % ( function,myfile.filename))
+        log.debug('%s - image-file:%s' % ( function, myfile.file))
+        log.debug('%s - image-value:%s' % ( function, str(myfile.value)))
 
 
-    def save(self):
-        function = 'save'
+
+        return "Successfully uploaded: %s, size: %i, description: %s" % (
+            myfile.filename,
+            len(myfile.value),
+            'jeje'
+        )
+
+        # Grabar todos los datos
+        place = c.user.add_place(latitude, longitude, None, None, title)
+        db_comment = place.add_comment(c.user, content, title)
+        db_water = place.add_water(ph, chlorine)
+
+        myfile = request.POST['place.file']
+
+
+        '''
+        # Falta de grabar la imagen
+        if (image_link != None and image_link != ""):
+            name = image_link.filename
+
+            folder = c.user.id.lstrip(os.sep)
+            if not os.path.isdir(os.path.join(os.getcwd(), 'tedx/public/files/', folder)):
+                os.mkdir(os.path.join(os.getcwd(), 'tedx/public/files/', folder))
+
+            db_file = db_comment.add_file('image', image_link.filename)
+            full_path = os.path.join(os.getcwd(), 'tedx/public/files/', folder, db_file.id)
+            db_file.path = os.path.join('/files', folder, db_file.id)
+            db_file.size = len(image_link.value)
+            permanent_file = open(full_path, 'w')
+
+            shutil.copyfileobj(image_link.file, permanent_file)
+            image_link.file.close()
+            permanent_file.close()
+
+            try:
+                im = Image.open(os.path.join(os.getcwd(),'tedx/public/files/', folder, db_file.id.lstrip(os.sep)))
+            except Exception, e:
+                print e
+                os.remove(os.path.join(os.getcwd(),'tedx/public/files/', folder, db_file.id.lstrip(os.sep)))
+                meta.Session.delete(db_file)
+                meta.Session.commit()
+                h.flash(_(u'El archivo enviado no es una imagen valida'))
+
+            im = im.convert('RGB')
+            width, height = im.size
+            filename = db_file.id + '.jpg'
+            filenamemid = db_file.id + '_mid.jpg'
+            filenamemini = db_file.id + '_small.jpg'
+            out = im
+            outmid = im
+            outmini = im
+            imAspect = float(width)/float(height)
+
+            # Default
+            if width > app_globals.default_image_size or height > app_globals.default_image_size:
+                if width > height:
+                    out = im.resize((app_globals.default_image_size,int(float(app_globals.default_image_size) / imAspect)), Image.ANTIALIAS)
+                else:
+                    out = im.resize((int(float(app_globals.default_image_size) * imAspect),app_globals.default_image_size), Image.ANTIALIAS)
+
+            # Imagen de tamaño medio
+            if width > app_globals.mid_image_size or height > app_globals.mid_image_size:
+                if width > height:
+                    outmid = im.resize((app_globals.mid_image_size,int(float(app_globals.mid_image_size) / imAspect)), Image.ANTIALIAS)
+                else:
+                    outmid = im.resize((int(float(app_globals.mid_image_size) * imAspect),app_globals.mid_image_size), Image.ANTIALIAS)
+
+            # Imagen de tamaño pequeño
+            if width > app_globals.small_image_size or height > app_globals.small_image_size:
+                if width > height:
+                    outmini = im.resize((app_globals.small_image_size,int(float(app_globals.small_image_size) / imAspect)), Image.ANTIALIAS)
+                else:
+                    outmini = im.resize((int(float(app_globals.small_image_size) * imAspect),app_globals.small_image_size), Image.ANTIALIAS)
+
+            out.save(os.path.join(os.getcwd(),'tedx/public/files/', folder, filename.lstrip(os.sep)))
+            outmid.save(os.path.join(os.getcwd(),'tedx/public/files/', folder, filenamemid.lstrip(os.sep)))
+            outmini.save(os.path.join(os.getcwd(),'tedx/public/files/', folder, filenamemini.lstrip(os.sep)))
+            os.remove(os.path.join(os.getcwd(),'tedx/public/files/', folder, db_file.id.lstrip(os.sep)))
+
+            meta.Session.add(db_file)
+            meta.Session.commit()
+        '''
+
+        h.flash(_(u'La muestra se ha grabado correctamente'))
+        redirect(h.url_for(controller='home', action='index'))
+
+
+    #@authorize(h.auth.is_valid_user)
+    @dispatch_on(POST="_edit")
+    def edit(self, id):
+        # We need to recheck auth in here so we can pass in the id
+        '''
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
+        '''
+        c.form = 'edit'
+        c.place  = meta.Session.query(Place).filter_by(id=id).first()
+        if not c.place:
+            abort(404)
+
+        if c.place.user_id != c.user.id:
+            abort(401)
+
+        defaults = h.object_to_defaults(c.place, 'place')
+
+        if c.place.comments[0]:
+            defaults['place.description'] = c.place.comments[0].content
+
+        form = render('/places/edit.mako')
+        return htmlfill.render(form, defaults)
+
+    @validate(schema=UpdatePlaceSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
+    def _edit(self, id):
+        ''' Update Place '''
+        function = '_edit'
         log.debug(function)
-        log.debug('%s - params:%s' % ( function, request.params))
 
-        c.place_msg = ''
-        c.name_value = ''
-        name = request.params.get('name')
-        if not name:
-            log.debug('%s - not name' % (function))
-            c.place_msg= "Introduce un valor"
+        # We need to recheck auth in here so we can pass in the id
+        #if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            # h.auth.no_role()
 
-        if c.place_msg:
-            c.name_value = name
-            return render('/places/new.mako')
+        #c.person = Person.find_by_id(id)
+        #self.finish_edit(c.person)
+
+
+        place  = meta.Session.query(Place).filter_by(id=id).first()
+        if place:
+
+            place.last_update = datetime.datetime.now()
+            place.name = self.prm('place.name')
+
+            log.debug('%s - place:%s' % (function, place.id))
+            log.debug('%s - fecha:%s' % (function, place.last_update))
+            log.debug('%s - title:%s' % (function, place.name))
+
+            meta.Session.commit()
         else:
-            log.debug('%s - name:%s' % (function,name))
-            return 'Your name is:%s' % name
 
-    def edit(self):
-        function = 'edit'
-        log.debug(function)
+            log.debug('%s - place:%s' % (function, place.id))
+            log.debug('%s - no encontrado' % (function))
 
-        return 'Edit'
-
-    def delete(self):
-        function = 'delete'
-        log.debug(function)
-
-        return 'Delete'
+        '''
+        content = self.prm('place.description')
 
 
+        latitude = float(self.prm('place.latitude') or 0)
+        longitude = float(self.prm('place.longitude') or 0)
 
+        image_link = request.params.get('image')
+        log.debug('%s - image-link:%s' % ( function, str(image_link)))
+
+        # Grabar todos los datos
+        place = c.user.add_place(latitude, longitude, None, None, title)
+        db_comment = place.add_comment(c.user, content, title)
+        db_water = place.add_water(ph, chlorine)
+        '''
+
+
+        #redirect_to(action='detail', id=id)
+
+        h.flash(_(u'La muestra se ha actualizado correctamente'))
+        redirect(h.url_for(action='index'))
+
+
+    def delete(self,id):
+        ''' Borrar una muestra '''
+        place  = meta.Session.query(Place).filter_by(id=id).first()
+
+        if not place:
+            abort(404)
+
+        if place.user_id != c.user.id:
+            abort(401)
+
+        ''' No lo borramos, solo actulizamos la fecha en deleted_on '''
+        place.remove()
+
+        h.flash(_(u'Se ha borrado la muestra correctamente'))
+        redirect(h.url_for(controller='home', action='index'))
 

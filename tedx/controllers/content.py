@@ -96,7 +96,10 @@ class ContentController(BaseController):
 
             log.debug('%s - antes de grabar' % (function))
             place = c.user.add_place(latitude, longitude, city, country, place_name)
+
+            log.debug('%s - despues de grabar place' % (function))
             db_water = place.add_water(ph, chlorine)
+            log.debug('%s - despues de grabar water' % (function))
 
         tags = []
         if place_tags is not None:
@@ -116,6 +119,7 @@ class ContentController(BaseController):
             place.add_tag(db_tag)
             db_comment.add_tag(db_tag)
 
+        log.debug('%s - sale de la funcion de grabacion' % (function))
         return h.toJSON({'status': 'OK', 'comment_id': db_comment.id, 'place_id':place.id})
 
     def new_empty_place(self):
@@ -133,12 +137,6 @@ class ContentController(BaseController):
         comment_title = self.prm('comment_title')
         #comment_content = self.prm('comment_content')
         comment_tags = self.prm('comment_tags')
-
-        log.debug('%s - place_id:%s' % (function, place_id))
-        #log.debug('%s - latitude:%' % (function, latitude))
-        #log.debug('%s - longitude:%s' % (function, longitude))
-        log.debug('%s - comment_title:%s' % (function, comment_title))
-        log.debug('%s - comment_content:%s' % (function, comment_content))
 
         if not c.user:
             return h.toJSON({'status': 'NOK', 'message': _(u'you_must_login_to_add_content'), 'error_code': 1})
@@ -168,84 +166,119 @@ class ContentController(BaseController):
         return h.toJSON({'status': 'OK', 'comment_id': db_comment.id})
 
     def upload_file(self):
+        function = 'upload_file'
+        log.debug(function)
+
+        log.debug('%s - file:%s' % (function, request.params.get('file')))
+
         file = request.params.get('file')
         comment_id = self.prm('comment_id')
+
+        log.debug('%s - comment:%s' % (function, comment_id))
+
         type = self.prm('type')
+
+        log.debug('%s - type:%s' % (function, str(type)))
 
         print str(file) + ',' + str(comment_id) + ',' + str(type)
 
         if file is not None and file != '':
+            log.debug('%s filito' % (function))
             if type != 'youtube':
+                log.debug('%s no es youtube' % (function))
+                name = file.name
+
+                log.debug('%s name:%s' % (function, name))
                 name = file.name
                 folder = c.user.id.lstrip(os.sep)
                 if not os.path.isdir(os.path.join(os.getcwd(), 'tedx/public/files/', folder)):
                     os.mkdir(os.path.join(os.getcwd(), 'tedx/public/files/', folder))
 
+
+            log.debug('%s busca el comentario' % (function))
             db_comment = meta.Session.query(Comment).filter_by(id=comment_id).first()
+            log.debug('%s despues de buscar el comentario' % (function))
+
             if db_comment:
-                if type == 'youtube':
-                    db_file = db_comment.add_file(type, "")
-                    db_file.path = file
-                elif type == 'image':
-                    db_file = db_comment.add_file(type, file.filename)
-                    full_path = os.path.join(os.getcwd(), 'tedx/public/files/', folder, db_file.id)
-                    db_file.path = os.path.join('/files', folder, db_file.id)
-                    db_file.size = len(file.value)
-                    permanent_file = open(full_path, 'w')
+                log.debug('%s type image' % (function))
+                db_file = db_comment.add_file(type, file.filename)
+                full_path = os.path.join(os.getcwd(), 'tedx/public/files/', folder, db_file.id)
+                db_file.path = os.path.join('/files', folder, db_file.id)
+                db_file.size = len(file.value)
+                permanent_file = open(full_path, 'w')
 
-                    shutil.copyfileobj(file.file, permanent_file)
-                    file.file.close()
-                    permanent_file.close()
+                log.debug('%s type image1' % (function))
 
-                    try:
-                        im = Image.open(os.path.join(os.getcwd(),'tedx/public/files/', folder, db_file.id.lstrip(os.sep)))
-                    except Exception, e:
-                        print e
-                        os.remove(os.path.join(os.getcwd(),'tedx/public/files/', folder, db_file.id.lstrip(os.sep)))
-                        meta.Session.delete(db_file)
-                        meta.Session.commit()
-                        return h.toJSON({'status': 'NOK', 'message': _(u'file_selected_is_not_an image'), 'error_code': 0})
+                shutil.copyfileobj(file.file, permanent_file)
+                file.file.close()
+                permanent_file.close()
 
-                    im = im.convert('RGB')
-                    width, height = im.size
-                    filename = db_file.id + '.jpg'
-                    filenamemid = db_file.id + '_mid.jpg'
-                    filenamemini = db_file.id + '_small.jpg'
-                    out = im
-                    outmid = im
-                    outmini = im
-                    imAspect = float(width)/float(height)
+                log.debug('%s type image2' % (function))
 
-                    # Default
-                    if width >app_globals.default_image_size or height >app_globals.default_image_size:
-                        if width > height:
-                            out = im.resize((app_globals.default_image_size,int(float(app_globals.default_image_size) / imAspect)), Image.ANTIALIAS)
-                        else:
-                            out = im.resize((int(float(app_globals.default_image_size) * imAspect),app_globals.default_image_size), Image.ANTIALIAS)
-
-                    # image medio
-                    if width >app_globals.mid_image_size or height >app_globals.mid_image_size:
-                        if width > height:
-                            outmid = im.resize((app_globals.mid_image_size,int(float(app_globals.mid_image_size) / imAspect)), Image.ANTIALIAS)
-                        else:
-                            outmid = im.resize((int(float(app_globals.mid_image_size) * imAspect),app_globals.mid_image_size), Image.ANTIALIAS)
-
-                    # image pequeño
-                    if width >app_globals.small_image_size or height >app_globals.small_image_size:
-                        if width > height:
-                            outmini = im.resize((app_globals.small_image_size,int(float(app_globals.small_image_size) / imAspect)), Image.ANTIALIAS)
-                        else:
-                            outmini = im.resize((int(float(app_globals.small_image_size) * imAspect),app_globals.small_image_size), Image.ANTIALIAS)
-
-                    out.save(os.path.join(os.getcwd(),'tedx/public/files/', folder, filename.lstrip(os.sep)))
-                    outmid.save(os.path.join(os.getcwd(),'tedx/public/files/', folder, filenamemid.lstrip(os.sep)))
-                    outmini.save(os.path.join(os.getcwd(),'tedx/public/files/', folder, filenamemini.lstrip(os.sep)))
+                try:
+                    im = Image.open(os.path.join(os.getcwd(),'tedx/public/files/', folder, db_file.id.lstrip(os.sep)))
+                except Exception, e:
+                    print e
                     os.remove(os.path.join(os.getcwd(),'tedx/public/files/', folder, db_file.id.lstrip(os.sep)))
+                    meta.Session.delete(db_file)
+                    meta.Session.commit()
+                    return h.toJSON({'status': 'NOK', 'message': _(u'file_selected_is_not_an image'), 'error_code': 0})
 
-                meta.Session.add(db_file)
-                meta.Session.commit()
 
-                return h.toJSON({'status': 'OK', 'comment_id': db_comment.id})
+                log.debug('%s type image3' % (function))
+
+                im = im.convert('RGB')
+                width, height = im.size
+                filename = db_file.id + '.jpg'
+                filenamemid = db_file.id + '_mid.jpg'
+                filenamemini = db_file.id + '_small.jpg'
+                out = im
+                outmid = im
+                outmini = im
+                imAspect = float(width)/float(height)
+
+                log.debug('%s type image4' % (function))
+
+                # Default
+                if width >app_globals.default_image_size or height >app_globals.default_image_size:
+                    if width > height:
+                        out = im.resize((app_globals.default_image_size,int(float(app_globals.default_image_size) / imAspect)), Image.ANTIALIAS)
+                    else:
+                        out = im.resize((int(float(app_globals.default_image_size) * imAspect),app_globals.default_image_size), Image.ANTIALIAS)
+
+                log.debug('%s type image5' % (function))
+
+                # image medio
+                if width >app_globals.mid_image_size or height >app_globals.mid_image_size:
+                    if width > height:
+                        outmid = im.resize((app_globals.mid_image_size,int(float(app_globals.mid_image_size) / imAspect)), Image.ANTIALIAS)
+                    else:
+                        outmid = im.resize((int(float(app_globals.mid_image_size) * imAspect),app_globals.mid_image_size), Image.ANTIALIAS)
+
+                log.debug('%s type image6' % (function))
+
+                # image pequeño
+                if width >app_globals.small_image_size or height >app_globals.small_image_size:
+                    if width > height:
+                        outmini = im.resize((app_globals.small_image_size,int(float(app_globals.small_image_size) / imAspect)), Image.ANTIALIAS)
+                    else:
+                        outmini = im.resize((int(float(app_globals.small_image_size) * imAspect),app_globals.small_image_size), Image.ANTIALIAS)
+
+                log.debug('%s type image7' % (function))
+
+                out.save(os.path.join(os.getcwd(),'tedx/public/files/', folder, filename.lstrip(os.sep)))
+                outmid.save(os.path.join(os.getcwd(),'tedx/public/files/', folder, filenamemid.lstrip(os.sep)))
+                outmini.save(os.path.join(os.getcwd(),'tedx/public/files/', folder, filenamemini.lstrip(os.sep)))
+                os.remove(os.path.join(os.getcwd(),'tedx/public/files/', folder, db_file.id.lstrip(os.sep)))
+
+            log.debug('%s type image8' % (function))
+
+            meta.Session.add(db_file)
+            meta.Session.commit()
+
+            log.debug('%s type image9' % (function))
+
+            return h.toJSON({'status': 'OK', 'comment_id': db_comment.id})
         return h.toJSON({'status': 'NOK', 'message': _(u'error_saving_file'), 'error_code': 0})
 
     def remove_comment(self):

@@ -29,23 +29,34 @@ def get_drop_image(value):
         return  '/images/drop_brown.png'
 '''
 
+''' Users '''
 def getAllUsers():
     ''' Get all the users active '''
-    return meta.Session.query(User)
+    return meta.Session.query(User).filter(User.deleted_on==None)
 
-def getAllPlaces():
-    ''' Get the all drops saved '''
-    return meta.Session.query(Place).filter(Place.empty==False)
-
-def getLastPlaces():
-    ''' Get the last drops saved '''
-    return meta.Session.query(Place).filter(Place.empty==False).order_by(desc(Place.last_update))
-
+''' Profile '''
 def getProfilePlaces(nickname):
     ''' Get places of the user '''
-    return meta.Session.query(Place).filter(Place.user.has(User.nickname == nickname))
+    return meta.Session.query(Place).filter(and_(Place.user.has(User.nickname == nickname), Place.deleted_on==None))
 
 def getProfileComments(nickname):
     ''' Get Comments of the user '''
-    return meta.Session.query(Comment).filter(Comment.user.has(User.nickname == nickname))
+    return meta.Session.query(Comment).filter(and_(Comment.user.has(User.nickname == nickname), Place.deleted_on==None ))
 
+''' Places '''
+def getAllPlaces():
+    ''' Get the all drops saved '''
+    return meta.Session.query(Place).filter(and_(Place.empty==False, Place.deleted_on==None))
+
+def getLastPlaces():
+    ''' Get the last drops saved '''
+    return meta.Session.query(Place).filter(and_(Place.empty==False, Place.deleted_on==None)).order_by(desc(Place.last_update))
+
+''' Comments '''
+def getAllComments():
+    ''' Get all comments saved '''
+    return meta.Session.query(Comment).filter(Comment.deleted_on==None).order_by(desc(Comment.last_update))
+
+def getCommentsPlace(id):
+    ''' Get Comments in a place '''
+    return meta.Session.query(Comment).filter(and_(Comment.place_id==id,Comment.deleted_on==None)).order_by(desc(Comment.last_update))

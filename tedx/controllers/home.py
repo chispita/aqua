@@ -23,6 +23,7 @@ class HomeController(BaseController):
     def index(self):
         function = 'def index'
         log.debug(function)
+
         #log.debug('%s - city:%s, country:%s' % (function, self.prm('city'), self.prm('country')))
         if self.prm('city') and self.prm('country'):
             c.city = self.prm('city').decode('utf8')

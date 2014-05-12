@@ -52,7 +52,7 @@ class AccountController(BaseController):
 
 
     def profile(self):
-        ''' Get private profile of the user '''
+        ''' Get private profile of the .iduser '''
         function='def profile'
         log.debug(function)
         log.debug('%s nickname:%s' % (function, c.user.nickname))
@@ -107,7 +107,8 @@ class AccountController(BaseController):
 
         c.places_map = getProfilePlaces(c.user_search.nickname)
 
-        c.places = paginate.Page(
+
+        c.Comments = paginate.Page(
             getProfileComments(c.user_search.nickname),
             page = page,
             items_per_page=5)
