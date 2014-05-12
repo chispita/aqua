@@ -1,3 +1,34 @@
+<%def name="DrawDrops(items)">
+    <script type="text/javascript">
+        alert('holita');
+
+        function map_load() {
+            // Acercamos el zoom lo mas cerca posible
+            % for place in items :
+                html =  '<table>' +
+                    '<tr><td><a class="cloud_strong">${_(u'lugar')}:</a></td>' +
+                    '<td><a class="estiloAzul" href="/places/${place.id}">${place.name}</a>'+
+                    '</td></tr><tr><td>' + 
+                    '<a class="cloud_strong">${_(u'autor')}:</a></td><td>' +
+                    '<a class="cloud_header" href="/account/${place.user.nickname}">${place.user.nickname}</a></td></tr>' +
+                    '<tr><td><a class="cloud_strong">${_(u'modificado')}:</a></td>' +
+                    '<td><a class="cloud_strong">${place.last_update}</a></td>' +
+                    '<tr><td><a class="cloud_strong">${_(u'pH')}:</a></td>' +
+                    '<td><a class="cloud_sub">${place.ph}</a></td></tr>' +
+                    '<tr><td><a class="cloud_strong">${_(u'Cloro')}:</a></td>' +
+                    '<td><a class="cloud_sub">${place.chlorine}</a></td></tr></table>';
+
+                var drop_marker = ${GetDrop(place.ph, place.chlorine)};
+                var marker = create_marker({
+                    position: new google.maps.LatLng(${place.latitude}, ${place.longitude}),
+                    icon: drop_marker,
+                    map: map
+                }, infowindow, html);
+            % endfor
+        }
+    </script>
+</%def>
+
 <%def name="GetDrop(ph,chlorine)">
 <%
     ph = float(ph or 0)
@@ -9,6 +40,23 @@
     else:
         return 'drop_blue'
 %>
+</%def>
+
+<%def name="list_comments(items)">
+%if items:
+    % for item in items:
+        <div id="muestra-item">
+            <div id="description">
+                <h4><a href="/places/${item.place_id}">${_(u'Muestra')}</a></h4>
+                    
+                <br><a href="/places/${item.place_id}/comments/${item.id}">${_(u'Título')}:           ${item.title}</a>
+                <br> ${_(u'Usuario')}:          
+                <br> ${_(u'Contenido')}:        ${item.content}
+                <br> ${_(u'Fecha Creación')}:   ${item.created_on}
+            </div>
+        </div>
+    % endfor
+%endif
 </%def>
 
 <%def name="list_users(users)">
@@ -34,7 +82,6 @@
 
         </div>
     % endfor
-
 %endif
 </%def>
 <%def name="list_places(places)">

@@ -48,7 +48,6 @@
 <%def name="MainContent()">
 
     <div id="queMapa">
-        User Search:${c.user_search.nickname}
         ${commons.show_user(c.user_search)}
     </div>
 </%def>
@@ -61,8 +60,8 @@
     <a name="muestras">    
     <div class="content_center">
         <h3>${_(u'Comentarios realizados')} ${_(u'por')}: ${c.nickname}</h3>
-        ##${functions.list_places(c.places)}
-        ##${c.places.pager('Page $page: $link_previous $link_next ~4~')}
+        ${functions.list_comments(c.Comments)}
+        ${c.Comments.pager('Page $page: $link_previous $link_next ~4~')}
     </div>
     </a>
                                                                     

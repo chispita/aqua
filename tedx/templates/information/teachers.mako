@@ -1,4 +1,10 @@
 ##Information_teachers.mako
+<h3>${_(u'Enlaces')}</h3>
+<h4><a href="/places/">${_(u'Muestras')}</a></h4>
+<h4><a href="/account/">${_(u'Usuarios')}</a></h4>
+<h4><a href="/comments/">${_(u'Comentarios')}</a></h4>
+
+
 <h3>${_(u'Información para Profesores')}</h3>
 ${_(u'Queremos repartir kits experimentales a todos los centros de Educación Secundaria que lo deseen, pero nuestro presupuesto es limitado. Mandanos un correo a')} <a href="mailto:info@ibercivis.es">info@ibercivis.es</a> ${_(u'indicando en el asunto AQUA y con los detalles de centro y de la persona de contacto')}.
 <br /><br />

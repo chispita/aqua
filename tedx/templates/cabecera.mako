@@ -14,8 +14,8 @@
                 <a href="/register" class="logolink">${_(u'Registrarse')}</a>
             %endif:
             &nbsp;
-            <a href="javascript: change_language('es')"><img src="images/es.png"></a>
-            <a href="javascript: change_language('en')"><img src="images/en.png"></a>
+            <a href="javascript: change_language('es')"><img src="/images/es.png"></a>
+            <a href="javascript: change_language('en')"><img src="/images/en.png"></a>
 
             <a href="/information" class="logolink">${_(u'Info')}</a>
         </div>

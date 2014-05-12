@@ -6,7 +6,7 @@
         <title>AQUA - ${next.title()}</title>
         <%include file="meta.mako"/>
 
-        <%namespace name="functions"  file="functions.mako"/>
+        ##<%namespace name="functions"  file="functions.mako"/>
 
 	    <link rel="shortcut icon" href="/images/favicon.ico" />
         <link rel="stylesheet" type="text/css" href="/css/common.css" />
@@ -89,6 +89,7 @@
 
     <body>
 
+        <a href="#muestras">
         <%include file="messages.mako"/>
         <%include file="cabecera.mako"/>
 

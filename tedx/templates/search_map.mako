@@ -8,9 +8,6 @@
     %if c.user:
         <div class="derecha">
             <a href="/places/new" class="left accion bordeSoft" id="geo">${_(u'Nueva Muestra')}</a>
-
-            <a href="/account/profile/">${c.user.nickname}</a>
-
         </div>
     %endif:
 </div>

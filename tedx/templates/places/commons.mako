@@ -17,17 +17,17 @@
             <h3>${_(u'Descripción')}</h3>
 
             <div class="dataVision">
-                <label>${_(u'Autor')}:</>
+                <label>${_(u'Autor')}:</label>
                 <a href="/account/${place.user.nickname}">${place.user.nickname}</a>
             </div>
 
             <div class="dataVision">
-                <label>${_(u'Creado')}:</>
+                <label>${_(u'Creado')}:</label>
                 ${place.created_on}
             </div>
 
             <div class="dataVision">
-                <label>${_(u'Descripción')}:</>
+                <label>${_(u'Descripción')}:</label>
                 ${place.comments[0].content}
             </div>
 
@@ -38,13 +38,13 @@
             </div>
 
             <div class="dataVision">
-                <label>${_(u'Cloro')}:</>
+                <label>${_(u'Cloro')}:</label>
                 ${place.chlorine}
             </div>
 
             <h3>${_(u'Actividad')}</h3>
             <div class="dataVision">
-                <label>${_(u'Comentarios')}:</>
+                <label>${_(u'Comentarios')}:</label>
                     <% comments = len(place.comments)-1 %>
                 %if comments >0:
                     ${comments}
@@ -52,12 +52,12 @@
             </div>
 
             <div class="dataVision">
-                <label>${_(u'Visitas')}:</>
+                <label>${_(u'Visitas')}:</label>
                 ${place.visits}
             </div>
 
             <div class="dataVision">
-                <label>${_(u'Puntuación')}:</>
+                <label>${_(u'Puntuación')}:</label>
                 Falta!!!
             </div>
 
@@ -73,7 +73,7 @@
 
             <br><br>
             %if c.user:
-                %if place.user.nickname == c.user.nickname:
+                %if place.user.id == c.user.id:
                     <div class="centerize">
                         <a href="/places/${place.id}/edit" class='accion  bordeSoft'  style='text-transform: uppercase:' id='grande'>
                             ${_(u'Editar')}

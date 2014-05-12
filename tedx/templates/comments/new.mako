@@ -1,13 +1,14 @@
 <%inherit file="/common.mako"/>
 
-<%def name="title()">${_(u'Nueva Muestra')}</%def>
+<%def name="title()">${_(u'Nueva Comentario')}</%def>
 
 <%def name="MainContent()">
     <div id="queMapa">
 
         <div align="right"><a href="/" class="close-icon"></a></div>
 
-        <h2 class="mom">${_(u'Nueva Muestra')}</h2>	    
+        <h2 class="mom">${_(u'Nuevo Comentario')}</h2>	    
+
         ${h.form(h.url_for(action='new')) }
             <%include file="form.mako" />
             ${ h.submit('submit', _(u'Enviar'), class_='accion bordeSoft') }

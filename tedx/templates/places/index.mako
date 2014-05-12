@@ -7,7 +7,7 @@
     <script type="text/javascript">
         function map_load() {
             // Acercamos el zoom lo mas cerca posible
-            % for place in c.ListPlaces :
+            % for place in c.AllPlaces :
                 html =  '<table>' +
                     '<tr><td><a class="cloud_strong">${_(u'lugar')}:</a></td>' +
                     '<td><a class="estiloAzul" href="/places/${place.id}">${place.name}</a>'+
@@ -41,7 +41,6 @@
 
 
 <%def name="MainContent()">
-
     %if not c.user:
 
         <div id="queMapa">
@@ -67,7 +66,8 @@
     </div>
 
     <div class="content_center">
-        <h3>${_(u'Ultimas muestras enviadas')}</h3>
+        <h3>${_(u'Mestras enviadas')}</h3>
+        ${c.AllPlaces}
         ${functions.list_places(c.ListPlaces)}
 
         ${c.ListPlaces.pager('Page $page: $link_previous $link_next ~4~')}
