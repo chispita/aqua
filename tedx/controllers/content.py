@@ -183,17 +183,13 @@ class ContentController(BaseController):
         print str(file) + ',' + str(comment_id) + ',' + str(type)
 
         if file is not None and file != '':
-            log.debug('%s filito' % (function))
             if type != 'youtube':
-                log.debug('%s no es youtube' % (function))
                 name = file.name
 
-                log.debug('%s name:%s' % (function, name))
                 name = file.name
                 folder = c.user.id.lstrip(os.sep)
                 if not os.path.isdir(os.path.join(os.getcwd(), 'tedx/public/files/', folder)):
                     os.mkdir(os.path.join(os.getcwd(), 'tedx/public/files/', folder))
-
 
             log.debug('%s busca el comentario' % (function))
             db_comment = meta.Session.query(Comment).filter_by(id=comment_id).first()
@@ -207,13 +203,10 @@ class ContentController(BaseController):
                 db_file.size = len(file.value)
                 permanent_file = open(full_path, 'w')
 
-                log.debug('%s type image1' % (function))
 
                 shutil.copyfileobj(file.file, permanent_file)
                 file.file.close()
                 permanent_file.close()
-
-                log.debug('%s type image2' % (function))
 
                 try:
                     im = Image.open(os.path.join(os.getcwd(),'tedx/public/files/', folder, db_file.id.lstrip(os.sep)))
@@ -224,9 +217,6 @@ class ContentController(BaseController):
                     meta.Session.commit()
                     return h.toJSON({'status': 'NOK', 'message': _(u'file_selected_is_not_an image'), 'error_code': 0})
 
-
-                log.debug('%s type image3' % (function))
-
                 im = im.convert('RGB')
                 width, height = im.size
                 filename = db_file.id + '.jpg'
@@ -236,8 +226,6 @@ class ContentController(BaseController):
                 outmid = im
                 outmini = im
                 imAspect = float(width)/float(height)
-
-                log.debug('%s type image4' % (function))
 
                 # Default
                 if width >app_globals.default_image_size or height >app_globals.default_image_size:
