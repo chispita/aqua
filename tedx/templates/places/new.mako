@@ -6,9 +6,7 @@
     <div id="queMapa">
 
         <div align="right"><a href="/" class="close-icon"></a></div>
-
         <h2 class="mom">${_(u'Nueva Muestra')}</h2>	    
-        ##${h.form(h.url_for(action='new')) }
         ${ h.form(url=h.url_for(), multipart=True) }
             <%include file="form.mako" />
             ${ h.submit('submit', _(u'Enviar'), class_='accion bordeSoft') }
