@@ -158,69 +158,7 @@ class PlacesController(BaseController):
 
         # Grabacion de la imagen
         if (image_link != None and image_link != ""):
-            name = image_link.filename
-
-            folder = c.user.id.lstrip(os.sep)
-            if not os.path.isdir(os.path.join(os.getcwd(), 'tedx/public/files/', folder)):
-                os.mkdir(os.path.join(os.getcwd(), 'tedx/public/files/', folder))
-
-            db_file = db_comment.add_file('image', image_link.filename)
-            full_path = os.path.join(os.getcwd(), 'tedx/public/files/', folder, db_file.id)
-            db_file.path = os.path.join('/files', folder, db_file.id)
-            db_file.size = len(image_link.value)
-            permanent_file = open(full_path, 'w')
-
-            shutil.copyfileobj(image_link.file, permanent_file)
-            image_link.file.close()
-            permanent_file.close()
-
-            try:
-                im = Image.open(os.path.join(os.getcwd(),'tedx/public/files/', folder, db_file.id.lstrip(os.sep)))
-            except Exception, e:
-                print e
-                os.remove(os.path.join(os.getcwd(),'tedx/public/files/', folder, db_file.id.lstrip(os.sep)))
-                meta.Session.delete(db_file)
-                meta.Session.commit()
-                h.flash(_(u'El archivo enviado no es una imagen valida'))
-
-            im = im.convert('RGB')
-            width, height = im.size
-            filename = db_file.id + '.jpg'
-            filenamemid = db_file.id + '_mid.jpg'
-            filenamemini = db_file.id + '_small.jpg'
-            out = im
-            outmid = im
-            outmini = im
-            imAspect = float(width)/float(height)
-
-            # Default
-            if width > app_globals.default_image_size or height > app_globals.default_image_size:
-                if width > height:
-                    out = im.resize((app_globals.default_image_size,int(float(app_globals.default_image_size) / imAspect)), Image.ANTIALIAS)
-                else:
-                    out = im.resize((int(float(app_globals.default_image_size) * imAspect),app_globals.default_image_size), Image.ANTIALIAS)
-
-            # Imagen de tamaño medio
-            if width > app_globals.mid_image_size or height > app_globals.mid_image_size:
-                if width > height:
-                    outmid = im.resize((app_globals.mid_image_size,int(float(app_globals.mid_image_size) / imAspect)), Image.ANTIALIAS)
-                else:
-                    outmid = im.resize((int(float(app_globals.mid_image_size) * imAspect),app_globals.mid_image_size), Image.ANTIALIAS)
-
-            # Imagen de tamaño pequeño
-            if width > app_globals.small_image_size or height > app_globals.small_image_size:
-                if width > height:
-                    outmini = im.resize((app_globals.small_image_size,int(float(app_globals.small_image_size) / imAspect)), Image.ANTIALIAS)
-                else:
-                    outmini = im.resize((int(float(app_globals.small_image_size) * imAspect),app_globals.small_image_size), Image.ANTIALIAS)
-
-            out.save(os.path.join(os.getcwd(),'tedx/public/files/', folder, filename.lstrip(os.sep)))
-            outmid.save(os.path.join(os.getcwd(),'tedx/public/files/', folder, filenamemid.lstrip(os.sep)))
-            outmini.save(os.path.join(os.getcwd(),'tedx/public/files/', folder, filenamemini.lstrip(os.sep)))
-            os.remove(os.path.join(os.getcwd(),'tedx/public/files/', folder, db_file.id.lstrip(os.sep)))
-
-            meta.Session.add(db_file)
-            meta.Session.commit()
+            UploadFile( db_comment, image_link)
 
         h.flash(_(u'La muestra se ha grabado correctamente'))
         redirect(h.url_for(controller='home', action='index'))
