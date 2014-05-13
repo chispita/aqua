@@ -15,7 +15,7 @@ from pylons.i18n import _
 from pylons.decorators.rest import dispatch_on
 from pylons.decorators import validate
 from formencode.validators import Invalid, FancyValidator
-from formencode.validators import Int, DateConverter, String, OneOf
+from formencode.validators import Int, DateConverter, String, OneOf, Number
 from formencode.variabledecode import NestedVariables
 
 #from formencode import variabledecode
@@ -30,40 +30,34 @@ log = logging.getLogger(__name__)
 
 from sqlalchemy import func
 
-class ChlorineValidator(FancyValidator):
-    def _to_python(self, value, state):
-        try:
-            ph = float(value or 0)
-        except:
-            raise Invalid(_(u'Intrdoduce un valor valido'), value, state)
-            return value
-
-        ph = float(value or 0)
-        if ph <0 or ph >2:
-            raise Invalid(_(u'Debe de estar entre 0 y 2'), value, state)
-            return value
-
-class PhValidator(FancyValidator):
-    def _to_python(self, value, state):
-        try:
-            ph = float(value or 0)
-        except:
-            raise Invalid(_(u'Intrdoduce un valor valido'), value, state)
-            return value
-
-        ph = float(value or 0)
-        if ph <0 or ph >14:
-            raise Invalid(_(u'Debe de estar entre 0 y 14'), value, state)
-            return value
-
 class PlaceSchema(BaseSchema):
     function='NewPlaceSchema'
     log.debug(function)
 
     name=String(not_empty=True)
     description=String(not_empty=True)
-    ph = PhValidator(not_empty=True)
-    chlorine = ChlorineValidator(not_empty=True)
+    ph = Number(
+            not_empty=True,
+            min=0.9, max=14.1,
+            messages={
+                'tooHigh' : _(u'El valor del ph no debe superar 14'),
+                'tooLow'  : _(u'El valor del ph no debe ser inferior 1')
+                }
+            )
+    chlorine = Number(
+            not_empty=True,
+            min=0, max=2.1,
+            messages={
+                'tooHigh' : _(u'El valor del ph no debe superar 2'),
+                'tooLow'  : _(u'El valor del ph no debe ser inferior a 0')
+                }
+            )
+    latitude = Number(
+            not_empty=True,
+            messages={
+                'empty':_(u'Debe seleccionar una posición en el mapa')
+                }
+            )
 
 class NewPlaceSchema(BaseSchema):
     function='NewPlaceSchema'
