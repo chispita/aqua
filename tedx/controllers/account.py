@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import shutil
 import Image
+import formencode
+from formencode import validators, Invalid #, schema
 
 from functions import *
 from webhelpers import paginate
@@ -8,10 +10,50 @@ from webhelpers import paginate
 from tedx.lib.base import *
 from pylons.i18n import _
 
+from pylons.decorators.rest import dispatch_on
+from pylons.decorators import validate
+
+from formencode.validators import Invalid, FancyValidator
+from formencode.validators import Int, DateConverter, String, OneOf
+from formencode.variabledecode import NestedVariables
+from formencode import htmlfill
+
+from tedx.lib.validators import BaseSchema
+
 import logging
 log = logging.getLogger(__name__)
 
 from sqlalchemy import func
+class ForgottenPasswordSchema(BaseSchema):
+    email = validators.Email(not_empty=True)
+
+class AuthPersonValidator(validators.FancyValidator):
+    def validate_python(self, values, state):
+        person =  meta.Session.query(User).filter_by(email=values['email']).first()
+        error_message = None
+        if person is None:
+            error_dict = {'email': _(u'No existe un usuario registrado con este correo.')}
+            raise Invalid(message, values, state, error_dict=error_dict)
+
+        #elif not person.deleted_on:
+        #    error_message = "You haven't yet confirmed your registration, please refer to your email for instructions on how to do so."
+
+        if person.password != hashlib.md5(values['password']).hexdigest():
+            error_dict = {'password': _(u'La contraseña no es correcta, intente recuperarla.')}
+            raise Invalid(message, values, state, error_dict=error_dict)
+
+class LoginPersonSchema(BaseSchema):
+    function = 'LoginPersonSchema'
+    log.debug(function)
+    email = validators.Email(not_empty=True)
+    password = validators.String(not_empty=True)
+    chained_validators = [AuthPersonValidator()]
+
+class LoginSchema(BaseSchema):
+    function = 'LoginSchema'
+    log.debug(function)
+    person = LoginPersonSchema()
+    pre_validators = [NestedVariables]
 
 class AccountController(BaseController):
 
@@ -29,6 +71,36 @@ class AccountController(BaseController):
 
         c.AllPlaces = getAllPlaces()
         return render('/accounts/index.mako')
+
+    @dispatch_on(POST="_signin")
+    def signin(self):
+        return render('/accounts/signin.mako')
+
+    @validate(schema=LoginSchema(), form='signin', post_only=True, on_get=False, variable_decode=True)
+    def _signin(self):
+
+        email = self.prm('person.email')
+
+        person =  meta.Session.query(User).filter_by(email=email).first()
+
+        session['user_id'] = person.id
+        session.save()
+
+        h.flash( _(u'Bienvenido ')+ '' + person.nickname)
+        redirect(h.url_for(controller='home'))
+
+
+    @dispatch_on(POST="_forgotten_password")
+    def forgotten_password(self):
+        return render('/accounts/forgotten_password.mako')
+
+    @validate(schema=ForgottenPasswordSchema(), form='forgotten_password', post_only=True, on_get=True, variable_decode=True)
+    def _forgotten_password(self):
+
+        h.flash( _(u'Se ha enviado un correo electrónico con la nueva contraseña'))
+        redirect(h.url_for(controller='home'))
+
+
 
     def public_profile(self, nickname):
         ''' Get public profile of the user '''

@@ -27,7 +27,6 @@ log = logging.getLogger(__name__)
 
 from sqlalchemy import func
 
-
 class CommentSchema(BaseSchema):
     function='Commentchema'
     log.debug(function)
@@ -107,7 +106,7 @@ class CommentsController(BaseController):
         form = render('/comments/new.mako')
         return htmlfill.render(form, defaults)
 
-    @validate(schema=NewCommentSchema(), form='new', post_only=False, on_get=True, variable_decode=True)
+    @validate(schema=NewCommentSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
         function = '_new'
         log.debug(function)
@@ -117,10 +116,18 @@ class CommentsController(BaseController):
         title = self.prm('comment.title')
         content = self.prm('comment.content')
 
+        image = request.params.get('comment.image')
+
+        log.debug('%s image:%s' % (function, str(image)))
+
         place  = meta.Session.query(Place).filter_by(id=place_id).first()
 
         # Grabar todos los datos
         db_comment = place.add_comment(c.user, content, title)
+
+        # Grabacion de la imagen
+        if (image != None and image != ""):
+            UploadFile( db_comment, image)
 
         h.flash(_(u'El comentario se ha grabado correctamente'))
         redirect(h.url_for(controller='places', action='detail', id=place_id))
