@@ -134,13 +134,10 @@ class PlacesController(BaseController):
         form = render('/places/new.mako')
         return htmlfill.render(form, defaults)
 
-    @validate(schema=NewPlaceSchema(), form='new', post_only=False, on_get=True, variable_decode=True)
+    @validate(schema=NewPlaceSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
         function = '_new'
         log.debug(function)
-
-        #results = self.form_result['place']
-        #log.debug('%s - results:%s' % (function, results))
 
         # Recuperamos los datos
         title = self.prm('place.name')
@@ -153,32 +150,13 @@ class PlacesController(BaseController):
         longitude = float(self.prm('place.longitude') or 0)
 
         image_link = request.params.get('place.image')
-        log.debug('%s - image-link:%s' % ( function, str(image_link)))
-
-        myfile = self.prm('place.image')
-
-        #log.debug('%s - image-filename:%s' % ( function,myfile.filename))
-        log.debug('%s - image-file:%s' % ( function, myfile.file))
-        log.debug('%s - image-value:%s' % ( function, str(myfile.value)))
-
-
-
-        return "Successfully uploaded: %s, size: %i, description: %s" % (
-            myfile.filename,
-            len(myfile.value),
-            'jeje'
-        )
 
         # Grabar todos los datos
         place = c.user.add_place(latitude, longitude, None, None, title)
         db_comment = place.add_comment(c.user, content, title)
         db_water = place.add_water(ph, chlorine)
 
-        myfile = request.POST['place.file']
-
-
-        '''
-        # Falta de grabar la imagen
+        # Grabacion de la imagen
         if (image_link != None and image_link != ""):
             name = image_link.filename
 
@@ -243,7 +221,6 @@ class PlacesController(BaseController):
 
             meta.Session.add(db_file)
             meta.Session.commit()
-        '''
 
         h.flash(_(u'La muestra se ha grabado correctamente'))
         redirect(h.url_for(controller='home', action='index'))
