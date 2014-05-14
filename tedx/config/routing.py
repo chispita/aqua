@@ -29,6 +29,12 @@ def make_map(config):
 
     map.connect('/',                            controller='home',  action='index')
 
+    map.connect('/register_new',                controller='register', action='new')
+    map.connect('/signin',                      controller='account', action='signin')
+    map.connect('/signout',                     controller='account', action='signout')
+    map.connect('/forgotten_password',          controller='account', action='forgotten_password')
+
+
     # Links to Account Public Profiles
     map.connect('/account/{nickname}',          controller='account', action='public_profile')
     map.connect('/account/{nickname}/comments/',controller='account', action='comments')
