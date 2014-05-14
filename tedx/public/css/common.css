@@ -10,6 +10,22 @@ ol, ul 					    { list-style: none; }
     -khtml-opacity: 0.5;
     opacity: 0.5;
 }
+#container{
+    display: table;
+}
+#row{
+    display: table-row;
+}
+#span3{
+    display: table-cell;
+    width: 330px;
+}
+
+#span4{
+    display: table-cell;
+    width: 300px;
+}
+
 /*----------------------- ETIQUETAS A P IMG -----------------------*/
 
 a.estiloBlancoStrong {
@@ -926,7 +942,7 @@ a.estiloBlanco {
 #barraFooter {
     background: #87b8f4;
     width: 980px; 
-    height: 35px; 
+    height: 35px;
     float:left;
     margin-bottom:15px;
     font-family: "Glegoo";
@@ -1512,5 +1528,4 @@ a.estiloBlanco {
 .placeholder {
     color: #aaa;
 }
-
 
