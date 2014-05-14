@@ -62,19 +62,7 @@
 </%def>
 
 <%def name="content()">
-    <div class="sidebarIzq">
-        <%include file="information/teachers.mako"/>
-    </div>
-
-    <div class="content_center">
-        <h3>${_(u'Ultimas muestras enviadas')}</h3>
-
-        ${functions.list_places(c.LastPlaces)}
-
-        ${c.LastPlaces.pager('Page $page: $link_previous $link_next ~4~')}
-    </div>
-                                                                    
-    <div class="sidebarDer">
-        <%include file="information/datos.mako"/>
-    </div>
+    <h3>${_(u'Ultimas muestras enviadas')}</h3>
+    ${functions.list_places(c.LastPlaces)}
+    ${c.LastPlaces.pager('Page $page: $link_previous $link_next ~4~')}
 </%def>

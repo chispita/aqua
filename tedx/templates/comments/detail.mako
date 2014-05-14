@@ -27,16 +27,6 @@
 
 
 <%def name="content()">
-    <div id="loading_div" style="padding-top:20px; display: none">
-        ${_(u'sending_processing_please_wait')}
-    </div>
-
-    <div id="new_comment_div" style="padding-top: 10px;">
-    <div class="sidebarIzq">
-        <%include file="../information/teachers.mako"/>
-    </div>
-
-    <div class="content_center">
         <h3>${_(u'Comentarios')}</h>
 
         %if not c.user:
@@ -44,11 +34,4 @@
         %else:
 
         %endif
-    </div>
-
-    <div class="sidebarDer">
-        <%include file="../information/datos.mako"/>
-    </div>
-    
-    <div id="attachment_modal" title="Attachment" style="z-index: 9999;"></div>
 </%def>

@@ -30,15 +30,5 @@
 </%def>
 
 <%def name="content()">
-    <div class="sidebarIzq">
-        <%include file="../information/teachers.mako"/>
-    </div>
-                                                                  
-    <div class="content_center">
-        <h3>${_(u'Muestra de Agua Analizadas')}:</h3>
-    </div>
-                                                                    
-    <div class="sidebarDer">
-        <%include file="../information/datos.mako"/>
-    </div>
+    <h3>${_(u'Muestra de Agua Analizadas')}:</h3>
 </%def>

@@ -35,21 +35,8 @@
 </%def>  
                 
 <%def name="content()">
-    <div class="sidebarIzq">
-        <%include file="../information/teachers.mako"/>
-    </div>
-                                                                  
-    <div class="content_center">
-        <h3>${_(u'Comentarios Registrados')}</h3>
-
-        ${functions.list_comments(c.Comments)}
-
-        ${c.Comments.pager('Page $page: $link_previous $link_next ~4~')}
-
-    </div>
-                                                                    
-    <div class="sidebarDer">
-        <%include file="../information/datos.mako"/>
-    </div>
+    <h3>${_(u'Comentarios Registrados')}</h3>
+    ${functions.list_comments(c.Comments)}
+    ${c.Comments.pager('Page $page: $link_previous $link_next ~4~')}
 </%def>
 

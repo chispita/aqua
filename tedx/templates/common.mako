@@ -111,7 +111,20 @@
 
         <div style="clear: both;"></div>
 
-        <div id="content">${next.content()}</div>
+        <div class="sidebarIzq">
+            <%include file="information/teachers.mako"/>
+        </div>
+
+        <div class="content_center">
+            <div id="content">${next.content()}</div>        
+        </div>
+                                                                    
+        <div class="sidebarDer">
+            <%include file="common/information.mako"/>
+        </div>
+
+        ##<div id="contentIzd">${next.contentIzd()}</div>        
+
         <div class="clear"></div>
 
         <%include file="common/footer.mako"/>

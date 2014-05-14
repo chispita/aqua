@@ -7,6 +7,4 @@ def GetDrop(ph, chlorine):
         return 'drop_blue'
 
 
-
-
 print GetDrop(7, 0.9)

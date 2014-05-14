@@ -53,19 +53,9 @@
 </%def>
 
 <%def name="content()">
-    <div class="sidebarIzq">
-        <%include file="../information/teachers.mako"/>
-    </div>
-
     <a name="muestras">    
-    <div class="content_center">
         <h3>${_(u'Comentarios realizados')} ${_(u'por')}: ${c.nickname}</h3>
         ${functions.list_comments(c.Comments)}
         ${c.Comments.pager('Page $page: $link_previous $link_next ~4~')}
-    </div>
     </a>
-                                                                    
-    <div class="sidebarDer">
-        <%include file="../information/datos.mako"/>
-    </div>
 </%def>

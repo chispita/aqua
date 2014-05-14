@@ -66,75 +66,17 @@
 
 
 <%def name="content()">
-    <div id="loading_div" style="padding-top:20px; display: none">
-        ${_(u'sending_processing_please_wait')}
-    </div>
-
-    <div id="new_comment_div" style="padding-top: 10px;">
-    <div class="sidebarIzq">
-        <%include file="../information/teachers.mako"/>
-    </div>
-
     <% counter = 0 %>
-    <div class="content_center">
-        <h3>${_(u'Comentarios')}</h>
+    <h3>${_(u'Comentarios')}</h>
 
-            %if not c.user:
-                ${_(u'login_first_to_comment')} <!-- Para hacer un comentario hace falta hacer login primero -->
-            %else:
+    %if not c.user:
+        ${_(u'login_first_to_comment')} <!-- Para hacer un comentario hace falta hacer login primero -->
+    %else:
+        <div class="centerize">
+            <a href="/places/${c.place.id}/comments/new" class="accion bordeSoft" id="new-instant-btnSend">${_(u'Añadir comentario')}</a>
+        </div>
+    %endif
 
-                <div class="centerize">
-                    <a href="/places/${c.place.id}/comments/new" class="accion bordeSoft" id="new-instant-btnSend">${_(u'Añadir comentario')}</a>
-                </div>
-            %endif
-
-            ${functions.list_comments(c.ListComments)}
-
-            ${c.ListComments.pager('Page $page: $link_previous $link_next ~4~')}
-    </div>
-
-            ##% for comment in c.place.comments:
-            ##<% counter += 1 %> 
-            ##% if counter >1:
-            ##    <div id="muestra-item">
-            ##        <div id="description">
-            ##            <h4>${comment.title}</h4>
-            ##            <p>${_('Usuario')}:${comment.user.nickname}</p>
-            ##            <p>${_('Enviado')}:${comment.last_update}</p>
-            ##            <p>${_('Comentario')}:${comment.content}</p>
-            ##            ##<p>${comment.positive_scorings}</p>
-            ##         </div>
-            ##    </div>
-            ##% endif
-            ##% endfor
-
-        
-        ##<div id="add_comment">
-        ##    <h3><br>${_(u'Añadir comentario')}</h3>
-        ##    %if not c.user:
-        ##    ${_(u'login_first_to_comment')} <!-- Para hacer un comentario hace falta hacer login primero --i
-                <!--  Faltaria un enlace al login -->
-                ##    %else:
-                ##<div id="manchaIzda">
-
-                <!-- Cambiarlo a la nueva forma de crear datos' -->
-                ##            <div class="colDetStreetr">
-
-                ##    ${h.form(h.url_for()) }
-                ##    <%include file="../comments/form.mako" />
-                ##    ${ h.submit('submit', _(u'Enviar')) }
-                ##    ${ h.end_form() }
-                    ##   </div>
-                    ##</div>
-                    ##  %endif            
-                    ##</div>
-                    ##%endif
-                    ##</div>
-                    ##</div>
-
-    <div class="sidebarDer">
-        <%include file="../information/datos.mako"/>
-    </div>
-    
-    <div id="attachment_modal" title="Attachment" style="z-index: 9999;"></div>
+    ${functions.list_comments(c.ListComments)}
+    ${c.ListComments.pager('Page $page: $link_previous $link_next ~4~')}
 </%def>

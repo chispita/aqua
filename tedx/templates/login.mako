@@ -45,19 +45,7 @@
 
 
 <%def name="content()">
-    <div class="sidebarIzq">
-        <%include file="information/teachers.mako"/>
-    </div>
-
-
-    <div class="content_center">
-        <h3>${_(u'Muestra de Agua Analizadas')}</h3>
-        <div id="list"></div>
-            <div id="srToolsDown"></div>
-        </div>
-                                                                    
-        <div class="sidebarDer">
-            <%include file="information/datos.mako"/>
-        </div>
-    </div>
+    <h3>${_(u'Muestra de Agua Analizadas')}</h3>
+    <div id="list"></div>
+    <div id="srToolsDown"></div>
 </%def>

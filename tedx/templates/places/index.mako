@@ -61,19 +61,9 @@
 </%def>
 
 <%def name="content()">
-    <div class="sidebarIzq">
-        <%include file="../information/teachers.mako"/>
-    </div>
+    <h3>${_(u'Mestras enviadas')}</h3>
+    ${c.AllPlaces}
+    ${functions.list_places(c.ListPlaces)}
 
-    <div class="content_center">
-        <h3>${_(u'Mestras enviadas')}</h3>
-        ${c.AllPlaces}
-        ${functions.list_places(c.ListPlaces)}
-
-        ${c.ListPlaces.pager('Page $page: $link_previous $link_next ~4~')}
-    </div>
-                                                                    
-    <div class="sidebarDer">
-        <%include file="../information/datos.mako"/>
-    </div>
+    ${c.ListPlaces.pager('Page $page: $link_previous $link_next ~4~')}
 </%def>
