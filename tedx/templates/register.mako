@@ -13,6 +13,7 @@
         <div align="right"><a href="/" class="close-icon"></a></div>
 
         <h2>${_(u'Formulario de Registro')}</h2>
+        <h3>old</h3>
         <form id="new-session-form" method="post" action="/register/save" >
             <label for="new-session-txtName">${_(u'Nombre')}:<br />
                 <input type="text"  name="nickname" maxlength="32" placeholder="${_(u'nombre')}"> </input>

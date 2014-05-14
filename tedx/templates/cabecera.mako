@@ -10,8 +10,8 @@
                 ${_(u'Hola')} <a href="/account/profile/">${c.user.nickname}</a>!
                 <a href="javascript:logout();" class="logolink" >${_(u'Salir')}</a>
             %else:
-                <a href="/login" class="logolink">${_(u'Entrar')}</a> |
-                <a href="/register" class="logolink">${_(u'Registrarse')}</a>
+                <a href="/signin" class="logolink">${_(u'Entrar')}</a> |
+                <a href="/register_new" class="logolink">${_(u'Registrarse')}</a>
             %endif:
             &nbsp;
             <a href="javascript: change_language('es')"><img src="/images/es.png"></a>

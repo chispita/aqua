@@ -2,11 +2,11 @@
     ${ h.hidden('place.id', size=40) }
 %endif
 
-${ h.hidden('place.latitude', hide=True) }</p>
-${ h.hidden('place.longitude', hide=True)}</p>
+${ h.hidden('place.latitude') }</p>
+${ h.hidden('place.longitude')}</p>
 
-<label for="place.name">${_(u'Nombre')}</label></p>                                                 
-<p class="entries">${ h.text('place.name', size=40) }</p>    
+<p><label for="place.name">${_(u'Nombre')}</label>
+    ${ h.text('place.name', size=40) }
          
 <p><label for="ph">${_(u'pH')}</label><br>
     ${ h.text('place.ph', size=3) }</p>
@@ -20,7 +20,5 @@ ${ h.hidden('place.longitude', hide=True)}</p>
 
 <p><label for="imagen">${_(u'Imagen')}:</label><br>
     ${ h.file('place.image', size=50)}
-<p>
-
-${ h.hidden('place.longitude', hide=True)}</p>
+    <p>
 

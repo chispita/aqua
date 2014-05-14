@@ -54,7 +54,7 @@
 
             <br><br>
             <div class="centerize">
-                <a href='/login' class='accion right bordeSoft' style='text-transform: uppercase:' id='grande'>
+                <a href='/signin' class='accion right bordeSoft' style='text-transform: uppercase:' id='grande'>
                 ${_(u'Entrar')}</a>
             </div>
         </div>

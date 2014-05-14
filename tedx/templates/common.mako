@@ -114,20 +114,12 @@
         <div id="content">${next.content()}</div>
         <div class="clear"></div>
 
-        <div id="barraFooter">
-            <div class="footer-element centerize">
-                <a href="javascript: open_team_dialog();">${_(u'Equipo')}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                <a href="javascript: open_about_dialog();">${_(u'Acerca de')}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                <a href="javascript: open_disclaimer_dialog();">${_(u'Responsabilidades')}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                <a href="javascript: send_contact_message();">${_(u'Contacto')}</a>
-            </div>
-        </div>
+        <%include file="common/footer.mako"/>
         <div class="clear"></div>
-     </div>
+        <%include file="common/logos.mako"/>
+
+
+    </div>
      <iframe style="display:none;" id="file_download_iframe" name="file_download_iframe"></iframe>
-     <%include file="information/contact.mako"/>
-     <%include file="information/team.mako"/>
-     <%include file="information/about.mako"/>
-     <%include file="information/moreinformation.mako"/>
     </body>
 </html>
