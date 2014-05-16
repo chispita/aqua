@@ -27,9 +27,11 @@ place_table.append_column(sa.Column("country", sa.types.String(128)))
 place_table.append_column(sa.Column("last_update", sa.types.DateTime))
 place_table.append_column(sa.Column("ph", sa.types.Numeric(2,1)))
 place_table.append_column(sa.Column("chlorine", sa.types.Numeric(3,1)))
+place_table.append_column(sa.Column("address", sa.types.String(256)))
+place_table.append_column(sa.Column("postalcode", sa.types.String(50)))
 
 class Place(object):
-    def __init__(self, user, latitude, longitude, city, country, name=None):
+    def __init__(self, user, latitude, longitude, city, country, name=None, address=None, postalcode=None):
         self.id = generate_id(self)
         while meta.Session.query(Place).filter_by(id = self.id).first() != None:
             self.id = generate_id(self)
@@ -37,6 +39,8 @@ class Place(object):
         self.latitude = round(float(latitude),6)
         self.longitude = round(float(longitude),6)
         self.name = name
+        self.address = address
+        self.postalcode=postalcode
         self.visits = 0
         self.city = city
         if country:
