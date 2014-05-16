@@ -4,16 +4,16 @@
 <ul>
     <li><strong>${_(u'Recursos')}...</strong></li>
     <li>Acerca de ...</li>
-    <li>Recurso #1</li>
-    <li>Recurso #2</li>
-    <li>Recurso #3</li>
-    <li>Recurso #4</li>
+    <li><a href="/information">${_(u'Information')}</a></li>
+    <li><a href="/information/information2">${_(u'Mecanismo de Acción')}</a></li>
+    <li><a href="/information/analysis">${_(u'Analisis')}</a></li>
 </ul>
 
 <ul>
     <li><strong>${ _(u'Responsabilidades')}</strong></li>
-    <li>${_(u'Declaración')}</li>
-    <li>${_(u'Equipo')}</li>
+    ##<li>${_(u'Declaración')}</li>
+    <li><a href="/information/team">${_(u'Equipo')}</a></li>
+</ul>
 </ul>
 
 <ul>

@@ -9,7 +9,5 @@
     ${ h.file('comment.image', size=50) }
 <p>
 
-Id${h.text('comment.id')}
-Place Id${h.text('comment.place_id')}
-
-
+${h.hidden('comment.id')}
+${h.hidden('comment.place_id')}

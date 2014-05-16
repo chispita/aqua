@@ -28,11 +28,18 @@
                    
         <p class="label"><label for="person.password">${_(u'Contraseña')}</label></p>
         <p class="entries">${ h.password('person.password') }</p>
-                             
-        <p class="submit">${ h.submit('Sign in', 'Entrar', class_='accion bordeSoft') }</p>
+
+        <div class="centerize">
+            <p class="submit">${ h.submit('Sign in', 'Entrar', class_='accion bordeSoft') }</p>
+        </div>
         ${ h.end_form() }
 
-        <a href="/forgotten_password" class="logolink">${_(u'Recuperar la contraseña')}</a>
+        <br><br>
+        <p>${_(u'Si no recuerdas tu contraseña puede solictar una nueva')}</p><br>
+
+        <div class="centerize">
+            <a href="/forgotten_password" class="accion bordeSoft">${_(u'Recuperar la contraseña')}</a>
+        </div>
 
     </div>
 </%def>

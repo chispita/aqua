@@ -7,7 +7,7 @@
     <script type="text/javascript">
         function map_load() {
             // Acercamos el zoom lo mas cerca posible
-            % for place in c.AllPlaces :
+            % for place in c.MapPlaces :
                 html =  '<table>' +
                     '<tr><td><a class="cloud_strong">${_(u'lugar')}:</a></td>' +
                     '<td><a class="estiloAzul" href="/places/${place.id}">${place.name}</a>'+

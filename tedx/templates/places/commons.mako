@@ -11,55 +11,62 @@
             <div class="imagen">
                 <img src="/images/${functions.GetDrop(c.place.ph, place.chlorine)}.png"/></a>
             </div>
-
             <h2>${place.name}</h2>
 
             <h3>${_(u'Descripción')}</h3>
 
             <div class="dataVision">
-                <label>${_(u'Autor')}:</label>
-                <a href="/account/${place.user.nickname}">${place.user.nickname}</a>
+                <label>${_(u'Autor')}:
+                <strong><a href="/account/${place.user.nickname}">${place.user.nickname}</a></strong>
+                </label>
+             </div>
+
+            <div class="dataVision">
+                <label>${_(u'Creado')}:
+                    <strong>${place.created_on}</strong>
+                </label>
             </div>
 
             <div class="dataVision">
-                <label>${_(u'Creado')}:</label>
-                ${place.created_on}
+                <label>${_(u'Descripción')}: 
+                    <strong>${place.comments[0].content}</strong>
+                </label>
             </div>
 
+            <h3>${_(u'Dirección')}</h3>
             <div class="dataVision">
-                <label>${_(u'Descripción')}:</label>
-                ${place.comments[0].content}
+                <label>${place.address}</label><br>
+                <label>${place.postalcode} ${place.city}</label>
             </div>
+
 
             <h3>${_(u'Medidas de la muestra')}</h3>
             <div class="dataVision">
-                <label>${_(u'pH')}:</>
-                    ${place.ph}
-            </div>
-
-            <div class="dataVision">
-                <label>${_(u'Cloro')}:</label>
-                ${place.chlorine}
+                <label>${_(u'pH')}:     <strong>${place.ph}</strong></label>
+                <label>${_(u'Cloro')}:  <strong>${place.chlorine}</strong></label>
             </div>
 
             <h3>${_(u'Actividad')}</h3>
             <div class="dataVision">
-                <label>${_(u'Comentarios')}:</label>
+                <label>${_(u'Comentarios')}:
                     <% comments = len(place.comments)-1 %>
-                %if comments >0:
-                    ${comments}
-                %endif
+                    <strong>
+                    %if comments >0:
+                        ${comments}
+                    %else:
+                        0
+                    %endif
+                    </strong>
+                |${_(u'Visitas')}:
+                <strong>${place.visits}</strong>
+                </label>
             </div>
 
-            <div class="dataVision">
-                <label>${_(u'Visitas')}:</label>
-                ${place.visits}
-            </div>
 
-            <div class="dataVision">
-                <label>${_(u'Puntuación')}:</label>
-                Falta!!!
-            </div>
+                ##<div class="dataVision">
+                ##<label>${_(u'Puntuación')}:</label>
+                ##Falta!!!
+                ##</div>
 
             % if len(place.comments[0].files)>0:
                 <h3>${_(u'Imágenes')}</h3>
