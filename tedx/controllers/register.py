@@ -63,7 +63,7 @@ class UserSchema(BaseSchema):
     name = String(not_empty=True)
     email = Email(not_empty=True)
     password = String(not_empty=True)
-    password = MinLength(8)
+    password = MinLength(6)
     password2 = String(not_empty=True)
 
     chained_validators =  [
