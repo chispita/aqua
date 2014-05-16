@@ -26,30 +26,32 @@
             <h2>${user.nickname}</h2>
             <h3>${_(u'Datos')}</h3>
             <div class="dataVision">
-                <label>${_(u'Descripción')}:</>
-                ${user.description}
+                <label>${_(u'Descripción')}
+                    <strong>${user.description}</strong>
+                </label>
             </div>
 
             <div class="dataVision">
-                <label>${_(u'Fecha Creación')}:</>
-                ${user.created_on}
+                <label>${_(u'Fecha Creación')}:                    
+                    <strong>${user.created_on}</strong>
+                </label>
             </div>
 
             <div class="dataVision">
-                <label>${_(u'Última Actividad')}:</>
-                ${user.last_activity}
+                <label>${_(u'Última Actividad')}:
+                    <strong>${user.last_activity}</strong>
+                </label>
             </div>
 
             <h3>${_(u'Actividad')}</h3>
             <div class="dataVision">
                 <a href="#muestras">
-                    <label>${_(u'Muestras')}:</>
-                    ${len(user.places)}
-                </a>    
-            </div>
+                    <label>${_(u'Muestras')}:
+                        <strong>${len(user.places)}</strong>
+                    </label>
+                    </a>    
 
-            <div class="dataVision">
-                ${ h.link_to( 
+                $ h.link_to( 
                     _(u'Comentarios') + ':' + str(len(user.comments)),
                     h.url_for(controller='account', 
                     action='comments', 
@@ -69,15 +71,16 @@
                     nickname=user.nickname)) }
             </div>
             <br><br>
-            %if c.user:
-                %if user.nickname == c.user.nickname:
 
-                    <div class="centerize">
-                        <a href='/account/settings/' class='accion right bordeSoft' style='text-transform: uppercase:' id='grande'>
-                        ${_(u'Editar')}</a>
-                    </div>
-                %endif
-            %endif
+            ##%if c.user:
+            ##    %if user.nickname == c.user.nickname:
+
+            ##        <div class="centerize">
+            ####            <a href='/account/settings/' class='accion right bordeSoft' style='text-transform: uppercase:' id='grande'>
+            ##            ${_(u'Editar')}</a>
+            ##        </div>
+            ##    %endif
+            ##%endif
 
         %endif
 </%def>
