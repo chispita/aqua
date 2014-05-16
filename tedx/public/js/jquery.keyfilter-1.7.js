@@ -21,6 +21,7 @@
    * mask-pnum:     /[\d\.]/
    * mask-money     /[\d\.\s,]/
    * mask-num:      /[\d\-\.]/
+   * mask-numdecimalcoma: /^[0-9]+((\.|,)[0-9][0-9]?)?$/ 
    * mask-hex:      /[0-9a-f]/i
    * mask-email:    /[a-z0-9_\.\-@]/i
    * mask-alpha:    /[a-z_]/i
@@ -35,6 +36,8 @@
 		pnum:     /[\d\.]/,
 		money:    /[\d\.\s,]/,
 		num:      /[\d\-\.]/,
+	    //numdecimalcoma:      /[^0-9.]/,
+        numdecimalcoma: /[0-9,]/i,
 		hex:      /[0-9a-f]/i,
 		email:    /[a-z0-9_\.\-@]/i,
 		alpha:    /[a-z_]/i,
