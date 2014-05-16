@@ -3,10 +3,11 @@
 <h3>${ _(u'Información')}</strong></h3>
 <ul>
     <li><strong>${_(u'Recursos')}...</strong></li>
-    <li>Acerca de ...</li>
     <li><a href="/information">${_(u'Information')}</a></li>
     <li><a href="/information/information2">${_(u'Mecanismo de Acción')}</a></li>
     <li><a href="/information/analysis">${_(u'Analisis')}</a></li>
+    <li><a href="/information/stabilizer">${_(u'Potablización')}</a></li>
+    <li><a href="/information/process">${_(u'Como realizar la toma')}</a></li>
 </ul>
 
 <ul>

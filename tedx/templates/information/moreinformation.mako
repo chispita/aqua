@@ -1,6 +1,7 @@
 ## more information ##
-<%inherit file="base_information.mako"/Map<%def name="title()">
-    ${_(u'Análisi del Agua')}
+<%inherit file="base_information.mako"/>
+<%def name="title()">
+    ${_(u'Análisis del Agua')}
 </%def>
 
 <%def name="contain()">
@@ -19,6 +20,11 @@
     ${_(u'Sería lógico suponer que un aumento en la concentración de cloro disponible en una solución traería un aumento correspondiente en la actividad biocida. Esta suposición puede ser verdad, mientras que otros factores, tales como el pH, la temperatura y el contenido de materia orgánica se mantengan constantes.')}
     </br></br>
     ${_(u'El poder biocida del cloro depende mucho de su no disociación en solución acuosa que está directamente relacionada al pH. Un aumento en el pH diminuye sustancialmente la actividad biocida del cloro, y una disminución del pH aumenta esa actividad en la misma proporción. Desde principios del siglo XX, se demostró esta dependencia del pH en la formación del ácido hipocloroso, forma más eficaz de la actividad biocida delos compuestos clorados, y por consiguiente, en la eficacia del cloro.')}
-    </a>
+</a>
+
+    <div class="derecha">
+        <a href="/information/information2" class='accion bordeSoft' >${_(u'Anterior')}</a>
+        <a href="/information/stabilizer" class='accion bordeSoft' >${_(u'Siguiente')}</a>
+    </div>
 </%def>
 

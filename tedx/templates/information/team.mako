@@ -18,7 +18,7 @@
         </br></br>
         <b>${_(u'Eduardo Lostal Lanza')}</b> ${_(u'es desarrollador de aplicaciones web y móvil para proyectos de ciencia ciudadana. Presente en distintos      congresos relacionados con el ámbito de la ciencia ciudadana. Director de proyectos fin de carrera relacionados con ciencia ciudadana')}.
         </br></br>
-        <b>${_(u'M.Carmen Ibáñez Hernández</b> es encargada de la sección de divulgación y difusión dentro de la fundación así como organizadora de    eventos de ciencia ciudadana, cuenta con 5 años de experiencia desarrollando actividades con la ciudadanía')}.
+        <b>${_(u'M.Carmen Ibáñez Hernández')}</b> ${_(u'es encargada de la sección de divulgación y difusión dentro de la fundación así como organizadora de    eventos de ciencia ciudadana, cuenta con 5 años de experiencia desarrollando actividades con la ciudadanía')}.
    <br />
    </a>
 

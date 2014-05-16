@@ -36,3 +36,13 @@ class InformationController(BaseController):
     def team(self):
         self._base()
         return render('/information/team.mako')
+
+    def process(self):
+        self._base()
+        return render('/information/process.mako')
+
+    def stabilizer(self):
+        self._base()
+        return render('/information/stabilizer.mako')
+
+

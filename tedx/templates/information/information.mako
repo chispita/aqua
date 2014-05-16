@@ -14,6 +14,10 @@
         <a class="text">
         ${ _(u'La finalidad principal de la cloración es destruir los microorganismos patógenos por la acción desinfectante del cloro, aunque también son importantes otros efectos secundarios como la oxidación del hierro, el manganeso y los sulfuros de hidrógeno, así como la destrucción de algunos compuestos que podrían aportar olores y sabores al agua')}
         </a>
-        </br></br>
-        <a href="/information/information2">${_(u'Mas Información')}</a>
+        </br></br></br></br>
+        <div class="derecha">
+            <a href="/information/information2" class='accion bordeSoft' >${_(u'Siguiente')}</a>
+        </div>
+
+
 </%def>

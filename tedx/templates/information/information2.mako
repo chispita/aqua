@@ -31,5 +31,10 @@
         ${_(u'Nivel de cloro adecuado en agua de consumo humano')}
         ${_(u'Visto esto ya se puede interpretar que en todo sistema de desinfección basado en cloro / hipoclorito es imprescindible disponer de un control sobre el valor del pH a fin de garantizar su eficacia desinfectante')}.
         ${_(u'Para calificar un agua como APTA o NO APTA para el consumo humando se deben cumplir todos los requisitos mínimos, parámetros indicadores (Real Decreto 140/2003), entre ellos el nivel de cloro y de pH, que son los incluidos en MapClor')}.
-        </a>
+    </a>
+
+    <div class="derecha">
+        <a href="/information" class='accion bordeSoft' >${_(u'Anterior')}</a>
+        <a href="/information/analysis" class='accion bordeSoft' >${_(u'Siguiente')}</a>
+    </div>
 </%def>
