@@ -9,11 +9,9 @@
             % if len(msgs) is 1:
                 <p>${ msgs[0] | n }</p>
             % else:
-                <ul>
                 % for msg in msgs:
-                    <li>${ msg | n }</li>                                                                           
+                    ${ msg | n }<br>
                 % endfor
-                </ul>
             % endif
             </a>
         % endfor
