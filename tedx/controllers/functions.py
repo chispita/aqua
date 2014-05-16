@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 import os
 
 from tedx.lib.base import *
@@ -14,23 +15,39 @@ log = logging.getLogger(__name__)
 
 from sqlalchemy import and_
 
-'''
-def get_drop_status(ph, chlorine):
-    if ph >= 6:
-        return 1
-    elif ph >=4:
-        return 2
-    else:
-        return 3
+from geopy import geocoders
+from pygeocoder import Geocoder
 
-def get_drop_image(value):
-    if value==1:
-        return  '/images/drop_blue.png'
-    elif value==2:
-        return  '/images/drop_green.png'
-    else:
-        return  '/images/drop_brown.png'
-'''
+
+def getLocation( latitude, longitude):
+    ''' Get data address data from latitude and longitude '''
+    function = 'getLocation'
+    address = ''
+    city = ''
+    postalcode = ''
+    country = ''
+    g = geocoders.GoogleV3()
+    log.debug(function)
+
+    try:
+        point = '%.6f, %6f' % (latitude, longitude)
+
+        positions = g.reverse( point )
+        if positions:
+            data, (latitude, longitude)  = positions[0]
+            results = Geocoder.geocode(data)
+
+            address = results[0].route
+            if results[0].street_number:
+                address = address + ',' + results[0].street_number
+            country = results[0].country
+            city =  results[0].city
+            postalcode = results[0].postal_code
+    except:
+        pass
+
+    return address, city, postalcode, country
+
 
 ''' Users '''
 def getAllUsers():
@@ -63,7 +80,6 @@ def getAllComments():
 def getCommentsPlace(id):
     ''' Get Comments in a place '''
     return meta.Session.query(Comment).filter(and_(Comment.place_id==id,Comment.deleted_on==None)).order_by(desc(Comment.last_update))
-
 
 
 def UploadFile(db_comment, attachment):

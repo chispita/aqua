@@ -12,6 +12,7 @@ from webhelpers import paginate
 from tedx.lib.base import *
 from pylons.i18n import _
 
+from formencode import validators, Invalid
 from pylons.decorators.rest import dispatch_on
 from pylons.decorators import validate
 from formencode.validators import Invalid, FancyValidator
@@ -24,11 +25,66 @@ from formencode import htmlfill
 #from formencode.api import NoDefault
 
 from tedx.lib.validators import BaseSchema
+from geopy import geocoders
 
 import logging
 log = logging.getLogger(__name__)
 
 from sqlalchemy import func
+
+class ConvertDecimalValidator(validators.FancyValidator):
+
+    function='ConvertDecimalValidator'
+    log.debug(function)
+    #def __init__(self, field_name):
+    #    function='ConvertDecimalValidator 1'
+    #    log.debug('%s - field_name:%s' % (function, field_name))
+
+    def convert_to_python(self, value, state):
+        function='ConvertDecimalValidator 2'
+        log.debug('%s - value:%s' % (function, value))
+        return '22'
+
+    def validate_python(self, value, state):
+        function='ConvertDecimalValidator 3'
+        log.debug('%s - value:%s' % (function, value))
+        return 22
+'''
+    def validate_python(self, values, state):
+        function='ConvertDecimalValidator'
+        log.debug(function)
+
+        numeric = values['ph']
+        log.debug('%s replace: %s' % (function, str(numeric.replace(',','.'))))
+        values['ph']=3
+        log.debug('%s ph:%s' % ( function, values['ph']))
+        return 2
+'''
+
+'''
+class ConvertDecimalValidator(validators.FormValidator):
+    function='ConvertDecimalValidator'
+    log.debug(function)
+
+    validate_partial_form = True
+    def __init__(self, field_name):
+
+        function='ConvertDecimalValidator 1'
+        #super(self.__class__, self).__init__()
+        #self.field_name = field_n
+
+        log.debug('%s validate partial%s' % (function, field_name))
+        #log.debug('%s - field:%s' % ( function, field_name))
+        #set(self.fieldname, '33')
+        #values.set(self.__field_name, '33')
+
+
+    def validate_partial(self, values, state):
+        function='ConvertDecimalValidator -2'
+        log.debug('%s validate partial' % function)
+        values.set(self.__field_name, '33')
+        ##agree_value = values.get(self.__field_name, None)
+'''
 
 class PlaceSchema(BaseSchema):
     function='NewPlaceSchema'
@@ -36,6 +92,10 @@ class PlaceSchema(BaseSchema):
 
     name=String(not_empty=True)
     description=String(not_empty=True)
+
+    ##pre_validators = [ConvertDecimalValidator("ph")]
+    ##ph = ConvertDecimalValidator()
+
     ph = Number(
             not_empty=True,
             min=0.9, max=14.1,
@@ -72,11 +132,7 @@ class UpdatePlaceSchema(BaseSchema):
 
 class PlacesController(BaseController):
 
-    def index(self):
-        ''' Get list of places in the system '''
-        function = 'index'
-        log.debug(function)
-
+    def _base(self):
         page = 1
         if request.GET.has_key('page'):
             page = request.GET['page']
@@ -88,14 +144,28 @@ class PlacesController(BaseController):
 
         page = 1
 
+        c.MapPlaces = getAllPlaces()
+
+    def index(self):
+        ''' Get list of places in the system '''
+        function = 'index'
+        log.debug(function)
+
+        self._base()
         return render('/places/index.mako')
 
     def detail(self, id):
         ''' Get Detail of the place '''
+
         function = 'detail'
         log.debug(function)
 
         c.place  = meta.Session.query(Place).filter_by(id=id).first()
+        log.debug('%s - c.place:%s' % ( function, c.place))
+
+        c.MapPlaces = []
+        c.MapPlaces = c.place
+
 
         page = 1
         if request.GET.has_key('page'):
@@ -105,6 +175,7 @@ class PlacesController(BaseController):
             getCommentsPlace(c.place.id),
             page = page,
             items_per_page=5)
+
 
         return render('/places/detail.mako')
 
@@ -146,7 +217,12 @@ class PlacesController(BaseController):
         image_link = request.params.get('place.image')
 
         # Grabar todos los datos
-        place = c.user.add_place(latitude, longitude, None, None, title)
+        address, city, postalcode, country = getLocation( latitude, longitude)
+
+        log.debug('%s address:%s' % (function, address))
+        log.debug('%s postalcode:%s' % (function, postalcode))
+
+        place = c.user.add_place(latitude, longitude, city, country, title, address, postalcode)
         db_comment = place.add_comment(c.user, content, title)
         db_water = place.add_water(ph, chlorine)
 
@@ -174,6 +250,9 @@ class PlacesController(BaseController):
 
         if c.place.user_id != c.user.id:
             abort(401)
+
+        c.MapPlaces = []
+        c.MapPlaces= c.place
 
         defaults = h.object_to_defaults(c.place, 'place')
 

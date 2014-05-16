@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import string
 import shutil
 import Image
 import formencode
@@ -19,11 +20,13 @@ from formencode.variabledecode import NestedVariables
 from formencode import htmlfill
 
 from tedx.lib.validators import BaseSchema
+from tedx.lib.mail import email
 
 import logging
 log = logging.getLogger(__name__)
 
 from sqlalchemy import func
+
 class ForgottenPasswordSchema(BaseSchema):
     email = validators.Email(not_empty=True)
 
@@ -97,10 +100,29 @@ class AccountController(BaseController):
     @validate(schema=ForgottenPasswordSchema(), form='forgotten_password', post_only=True, on_get=True, variable_decode=True)
     def _forgotten_password(self):
 
-        h.flash( _(u'Se ha enviado un correo electrónico con la nueva contraseña'))
-        redirect(h.url_for(controller='home'))
+        c.email = self.form_result['email']
+        c.person = User.find_by_email(c.email)
 
+        if c.person is None:
+            h.flash(_(u'No se ha encontrado ningun usuario con el correo introducido'))
+            redirect(h.url_for(action='forgotten_password'))
+        else:
 
+            # Create and save the new password
+            size = 9
+            new_password = ''.join([choice(string.letters + string.digits) for i in range(size)])
+            c.person.password = hashlib.md5(new_password).hexdigest()
+            meta.Session.commit()
+
+            c.password = new_password
+
+            email(c.email, render('accounts/confirmation_email.mako'))
+
+            msg  =  _(u'Para completar el proceso siga las instrucciones que se han mandado a la dirección de correo.')
+            msg1 =  _(u'Si no recibe el correo en un tiempo razonable, contacte con ') + h.contact_email()
+            h.flash(msg)
+            h.flash(msg1)
+            redirect(h.url_for(controller='home'))
 
     def public_profile(self, nickname):
         ''' Get public profile of the user '''
@@ -129,7 +151,10 @@ class AccountController(BaseController):
         log.debug(function)
         log.debug('%s nickname:%s' % (function, c.user.nickname))
 
-        c.user_search= meta.Session.query(User).filter(and_(User.nickname==c.user.nickname,User.deleted_on==None)).first()
+        c.user_search= meta.Session.query(User).filter(and_(
+            User.nickname==c.user.nickname,
+            User.deleted_on==None
+            )).first()
 
         page = 1
         if request.GET.has_key('page'):
@@ -149,7 +174,10 @@ class AccountController(BaseController):
         log.debug(function)
 
         log.debug('%s - user' % (function))
-        c.user_search= meta.Session.query(User).filter(and_(User.nickname==c.user.nickname,User.deleted_on==None)).first()
+        c.user_search= meta.Session.query(User).filter(and_(
+            User.nickname==c.user.nickname,
+            User.deleted_on==None
+            )).first()
         log.debug('%s - user:%s' % (function, c.user_search))
 
         page = 1
@@ -326,78 +354,6 @@ class AccountController(BaseController):
             return h.toJSON({"status": "OK", 'latitude': c.user.latitude, 'longitude': c.user.longitude})
         else:
             return h.toJSON({"status": "NOK", "message": _(u"couldnt_get_location"), 'error_code': 0})
-
-    def report_abuse(self):
-        if c.user:
-            gmailUser = 'admin@tedx.com'
-            gmailPassword = 'tedx.2010'
-
-            type = request.params.get('type')
-            element_id = request.params.get('id')
-
-            if type == "comment":
-                db_object = meta.Session.query(Comment).filter_by(id = self.prm('id')).first()
-            elif type == "place":
-                db_object = meta.Session.query(Place).filter_by(id = self.prm('id')).first()
-
-            if db_object is not None:
-                # ENVIO DEL EMAIL DE INVITACION
-                text = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /><title>mail</title></head>' \
-                        + '<body><table width="700" cellspacing="0" cellpadding="0" style="border-color:#db1b1b; border-width:2px;border-style:solid"><tbody><tr bgcolor="#db1b1b" height="45"><td colspan="2" style="color:#FFFFFF;font-size:30px;font-weight: bold;padding-left:20px; background-image:url(''/images/banner50_800.png'');">Streetrs</td></tr>' \
-                        + '<tr><td width="300" height="300" align="center" style="padding: 10px; font-size:11px;color:#db1b1b;" >'
-
-                                # You can copy the URL from the image below, however.
-                #
-                if type == "comment":
-                    latitude = str(db_object.place.latitude)
-                    longitude = str(db_object.place.longitude)
-                else:
-                    latitude = str(db_object.latitude)
-                    longitude = str(db_object.longitude)
-
-                url = 'http://maps.google.com/maps/api/staticmap?center=' + latitude + ',' +longitude +'&zoom=14&size=300x300&maptype=satellite' \
-                      + '&markers=icon:http://www.tedx.com/images/red_marker.png|shadow:true|'+ latitude + ',' + longitude +'&sensor=false'
-
-                text = text + '<img src="' + url +  '"></img></b></td>' \
-                    + '<td style = "color:#000000; font-size: 11px;"><h3 style="color:#db1b1b;font-size: 14px;">Reporte de abuso</h3>' \
-
-                text = text + '<p style="color:#000000;"><b>' + c.user.nickname + '</b> ha reportado este elemento como spam <b>Streetrs</b> '
-
-                if type == "comment":
-                    text = text + '<br/><p><ul><li>T&iacute;tulo: "'+ unicode(db_object.title) + '"</li><li>Contenido: "' + unicode(db_object.content) + '"</li><li>Id: "' + db_object.id +' "</li></ul></p>'
-                else:
-                    text = text + '<br/><p><ul><li>T&iacute;tulo: "'+ unicode(db_object.name) + '"</li><li>Id: "' + db_object.id +' "</li></ul></p>'
-
-
-                text = text + '</p>' + '<p style="text-align:justify; padding-right:20px;color:#000000"><b>Streetrs</b> es la nueva manera de comunicaci&oacute;n, de hablar sobre un lugar, de dejarle a alguien un mensaje en un sitio concreto, all&iacute; donde os reun&iacute;s todos los fines de semana o simplemente donde &iacute;bais en los viejos tiempos. <p> Sube un v&iacute;deo, una foto o un mensaje para que lo pueda ver paseando por la calle tambi&eacute;n. Para ver el contenido  del mensaje s&oacute;lo tienes que ir al lugar indicado en el mapa.</p>'
-                text = text +' <p>Una vez registrado puedes publicar nuevos streetits, votar comentarios y lugares de otros usuarios, pegar las pegatinas en la calle, enviar mensajes a tus amigos, etc.</p></p></td></tr>' \
-                            + '<tr> <td colspan="2"><h3 style="color:#db1b1b;font-size: 16px;text-align:center;">&iexcl; &Uacute;nete y Ponte a Streetear!</h3></td></tr></tbody> </table></body></html>'
-
-
-
-                msg = MIMEMultipart()
-                msg['From'] = gmailUser
-                msg['To'] = gmailUser
-                msg['Subject'] = 'Reporte de tedx'
-                msg.attach(MIMEText(text.encode('utf-8','replace'),'html','charset=utf-8'))
-
-                #for attachmentFilePath in attachmentFilePaths:
-                 #   msg.attach(getAttachment(attachmentFilePath))
-
-                mailServer = smtplib.SMTP('smtp.gmail.com', 587)
-                mailServer.ehlo()
-                mailServer.starttls()
-                mailServer.ehlo()
-                mailServer.login(gmailUser, gmailPassword)
-                mailServer.sendmail(gmailUser, gmailUser, msg.as_string())
-                mailServer.close()
-
-
-                return h.toJSON({'status': 'OK'})
-            else:
-                return h.toJSON({'status': 'NOK', 'message': 'Error al notificar', 'error_code': 0})
-        else:
-            return h.toJSON({'status': 'NOK', 'message': _(u'you_must_login'), 'error_code': 1})
 
     def upload_avatar(self):
         file = request.params.get('file')

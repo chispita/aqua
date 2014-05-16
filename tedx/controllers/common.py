@@ -124,46 +124,6 @@ class CommonController(BaseController):
 
         return h.toJSON({ 'status': 'OK' })
 
-    def forgotten_password(self):
-        function = 'forgotten_password'
-        log.debug(function)
-
-        email = self.prm('email')
-
-        log.debug('%s - email:%s' % (function, email))
-        db_user = meta.Session.query(User).filter(User.email==email).first()
-        if (db_user is None):
-            return h.toJSON({ 'status': 'NOK', 'message': _(u'No se ha encontrado un usuario con ese correo electrónico.') })
-        else:
-            # Create and save the new password
-            size = 9
-            new_password = ''.join([choice(string.letters + string.digits) for i in range(size)])
-            db_user.password = hashlib.md5(new_password).hexdigest()
-            meta.Session.commit()
-
-            # Send the email
-            try:
-                gmail_user = 'aqua@ibercivis.es' # REFACTOR: [JUANJO] Moverlo a algun sitio de configuracion
-                gmail_pwd = '9G*rY2Vrr'
-
-                msg = MIMEMultipart()
-                msg['From'] = gmail_user
-                msg['To'] = db_user.email
-                msg['Subject'] = _(u'Nueva contraseña de AQUA')
-                msg.attach(MIMEText(_(u'Nuevo password: ') + unicode(new_password, 'utf-8')))
-
-                mailServer = smtplib.SMTP('smtp.ibercivis.es', 25)
-                mailServer.ehlo()
-                #mailServer.starttls()
-                mailServer.ehlo()
-                mailServer.login(gmail_user, gmail_pwd)
-                mailServer.sendmail(gmail_user, db_user.email, msg.as_string())
-                mailServer.close()
-            except SMTPRecipientsRefused:
-                return h.toJSON( { 'status': 'NOK', 'message': _(u'No se ha podido enviar el correo electrónico a la dirección indicada. Intentelo de nuevo más tarde.') } )
-
-            return h.toJSON( { 'status': 'OK', 'message': _(u'Se ha enviado el correo a la dirección indicada.') } )
-
     def get_happy_cities(self):
         db_query = select([Place.city, Place.country, func.count(Place.id)], group_by=[Place.city,Place.country], order_by = [desc(func.count(Place.id))])
         cities = []
@@ -174,28 +134,3 @@ class CommonController(BaseController):
                 cities.append({"city":result[0], "country": result[1], "number": result[2]})
         return h.toJSON({'status':'OK', "cities": cities})
 
-    def contact(self):
-        email = self.prm('email')
-        name = self.prm('name')
-        content = self.prm('content')
-
-        try:
-            gmail_user = 'aqua@ibercivis.es' # REFACTOR: [JUANJO] Moverlo a algun sitio de configuracion
-            gmail_pwd = '9G*rY2Vrr'
-            msg = MIMEMultipart()
-            msg['From'] = email
-            msg['To'] = gmail_user
-            msg['Subject'] = name + '<' + email + '>'
-            msg.attach(MIMEText(content))
-
-            mailServer = smtplib.SMTP('smtp.ibercivis.es', 25)
-            mailServer.ehlo()
-            #mailServer.starttls()
-            mailServer.ehlo()
-            mailServer.login(gmail_user, gmail_pwd)
-            mailServer.sendmail(email, gmail_user, msg.as_string())
-            mailServer.close()
-        except SMTPRecipientsRefused:
-            return h.toJSON( { 'status': 'NOK', 'message': _(u'No se ha podido enviar el mensaje correctamente. Intentelo de nuevo más tarde.') } )
-
-        return h.toJSON({ 'status': 'OK', 'message': _(u'Mensaje enviado correctamente. Nos pondremos en contacto contigo lo antes posible.') })

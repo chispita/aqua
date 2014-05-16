@@ -21,6 +21,8 @@ from sqlalchemy import orm, and_, desc, select, func
 from geopy import geocoders
 from random import choice,uniform
 
+from geopy import geocoders
+
 import logging
 log = logging.getLogger(__name__)
 
@@ -86,7 +88,11 @@ class ContentController(BaseController):
             log.debug('%s - new place' % (function))
             if city is None or country is None or city== "" or country == "":
 
-                log.debug('%s - geoposicion vacia' % (function))
+                #address, city, postalcode, country = getLocation( "40.752067", "-73.977578")
+                #log.debug('%s - geoposicion vacia' % (function))
+
+                ##'postalcode': u' NY 10017', 'city': u' New York', 'country': u' USA', 'address': u'77 East 42nd  Street'}
+
                 #g = geocoders.Google(domain='maps.google.es')
                 #point = [latitude,longitude]
                 #(new_place,new_point) = g.reverse(point)
