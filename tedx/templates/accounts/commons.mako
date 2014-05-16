@@ -45,42 +45,44 @@
 
             <h3>${_(u'Actividad')}</h3>
             <div class="dataVision">
-                <a href="#muestras">
-                    <label>${_(u'Muestras')}:
-                        <strong>${len(user.places)}</strong>
-                    </label>
+                <label>
+                    <a href="#muestras">
+                        ${_(u'Muestras')}:<strong>${len(user.places)}</strong>
                     </a>    
-
-                $ h.link_to( 
+                    |
+                    ${h.link_to( 
                     _(u'Comentarios') + ':' + str(len(user.comments)),
                     h.url_for(controller='account', 
                     action='comments', 
                     nickname=user.nickname)) }
-            </div>
+                    |
+                    <% visits = 0 %>
+                    %for place in user.places:
+                        <% visits = visits + place.visits %>
+                    %endfor
 
-            <div class="dataVision">
-                <% visits = 0 %>
-                %for place in user.places:
-                    <% visits = visits + place.visits %>
-                %endfor
-
-                ${ h.link_to( 
-                    _(u'Visitas') + ':' + str(visits),
-                    h.url_for(controller='account', 
-                    action='visits', 
-                    nickname=user.nickname)) }
+                    ${ h.link_to( 
+                        _(u'Visitas') + ':' + str(visits),
+                        h.url_for(controller='account', 
+                        action='visits', 
+                        nickname=user.nickname)) }
+                </label>
             </div>
             <br><br>
 
-            ##%if c.user:
-            ##    %if user.nickname == c.user.nickname:
+            %if c.user:
+                %if user.nickname == c.user.nickname:
 
-            ##        <div class="centerize">
-            ####            <a href='/account/settings/' class='accion right bordeSoft' style='text-transform: uppercase:' id='grande'>
-            ##            ${_(u'Editar')}</a>
-            ##        </div>
-            ##    %endif
-            ##%endif
+                    <div class="centerize">
+                        <a href='/account/settings/' class='accion right bordeSoft' style='text-transform: uppercase:' id='grande'>
+                            ${_(u'Actualizar Perfíl')}</a>
+                        </br></br></br></br>
+                        <a href='/account/password/' class='accion right bordeSoft' style='text-transform: uppercase:' id='grande'>
+                            ${_(u'Cambiar Contraseña')}</a>
+                    </div>
+
+                %endif
+            %endif
 
         %endif
 </%def>

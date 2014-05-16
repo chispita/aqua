@@ -170,16 +170,11 @@ class AccountController(BaseController):
 
     def settings(self):
         ''' Edit profile of the user '''
-        function='def settings'
-        log.debug(function)
 
-        log.debug('%s - user' % (function))
         c.user_search= meta.Session.query(User).filter(and_(
             User.nickname==c.user.nickname,
             User.deleted_on==None
             )).first()
-        log.debug('%s - user:%s' % (function, c.user_search))
-
         page = 1
         if request.GET.has_key('page'):
             page = request.GET['page']
@@ -190,9 +185,27 @@ class AccountController(BaseController):
             page = page,
             items_per_page=5)
 
-        log.debug('%s - user:%s' % (function, c.user_search))
-
         return render('/accounts/settings.mako')
+
+
+    def password(self):
+        ''' Change password profile of the user '''
+
+        c.user_search= meta.Session.query(User).filter(and_(
+            User.nickname==c.user.nickname,
+            User.deleted_on==None
+            )).first()
+        page = 1
+        if request.GET.has_key('page'):
+            page = request.GET['page']
+
+        c.places_map = getProfilePlaces(c.user_search.nickname)
+        c.places = paginate.Page(
+            getProfilePlaces(c.user_search.nickname),
+            page = page,
+            items_per_page=5)
+
+        return render('/accounts/reset.mako')
 
     def comments(self,nickname):
         ''' Get comments of the user '''

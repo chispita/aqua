@@ -49,18 +49,16 @@
 
 
         <div align="right"><a href="/" class="close-icon"></a></div>
-        <h2>${_(u'Actualiza tu perfíl')}</h2>
-
+        <h2>${_(u'Cambia tu contraseña')}</h2>
          ${ h.form(url=h.url_for()) }
-            <p><label for="name">${_(u'Nombre')}:</label><br>
-            ${ h.text('register.name', size=50) }</p>
+            <p><label for="password">${_(u'Contraseña Anterior')}:</label><br>
+            ${ h.password("register.password", size=15) }</p>
 
-            <p><label for="email">${_(u'Email')}:</label><br>
-            ${ h.text('register.email', size=50) }</p>
+            <p><label for="password-verify">${_(u'Nueva Contraseña')}:</label><br>
+            ${ h.password("register.password2", size=15) }</p>
 
             ${ h.submit('submit', _(u'Guardar los cambios'), class_='accion bordeSoft') }
         ${ h.end_form() }
-
         <!--
 
         <label for="new-session-txtName">${_(u'Nombre')}<br />
