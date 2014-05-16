@@ -8,8 +8,8 @@ ${ h.hidden('place.longitude')}</p>
 <p><label for="place.name">${_(u'Nombre')}</label>
     ${ h.text('place.name', size=40) }
          
-<p><label for="ph">${_(u'pH')}(Con punto decimal: e.g.:1.2)</label>
-    ${ h.text('place.ph', size=3, class_="mask-num") }</p>
+<p><label for="ph">${_(u'pH')}</label>
+    ${ h.text('place.ph', size=2, class_="mask-int") }</p>
 
 <p><label for="chlorine">${_(u'Cloro')}(Con punto decimal: e.g.:1.2)</label>
     ${ h.text('place.chlorine',size=3, class_="mask-num") }</p>
