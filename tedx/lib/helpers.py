@@ -16,6 +16,7 @@ from webhelpers.html.tags import file
 from pylons import session
 from sqlalchemy.orm.util import object_mapper
 
+from tedx.config.lca_info import lca_info
 
 def toJSON(obj):
     return simplejson.encoder.JSONEncoder(use_decimal=True, sort_keys=True, encoding="utf-8").encode(obj)
@@ -99,3 +100,35 @@ def object_to_defaults(object, prefix):
             defaults['.'.join((prefix, key))] = value
 
     return defaults
+
+def webmaster():
+    return lca_info['webmaster_email']
+
+def webmaster_email(text=None):
+    """ E-mail link for the conference contact.
+    Renders a link to the committee; optionally takes a text, which will be
+    the text of the anchor (defaults to the e-mail address).
+    """
+    email = lca_info['webmaster_email']
+    if text == None:
+        text = email
+
+    return link_to(text, 'mailto:' + email)
+
+def contact_email(text=None):
+    """ E-mail link for the conference contact.
+
+    Renders a link to the committee; optionally takes a text, which will be
+    the text of the anchor (defaults to the e-mail address).
+    """
+    email = lca_info['contact_email']
+    if text == None:
+        text = email
+
+    return link_to(text, 'mailto:' + email)
+
+def event_name():
+    """ Name of the event
+    Returns the name of the event we're running (yay).
+    """
+    return lca_info['event_name']
