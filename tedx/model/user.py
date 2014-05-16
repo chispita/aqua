@@ -57,8 +57,8 @@ class User(object):
         meta.Session.add(self)
         meta.Session.commit()
 
-    def add_place(self, latitude, longitude, city, country, name=None):
-        db_place = Place(self, latitude, longitude, city, country, name)
+    def add_place(self, latitude, longitude, city, country, name=None, address=None,postalcode=None):
+        db_place = Place(self, latitude, longitude, city, country, name, address, postalcode)
         self.places.append(db_place)
 
         meta.Session.add(self)
@@ -90,6 +90,13 @@ class User(object):
         if follower:
             meta.Session.delete(follower)
             meta.Session.commit()
+
+    @classmethod
+    def find_by_email(cls, email, abort_404 = False):
+        result = meta.Session.query(User).filter_by(email=email.lower()).first()
+        if result is None and abort_404:
+            abort(404, "No such person object")
+        return result
 
 
 class Follower(object):
