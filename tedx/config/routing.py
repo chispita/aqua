@@ -43,7 +43,7 @@ def make_map(config):
     # Link to Account Private Profile
     map.connect('/account/profile/',             controller='account', action='profile' )
     map.connect('/account/settings/',            controller='account', action='settings' )
-
+    map.connect('/account/password/',            controller='account', action='password' )
 
 
     #map.connect('/account/signin',              controller='account', action='signin')
