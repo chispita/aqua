@@ -347,7 +347,7 @@ a.estiloBlanco {
 .map_legend {z-index:20;position: absolute; }
 
 #MsgOverMap { 
-    height:390px; 
+    height:450px; 
     width: 910px;  
     position:absolute; 
     top:15px; 
@@ -374,6 +374,17 @@ a.estiloBlanco {
     box-shadow:0px 0px 5px 2px rgba(0,0,0,0.5);
     transition: all 0.3s ease;
 }
+
+#MsgOverMap .titulo1{
+    font-size: 25px;
+    border-bottom: 1px solid #999;
+    text-transform:uppercase;   
+}
+
+#MsgOverMap .text{
+    font-size: 15px;
+}
+
 #queMapa { 
     height:390px; 
     width: 220px;  
