@@ -21,7 +21,7 @@
         <script type="text/javascript" src="/common/translation"></script>
         <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js"></script>
 
-        <script type="text/javascript" src="js/jquery.keyfilter-1.7.js"></script>
+        <script type="text/javascript" src="/js/jquery.keyfilter-1.7.js"></script>
 	    <script type="text/javascript" src="/js/jquery.form.js"></script>
 
         ${next.head()}
@@ -123,11 +123,6 @@
             <%include file="common/information.mako"/>
         </div>
 
-        ##<div id="contentIzd">${next.contentIzd()}</div>        
-
-        <div class="clear"></div>
-
-        <%include file="common/footer.mako"/>
         <div class="clear"></div>
         <%include file="common/logos.mako"/>
 

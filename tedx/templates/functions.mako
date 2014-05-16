@@ -97,11 +97,10 @@
             <h4><a href="/places/${place.id}">${place.name}</a></h4>                                                                                                  
             <p>Description: ${place.comments[0].content}</p>                                                                                                                 
             <p>last Update:${place.last_update}</p>   
-            <p>                                      
-            <% comments = len(place.comments)-1 %>                
-            ${_(u'Comentarios')}:   ${comments}
-            ${_(u'Visitas')}: ${place.visits}                                                                                                                            
-            ${_(u'Me gusta')}:                                                                                                                                           
+            <p><% comments = len(place.comments)-1 %>                
+               ${_(u'Comentarios')}:   ${comments}
+               ${_(u'Visitas')}: ${place.visits}                      
+               ##${_(u'Me gusta')}:
             </p>                                                                                                                                                             
         </div>                                                                                                                                                               
         <div class="clear"></div>  
