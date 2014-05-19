@@ -52,7 +52,7 @@ def getLocation( latitude, longitude):
 ''' Users '''
 def getAllUsers():
     ''' Get all the users active '''
-    return meta.Session.query(User).filter(User.deleted_on==None)
+    return meta.Session.query(User).filter(User.deleted_on==None).order_by(desc(User.created_on))
 
 ''' Profile '''
 def getProfilePlaces(nickname):
