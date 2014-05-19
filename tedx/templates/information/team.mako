@@ -11,6 +11,8 @@
         <a class="text">
         ${_(u'Para este proyecto, Ibercivis se beneficia de la experiencia de este grupo de profesionales')}:
         </br></br>
+        <b>${_(u'Fermín Serrano Sanz')}</b>, ${_(u'profesional en proyectos europeos de ciencia ciudadana, lidera dicha línea en el Instituto de Biocomputación y Física de los Sistemas Complejos, coordinador del proyecto FP7 Socientize. Ponente en distintos foros europeos de ciencia ciudadana e inteligencia colectiva')}.
+        </br></br>
         <b>${_(u'Francisco Sanz')}</b>, ${_(u'tiene relación directa con la comunidad científica para brindarles la plataforma Ibercivis que permite contactar  con la ciudadanía y la ciencia ciudadana. Desarrollador de herramientas para este nuevo tipo de ciencia. Divulgador en distintos foros acerca    de computación y ciencia ciudadana')}.
         </br></br>
 
