@@ -19,7 +19,8 @@
 
             <div id="span3">
                 <h3>${_(u'Financiado por')}:</h3>
-                <a href="http://www.fecyt.es"><img src="/images/fecyt.jpg" alt="Logo FECYT" /></a>
+                </br>
+                <a href="http://www.fecyt.es"><img src="/images/mineco.jpg" width="350" alt="Logo FECYT" /></a>
             </div>
         </div>
     </div>
