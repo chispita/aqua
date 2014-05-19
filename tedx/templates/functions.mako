@@ -95,8 +95,8 @@
         </div>                            
         <div class="description">
             <h4><a href="/places/${place.id}">${place.name}</a></h4>                                                                                                  
-            <p>Description: ${place.comments[0].content}</p>                                                                                                                 
-            <p>last Update:${place.last_update}</p>   
+            <p>${_(u'Descripción')}: ${place.comments[0].content}</p>                                                                                                                 
+            <p>${_(u'Ultima actualización')}:${place.last_update}</p>   
             <p><% comments = len(place.comments)-1 %>                
                ${_(u'Comentarios')}:   ${comments}
                ${_(u'Visitas')}: ${place.visits}                      
