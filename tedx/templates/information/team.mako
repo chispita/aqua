@@ -13,7 +13,7 @@
         </br></br>
         <b>${_(u'Fermín Serrano Sanz')}</b>, ${_(u'profesional en proyectos europeos de ciencia ciudadana, lidera dicha línea en el Instituto de Biocomputación y Física de los Sistemas Complejos, coordinador del proyecto FP7 Socientize. Ponente en distintos foros europeos de ciencia ciudadana e inteligencia colectiva')}.
         </br></br>
-        <b>${_(u'Ntividad Miguel Salcedo')}</b>, ${_(u'ccolaboradora en este proyecto de ciencia ciudadana y personal docente e investigador de la Universidad de Zaragoza. Perteneciente al Grupo de Investigación Aplicada "Calidad y Tratamiento de Aguas" que forma parte del Instituyo Universitario de Ciencias Ambientales de Aragón')}
+        <b>${_(u'Natividad Miguel Salcedo')}</b>, ${_(u'ccolaboradora en este proyecto de ciencia ciudadana y personal docente e investigador de la Universidad de Zaragoza. Perteneciente al Grupo de Investigación Aplicada "Calidad y Tratamiento de Aguas" que forma parte del Instituyo Universitario de Ciencias Ambientales de Aragón')}
         </br></br>
         <b>${_(u'Francisco Sanz')}</b>, ${_(u'tiene relación directa con la comunidad científica para brindarles la plataforma Ibercivis que permite contactar  con la ciudadanía y la ciencia ciudadana. Desarrollador de herramientas para este nuevo tipo de ciencia. Divulgador en distintos foros acerca    de computación y ciencia ciudadana')}.
         </br></br>
