@@ -3,7 +3,7 @@ init = function() {
     	setPos($("#city").attr('value'),$("#country").attr('value'));
     }
     list_mode = true;
-    get_comment_tags();
+    //get_comment_tags();
     //get_places();
     //get_places_last();
     //get_places_map(); 

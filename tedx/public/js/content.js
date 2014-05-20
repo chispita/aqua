@@ -6,7 +6,7 @@ var country;
 var youtube_exp = /^http:\/\/(?:www\.)?youtube.com\/watch\?(?=.*v=\w+)(?:\S+)?/;
 
 init = function() {
-    get_comment_tags();
+    //get_comment_tags();
     
     $('#link').dialog({
         autoOpen: false,
