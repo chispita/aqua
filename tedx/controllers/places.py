@@ -2,6 +2,7 @@
 import shutil
 import Image
 import formencode
+import datetime
 
 from functions import *
 from webhelpers import paginate
@@ -90,8 +91,9 @@ class PlaceSchema(BaseSchema):
     function='NewPlaceSchema'
     log.debug(function)
 
+    #log.debug('%s name:%s' % (function, name))
     name=String(not_empty=True)
-    description=String(not_empty=True)
+    description=String()
 
     ##pre_validators = [ConvertDecimalValidator("ph")]
     ##ph = ConvertDecimalValidator()
@@ -118,6 +120,8 @@ class PlaceSchema(BaseSchema):
                 'empty':_(u'Debe seleccionar una posición en el mapa')
                 }
             )
+    date = validators.DateConverter(month_style='dd/mm/yyyy')
+    time = validators.TimeConverter(use_datetime=True)
 
 class NewPlaceSchema(BaseSchema):
     function='NewPlaceSchema'
@@ -131,7 +135,6 @@ class UpdatePlaceSchema(BaseSchema):
     pre_validators = [NestedVariables]
 
 class PlacesController(BaseController):
-
     def _base(self):
         page = 1
         if request.GET.has_key('page'):
@@ -144,7 +147,22 @@ class PlacesController(BaseController):
 
         page = 1
 
-        c.MapPlaces = getAllPlaces()
+        c.places_map = getAllPlaces()
+
+    def _basedetail(self,id):
+        c.place  = Place.find_by_id(id)
+
+        if c.place is None:
+            abort(404)
+
+        page = 1
+        if request.GET.has_key('page'):
+            page = request.GET['page']
+
+        c.ListComments = paginate.Page(
+            getCommentsPlace(c.place.id),
+            page = page,
+            items_per_page=5)
 
     def index(self):
         ''' Get list of places in the system '''
@@ -156,26 +174,10 @@ class PlacesController(BaseController):
 
     def detail(self, id):
         ''' Get Detail of the place '''
-
         function = 'detail'
         log.debug(function)
 
-        c.place  = meta.Session.query(Place).filter_by(id=id).first()
-        log.debug('%s - c.place:%s' % ( function, c.place))
-
-        c.MapPlaces = []
-        c.MapPlaces = c.place
-
-
-        page = 1
-        if request.GET.has_key('page'):
-            page = request.GET['page']
-
-        c.ListComments = paginate.Page(
-            getCommentsPlace(c.place.id),
-            page = page,
-            items_per_page=5)
-
+        self._basedetail(id)
 
         return render('/places/detail.mako')
 
@@ -188,13 +190,13 @@ class PlacesController(BaseController):
             abort(401)
 
         defaults = None
-        '''
-        Podemos poner valores por defecto
+
+        #Podemos poner valores por defecto
+        now = datetime.datetime.now()
         defaults = {
-                    'place.ph': '5',
-                    'place.chlorine':'1.1',
+                    'place.date': now.strftime("%d/%m/%Y"),
+                    'place.time': now.strftime("%H:%M"),
                     }
-        '''
 
         form = render('/places/new.mako')
         return htmlfill.render(form, defaults)
@@ -205,34 +207,34 @@ class PlacesController(BaseController):
         log.debug(function)
 
         # Recuperamos los datos
-        title = self.prm('place.name')
-        content = self.prm('place.description')
+        results = self.form_result['place']
 
-        ph = self.prm('place.ph')
-        chlorine = self.prm('place.chlorine')
-
+        name = results['name']
+        description = results['description']
+        ph = results['ph']
+        chlorine = results['chlorine']
         latitude = float(self.prm('place.latitude') or 0)
         longitude = float(self.prm('place.longitude') or 0)
-
+        take_on = datetime.datetime.combine( results['date'], results['time'])
         image_link = request.params.get('place.image')
 
-        # Grabar todos los datos
+        # Buscar los valores de la calle, ...
         address, city, postalcode, country = getLocation( latitude, longitude)
 
-        log.debug('%s address:%s' % (function, address))
-        log.debug('%s postalcode:%s' % (function, postalcode))
-
-        place = c.user.add_place(latitude, longitude, city, country, title, address, postalcode)
-        db_comment = place.add_comment(c.user, content, title)
+        # Grabar todos los datos
+        place = c.user.add_place(latitude, longitude, name, address, city, postalcode, country, description, take_on)
         db_water = place.add_water(ph, chlorine)
 
         # Grabacion de la imagen
+        log.debug('%s - image_link: %s' % (function, image_link))
+
         if (image_link != None and image_link != ""):
+            log.debug('%s imagen' % function)
+            db_comment = place.add_comment(c.user, description, name)
             UploadFile( db_comment, image_link)
 
         h.flash(_(u'La muestra se ha grabado correctamente'))
         redirect(h.url_for(controller='home', action='index'))
-
 
     #@authorize(h.auth.is_valid_user)
     @dispatch_on(POST="_edit")
@@ -244,20 +246,13 @@ class PlacesController(BaseController):
             h.auth.no_role()
         '''
         c.form = 'edit'
-        c.place  = meta.Session.query(Place).filter_by(id=id).first()
-        if not c.place:
-            abort(404)
 
-        if c.place.user_id != c.user.id:
-            abort(401)
-
-        c.MapPlaces = []
-        c.MapPlaces= c.place
+        self._basedetail(id)
 
         defaults = h.object_to_defaults(c.place, 'place')
 
-        if c.place.comments[0]:
-            defaults['place.description'] = c.place.comments[0].content
+        defaults['place.date'] =  c.place.take_on.strftime("%d/%m/%Y")
+        defaults['place.time'] =  c.place.take_on.strftime("%H:%M")
 
         form = render('/places/edit.mako')
         return htmlfill.render(form, defaults)
@@ -268,49 +263,21 @@ class PlacesController(BaseController):
         function = '_edit'
         log.debug(function)
 
-        # We need to recheck auth in here so we can pass in the id
-        #if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(id), h.auth.has_organiser_role)):
-            # Raise a no_auth error
-            # h.auth.no_role()
+        # Recuperamos los datos
+        results = self.form_result['place']
 
-        #c.person = Person.find_by_id(id)
-        #self.finish_edit(c.person)
+        c.place  = Place.find_by_id(id)
+        c.place.name = results['name']
+        c.place.description = results['description']
+        log.debug('%s desc: %s' % (function, results['description']))
+        c.place.ph = results['ph']
+        c.place.chlorine = results['chlorine']
+        c.place.take_on = datetime.datetime.combine( results['date'], results['time'])
+        c.place.last_update = datetime.datetime.now()
 
+        #image_link = request.params.get('place.image')
 
-        place  = meta.Session.query(Place).filter_by(id=id).first()
-        if place:
-
-            place.last_update = datetime.datetime.now()
-            place.name = self.prm('place.name')
-
-            log.debug('%s - place:%s' % (function, place.id))
-            log.debug('%s - fecha:%s' % (function, place.last_update))
-            log.debug('%s - title:%s' % (function, place.name))
-
-            meta.Session.commit()
-        else:
-
-            log.debug('%s - place:%s' % (function, place.id))
-            log.debug('%s - no encontrado' % (function))
-
-        '''
-        content = self.prm('place.description')
-
-
-        latitude = float(self.prm('place.latitude') or 0)
-        longitude = float(self.prm('place.longitude') or 0)
-
-        image_link = request.params.get('image')
-        log.debug('%s - image-link:%s' % ( function, str(image_link)))
-
-        # Grabar todos los datos
-        place = c.user.add_place(latitude, longitude, None, None, title)
-        db_comment = place.add_comment(c.user, content, title)
-        db_water = place.add_water(ph, chlorine)
-        '''
-
-
-        #redirect_to(action='detail', id=id)
+        meta.Session.commit()
 
         h.flash(_(u'La muestra se ha actualizado correctamente'))
         redirect(h.url_for(action='index'))
@@ -318,17 +285,10 @@ class PlacesController(BaseController):
 
     def delete(self,id):
         ''' Borrar una muestra '''
-        place  = meta.Session.query(Place).filter_by(id=id).first()
-
-        if not place:
-            abort(404)
-
-        if place.user_id != c.user.id:
-            abort(401)
+        c.place = Place.find_by_id(id)
 
         ''' No lo borramos, solo actulizamos la fecha en deleted_on '''
-        place.remove()
+        c.place.remove()
 
         h.flash(_(u'Se ha borrado la muestra correctamente'))
         redirect(h.url_for(controller='home', action='index'))
-

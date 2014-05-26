@@ -20,26 +20,23 @@ from sqlalchemy import orm, and_, desc, select, func
 
 class HomeController(BaseController):
 
-    def index(self):
-        function = 'def index'
-        log.debug(function)
-
-        #log.debug('%s - city:%s, country:%s' % (function, self.prm('city'), self.prm('country')))
-        if self.prm('city') and self.prm('country'):
-            c.city = self.prm('city').decode('utf8')
-            c.country = self.prm('country').decode('utf8')
-
+    def _base(self):
         page = 1
         if request.GET.has_key('page'):
             page = request.GET['page']
 
-        c.LastPlaces = paginate.Page(
+        c.places_list = paginate.Page(
             getLastPlaces(),
             page = page,
             items_per_page=5)
 
-        c.AllPlaces = getAllPlaces()
+        page = 1
 
+        c.places_map = getAllPlaces()
+
+    def index(self):
+
+        self._base()
         return render('/home.mako')
 
     def _order_elements_by_date(self, element1, element2):

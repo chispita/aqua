@@ -23,7 +23,8 @@ class ProfileController(BaseController):
 
     def view(self, nickname):
         function='def view'
-        log.debug(function)
+        #log.debug(function)
+
         c.db_user = meta.Session.query(User).filter(and_(User.nickname==nickname,User.deleted_on==None)).first()
 
         page = 1

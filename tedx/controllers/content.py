@@ -27,9 +27,13 @@ import logging
 log = logging.getLogger(__name__)
 
 class ContentController(BaseController):
+    log.debug('ContentController')
     requires_auth = True
 
     def index(self):
+        function = 'index'
+        log.debug( function)
+
         if request.params.get('place'):
             place = meta.Session.query(Place).filter(Place.id==request.params.get('place')).first()
             if place:
@@ -64,10 +68,6 @@ class ContentController(BaseController):
 
         edit_place_id = self.prm('edit_place_id')
 
-        log.debug('%s - latitude:%s' % (function, latitude))
-        log.debug('%s - longigude:%s' % (function, longitude))
-        log.debug('%s - place_name:%s' % (function, place_name))
-
         if not c.user:
             log.debug('%s - user:%s' % (function, c.user))
             return h.toJSON({'status': 'NOK', 'message': _(u'you_must_login_to_add_content'), 'error_code': 1})
@@ -87,7 +87,8 @@ class ContentController(BaseController):
         else:
             log.debug('%s - new place' % (function))
             if city is None or country is None or city== "" or country == "":
-
+                ## ??? Cambiar
+                address = 'pepito'
                 #address, city, postalcode, country = getLocation( "40.752067", "-73.977578")
                 #log.debug('%s - geoposicion vacia' % (function))
 
@@ -170,6 +171,28 @@ class ContentController(BaseController):
         users = []
 
         return h.toJSON({'status': 'OK', 'comment_id': db_comment.id})
+
+    def list_places(self):
+        function = 'list_places'
+        log.debug(function)
+        ## Filtro para que no muestre los borrados
+        places = meta.Session.query(Place).all()
+        '''
+
+        for place in places:
+            # obtener tiulo
+            # fecha inicio
+            # latitud y longitud
+            place.name
+            place.created_on
+            place.latitude
+            place.longitude
+
+
+        return h.toJSON()
+        '''
+        return 'holita'
+
 
     def upload_file(self):
         function = 'upload_file'

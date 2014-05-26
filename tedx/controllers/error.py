@@ -47,11 +47,11 @@ class ErrorController(BaseController):
             if resp:
                 c.error_message  = literal(resp.status)
 
-            email(sentto, render('error/error_email.mako'))
+            ##email(sentto, render('error/error_email.mako'))
             return render('/error/%s.mako'%resp.status_int)
         except:
 
-            email(sentto, render('error/error_email.mako'))
+            ##email(sentto, render('error/error_email.mako'))
             return render('/error/500.mako')
 
             '''

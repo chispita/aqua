@@ -103,6 +103,9 @@ class CommonController(BaseController):
         return render('/i18n.js')
 
     def get_tags(self):
+
+        return h.toJSON({"status": "NOK", "error_code": 1})
+
         a = select([Comment_tag.tag_id, func.count(Comment_tag.tag_id)], group_by=[Comment_tag.tag_id], order_by = [desc(func.count(Comment_tag.tag_id))])
         a = a.alias('query')
         results = meta.Session.query(a).limit(20)
