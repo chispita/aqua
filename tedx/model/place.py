@@ -29,9 +29,11 @@ place_table.append_column(sa.Column("ph", sa.types.Numeric(2,1)))
 place_table.append_column(sa.Column("chlorine", sa.types.Numeric(3,1)))
 place_table.append_column(sa.Column("address", sa.types.String(256)))
 place_table.append_column(sa.Column("postalcode", sa.types.String(50)))
+place_table.append_column(sa.Column("take_on", sa.types.DateTime))
+place_table.append_column(sa.Column("description", sa.types.String(256)))
 
 class Place(object):
-    def __init__(self, user, latitude, longitude, city, country, name=None, address=None, postalcode=None):
+    def __init__(self, user, latitude, longitude, name, address=None, city=None, postalcode=None, country=None, description=None, take_on=None):
         self.id = generate_id(self)
         while meta.Session.query(Place).filter_by(id = self.id).first() != None:
             self.id = generate_id(self)
@@ -39,17 +41,18 @@ class Place(object):
         self.latitude = round(float(latitude),6)
         self.longitude = round(float(longitude),6)
         self.name = name
+        self.description = description
         self.address = address
         self.postalcode=postalcode
         self.visits = 0
         self.city = city
-        if country:
-            if len(country.split(" ")) > 1:
-                self.country = country.split(" ")[1]
-            else:
-                self.country = country
+        self.country = country
         self.created_on = datetime.datetime.now()
         self.last_update = datetime.datetime.now()
+        if take_on is None:
+            self.take_on = datetime.datetime.now()
+        else:
+            self.take_on = take_on
 
     def remove(self):
         self.deleted_on = datetime.datetime.now()
@@ -90,3 +93,10 @@ class Place(object):
         self.ph = ph
         self.chlorine = chlorine
         meta.Session.commit()
+
+    @classmethod
+    def find_by_id(cls, id, abort_404 = False):
+        result = meta.Session.query(Place).filter_by(id=id).first()
+        if result is None and abort_404:
+            abort(404, "No such place object")
+        return result
