@@ -9,22 +9,27 @@
         <h3>${_(u'Descripción')}</h3>
 
         <div class="dataVision">
-            <label>${_(u'Autor')}</label>
-            ${comment.user_id}
+            <label>${_(u'Autor')}
+            <strong>${comment.user.nickname}</strong>
+            </label>
         </div>
 
         <div class="dataVision">
-            <label>${_(u'Creado')}:</label>
-            ${comment.created_on}
+            <label>${_(u'Creado')}:
+                <strong>${comment.created_on}</strong>
+            </labelb>
         </div>
 
 
         <div class="dataVision">
-            <label>${_(u'Contenido')}:</label>
-            ${comment.content}
+            <label>${_(u'Contenido')}:
+                <strong>${comment.content}</strong>
+            </label>
         </div>
 
-        <br><br>
+        </br></br>
+        </br></br>
+
         %if c.user:
             %if comment.user_id == c.user.id:
                 <div class="centerize">

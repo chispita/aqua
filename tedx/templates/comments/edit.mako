@@ -1,34 +1,21 @@
-<%inherit file="/common.mako"/>
+<%inherit file="../base.mako"/>
 <%namespace name="functions"  file="/functions.mako"/>
 <%namespace name="commons"  file="commons.mako"/>
 
-<%def name="title()">${_(u'Editar Muestra')}</%def>
-
-<%def name="head()">
-    <link rel="stylesheet" type="text/css" href="/css/common.css" />
-
-    <script type="text/javascript" src="/js/flowplayer-3.2.4.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.tagcloud.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/js/view.js" charset="utf-8"></script>
-
-    <script type="text/javascript">
-    </script>
-</%def>
-
-<%def name="title()">${_(u'Editar Muestra')}</%def>
+<%def name="title()">${_(u'Editar Comentario')}</%def>
 
 <%def name="MainContent()">
     <div id="queMapa">
         <div align="right"><a href="/" class="close-icon"></a></div>
-
-        <h2 class="mom">${_(u'Editar Comentario')}</h2>	    
-        Commentario id:${c.comment.id}
-        ${h.form(h.url_for(id=c.comment.id, place_id=c.comment.place_id), class_='accion bordeSoft') }
+        <h2>${_(u'Editar Comentario')}</h2>	    
+        ${h.form(h.url_for(id=c.comment.id,place_id=c.comment.place_id))}
         <%include file="form.mako" />
-
-
+            </br></br>
+            <div class="centerize">
+                <p class="submit">${ h.submit('submit', _(u'Enviar'), class_='accion bordeSoft') }</p>
+            </div>
         ${ h.end_form() }
-</div>
+    </div>
 </%def>
 
 <%def name="init()"></%def>

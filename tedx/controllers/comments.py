@@ -61,18 +61,16 @@ class CommentsController(BaseController):
             page = page,
             items_per_page=5)
 
+        c.places_map = getAllPlaces()
         page = 1
 
         return render('/comments/index.mako')
 
-    def detail(self, id, place_id):
+    def detail(self, id):
         function = 'detail'
         log.debug(function)
 
-        c.comment  = meta.Session.query(Comment).filter_by(id=id).first()
-
-        if c.comment is None:
-            abort(404)
+        c.comment  = Comment.find_by_id(id)
 
         #Podemos poner valores por defecto
         defaults = None
@@ -93,34 +91,23 @@ class CommentsController(BaseController):
         if c.user is None:
             abort(401)
 
-        place  = meta.Session.query(Place).filter_by(id=place_id).first()
-
-        if place is None:
-            abort(404)
-
-        #Podemos poner valores por defecto
-        defaults = {
-            'comment.place_id': place.id,
-            }
+        c.place = Place.find_by_id(place_id)
+        defaults = None
 
         form = render('/comments/new.mako')
         return htmlfill.render(form, defaults)
 
     @validate(schema=NewCommentSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
-    def _new(self):
+    def _new(self,place_id):
         function = '_new'
         log.debug(function)
 
+        place  = Place.find_by_id(place_id)
+
         # Recuperamos los datos
-        place_id = self.prm('comment.place_id')
         title = self.prm('comment.title')
         content = self.prm('comment.content')
-
         image = request.params.get('comment.image')
-
-        log.debug('%s image:%s' % (function, str(image)))
-
-        place  = meta.Session.query(Place).filter_by(id=place_id).first()
 
         # Grabar todos los datos
         db_comment = place.add_comment(c.user, content, title)
@@ -133,19 +120,12 @@ class CommentsController(BaseController):
         redirect(h.url_for(controller='places', action='detail', id=place_id))
 
     @dispatch_on(POST="_edit")
-    def edit(self, id, place_id):
+    def edit(self, id):
         function = 'edit'
         log.debug(function)
         # We need to recheck auth in here so we can pass in the id
-        '''
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(id), h.auth.has_organiser_role)):
-            # Raise a no_auth error
-            h.auth.no_role()
-        '''
         c.form = 'edit'
-        c.comment  = meta.Session.query(Comment).filter_by(id=id).first()
-        if not c.comment:
-            abort(404)
+        c.comment  = Comment.find_by_id(id)
 
         if c.comment.user_id != c.user.id:
             abort(401)
@@ -163,13 +143,7 @@ class CommentsController(BaseController):
         function = '_edit'
         log.debug(function)
 
-            # Raise a no_auth error
-            # h.auth.no_role()
-
-        #c.person = Person.find_by_id(id)
-        #self.finish_edit(c.person)
-
-        comment  = meta.Session.query(Comment).filter_by(id=id).first()
+        comment = Comment.find_by_id(id)
         if comment:
             comment.last_update = datetime.datetime.now()
             comment.title = self.prm('comment.title')
@@ -181,11 +155,7 @@ class CommentsController(BaseController):
 
     def delete(self,id, place_id):
         ''' Borrar una muestra '''
-
-        comment  = meta.Session.query(Comment).filter_by(id=id).first()
-
-        if not comment:
-            abort(404)
+        comment = Comment.find_by_id(id)
 
         if comment.user_id != c.user.id:
            abort(401)
@@ -195,5 +165,4 @@ class CommentsController(BaseController):
 
         h.flash(_(u'Se ha borrado el comentario correctamente'))
         redirect(h.url_for(controller='places', action='detail', id=place_id))
-
 

@@ -61,3 +61,10 @@ class Comment(object):
         db_tag = Comment_tag(self, tag)
 
         return db_tag
+
+    @classmethod
+    def find_by_id(cls, id, abort_404 = False):
+        result = meta.Session.query(Comment).filter_by(id=id).first()
+        if result is None and abort_404:
+            abort(404, "No such comment object")
+        return result

@@ -1,4 +1,4 @@
-<%inherit file="/common.mako"/>
+<%inherit file="../base.mako"/>
 
 <%def name="title()">${_(u'Nueva Muestra')}</%def>
 
@@ -9,29 +9,15 @@
         <h2 class="mom">${_(u'Nueva Muestra')}</h2>	    
         ${ h.form(url=h.url_for(), multipart=True) }
             <%include file="form.mako" />
-            ${ h.submit('submit', _(u'Enviar'), class_='accion bordeSoft') }
+            <div class="centerize">
+                <p class="submit">${ h.submit('submit', _(u'Enviar'), class_='accion bordeSoft') }</p>
+            </div>
         ${ h.end_form() }
-
-</div>
-</%def>
-
-<%def name="head()">
-    <link rel="stylesheet" type="text/css" href="/css/tablesorterstyle.css" />
-    <link rel="stylesheet" type="text/css" href="/css/home.css" />
-    <script type="text/javascript" src="/js/home.js"></script>
-    <script type="text/javascript" src="/js/jquery.tagcloud.min.js" charset="utf-8"></script>
-    <link rel="stylesheet" type="text/css" href="/css/screen.css" />
-    <script type="text/ javascript">
-        var user = "${c.user}";
-        var latitude = "${c.latitude}";
-        var longiude = "${c.longitude}";
-    </script>
+    </div>
 </%def>
 
 <%def name="init()"></%def>
 
 <%def name="content()">
     <h3>${_(u'Muestra de Agua Analizadas')}</h3>
-    <div id="list"></div>
-    <div id="srToolsDown"></div>
 </%def>

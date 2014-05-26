@@ -60,7 +60,7 @@ body {
 
 h1, h2, h3, h4, h5, p   				{ font-family:Arial, Helvetica, sans-serif; }
 h1										{ padding:5px;font-size:20px; color:#000;}
-h2										{ padding:5px;font-size:18px; color:#000;}
+h2										{ padding:5px;font-size:18px; font-weight:bold;}
 h3										{   text-transform:uppercase; 
                                             font-size: 14px; 
                                             color:#369; 
@@ -69,7 +69,9 @@ h3										{   text-transform:uppercase;
                                             border-bottom: 1px solid #999;}
 h4										{ padding:5px;font-size:14px; color:#000;color:#369; text-transform:uppercase;}
 h5										{ padding:5px;font-size:12px; color:#000;}
-p										{ padding:5px;font-size:11px; color:#000;}
+p										{ padding:5px;font-size:11px;}
+
+
 /*-----------------------ROLLOVERS-----------------------*/
 
 a.nuevoStreetr {
@@ -384,13 +386,12 @@ a.estiloBlanco {
 #MsgOverMap .text{
     font-size: 15px;
 }
-
 #queMapa { 
     height:390px; 
-    width: 220px;  
+    width: 240px;  
     position:absolute; 
     top:15px; 
-    left: 710px; 
+    left: 690px; 
     padding: 15px 25px; 
     background: rgba(255,255,255,0.8);
     border:1px;
@@ -398,16 +399,45 @@ a.estiloBlanco {
     border-style:solid;
     border-radius:10px;
     }    
-#queMapa h2 { font-size: 25px; text-align: left; }
-#queMapa h2.mom {font-size:18px; padding-left:0;}
-#queMapa p { font-size: 12px; }
+
+#queMapa h2{
+    font-size: 25px;
+    text-transform:uppercase;   
+    font-weight:bold;
+}
+
+#queMapa .text {
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+#queMapa .textbold{
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight:bold;
+}
+
+
+#queMapa h2.mom {font-size:18px; padding-left:0;}*
+#queMapa p { font-size: 14px; }
 #idioma a { color: #3e7988; text-decoration: none; }
 #idioma a:hover { text-decoration: underline;}
 #queMapa .lnk { font-size: 11px; display: block; padding: 5px 20px; color:#CD6717; margin: 5px; }
 #queMapa .lnk:hover { background-color: #F18835; }
 #queMapa .youtube { background: #f8f8f8 url('../images/iconoYoutube.png') no-repeat 0 -9px; text-indent: -99999px; border:1px dotted #333; }
 #queMapa .img { background: #f8f8f8 url('../images/iconoFotografia.png') no-repeat 7px 0; text-indent: -99999px; border:1px dotted #333; }
-#queMapa input[type="text"] { width: 230px; }
+#queMapa input[type="text"]{ 
+    width: 200px;
+    font-weight:bold;
+    color:#3E7986}
+#queMapa input[type="password"]{ 
+    width: 200px;
+    font-weight:bold;
+    color:#3E7986}
+#queMapa input[type="textarea"]{ 
+    width: 200px;
+    font-weight:bold;
+    color:#3E7986}
 #queMapa textarea { width: 220px; font-family: Arial, serif; font-size: 13px; padding: 5px; height: 60px; }
 #queMapa label {font-size:14px;}
 #queMapa input.cps {width:100px;}
@@ -463,7 +493,7 @@ a.estiloBlanco {
     font-size:large;
     font-family: "Helvetica Neue";
     background: rgba(255,255,255,0.8);
-    padding: 15px 25px; 
+    padding: 10px 20px; 
     border:1px;
     border-color: #87b8f4;
     border-style: solid;
@@ -473,7 +503,10 @@ a.estiloBlanco {
 
 .logolink{
     text-decoration:none;
-    color:black;
+    /*color:black;*/
+    /*font-family: Arial, Helvetica, sans-serif;*/
+    font-weight: bold;
+    font-family: Helvetica;
 }
 
 #login {

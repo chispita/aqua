@@ -1,0 +1,5 @@
+*.pyc
+data/*
+data/templates/*
+tedx/config/lca_info.py
+tedx/controllers/*.pyc

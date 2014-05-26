@@ -57,8 +57,8 @@ class User(object):
         meta.Session.add(self)
         meta.Session.commit()
 
-    def add_place(self, latitude, longitude, city, country, name=None, address=None,postalcode=None):
-        db_place = Place(self, latitude, longitude, city, country, name, address, postalcode)
+    def add_place(self, latitude, longitude, name, address=None, city=None, postalcode=None, country=None, description=None ,take_on=None):
+        db_place = Place(self, latitude, longitude, name, address, city, postalcode, country, description, take_on)
         self.places.append(db_place)
 
         meta.Session.add(self)
@@ -94,6 +94,20 @@ class User(object):
     @classmethod
     def find_by_email(cls, email, abort_404 = False):
         result = meta.Session.query(User).filter_by(email=email.lower()).first()
+        if result is None and abort_404:
+            abort(404, "No such person object")
+        return result
+
+    @classmethod
+    def find_by_id(cls, id, abort_404 = False):
+        result = meta.Session.query(User).filter_by(id=id).first()
+        if result is None and abort_404:
+            abort(404, "No such person object")
+        return result
+
+    @classmethod
+    def find_by_name(cls, nickname, abort_404 = False):
+        result = meta.Session.query(User).filter_by(nickname=nickname).first()
         if result is None and abort_404:
             abort(404, "No such person object")
         return result

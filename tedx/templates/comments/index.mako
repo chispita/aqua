@@ -1,31 +1,10 @@
 # -*- coding: utf-8 -*-
-<%inherit file="../common.mako"/>
+<%inherit file="../base.mako"/>
 <%namespace name="functions"  file="/functions.mako"/>
 
 <%def name="title()">
     ${_(u'Comentarios')}
 </%def>
-
-<%def name="head()">
-    <script type="text/javascript" src="/js/my_account.js">
-    </script>
-
-    <link rel="stylesheet" type="text/css" href="/css/my_account.css" />
-    </script>
-
-    <script type="text/javascript">
-
-        ##% if c.user.latitude and c.user.longitude:
-        ##    latitude = "${c.user.latitude}"
-        ##    longitude = "${c.user.longitude}"
-        ##% endif
-        ##% if c.user:
-        ##    user_id = "${c.user.id}";
-        ##% endif
-    </script>
-</%def>
-
-<%def name="init()"></%def>
 
 <%def name="MainContent()">
     <div  id="queMapa">

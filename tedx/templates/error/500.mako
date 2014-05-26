@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-<%inherit file="../common.mako"/>
+<%inherit file="../base.mako"/>
 <%def name="title()">
     ${_(u'Algo ha funcionado mal')}
 </%def>
