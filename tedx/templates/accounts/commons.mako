@@ -2,7 +2,7 @@
     edit user
 </%def>
 
-<%def name="show_user(user)">
+<%def name="show_user(user, public)">
     %if user:
         ## Si no exite el usuario logeado-> perfil publico
 
@@ -26,10 +26,17 @@
             <h2>${user.nickname}</h2>
             <h3>${_(u'Datos')}</h3>
             <div class="dataVision">
-                <label>${_(u'Descripción')}
-                    <strong>${user.description}</strong>
+                <label>${_(u'Nombre')}:
+                    <strong>${user.nickname}</strong>
                 </label>
             </div>
+            %if public == False:
+                <div class="dataVision">
+                    <label>${_(u'Email')}:
+                        <strong>${user.email}</strong>
+                    </label>
+                </div>
+            %endif
 
             <div class="dataVision">
                 <label>${_(u'Fecha Creación')}:                    
@@ -72,7 +79,6 @@
 
             %if c.user:
                 %if user.nickname == c.user.nickname:
-
                     <div class="centerize">
                         <a href='/account/settings/' class='accion right bordeSoft' style='text-transform: uppercase:' id='grande'>
                             ${_(u'Actualizar Perfíl')}</a>

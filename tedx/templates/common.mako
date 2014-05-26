@@ -26,7 +26,6 @@
 
         ${next.head()}
 
-
         <script type="text/javascript">
 
             function create_map() {
@@ -51,6 +50,8 @@
                     });
                 return map;
             };
+
+            ##${next.javascript()}
 
 	     $(document).ready( function() {
             %if not "app_message" in session:
@@ -84,12 +85,16 @@
 
         });
 
+        ${next.javascript()}
+
         </script>
+
+        ##${next.javascript()}
+
     </head>
 
     <body>
 
-        <a href="#muestras">
         <%include file="messages.mako"/>
         <%include file="cabecera.mako"/>
 

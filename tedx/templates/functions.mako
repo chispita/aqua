@@ -1,34 +1,3 @@
-<%def name="DrawDrops(items)">
-    <script type="text/javascript">
-        alert('holita');
-
-        function map_load() {
-            // Acercamos el zoom lo mas cerca posible
-            % for place in items :
-                html =  '<table>' +
-                    '<tr><td><a class="cloud_strong">${_(u'lugar')}:</a></td>' +
-                    '<td><a class="estiloAzul" href="/places/${place.id}">${place.name}</a>'+
-                    '</td></tr><tr><td>' + 
-                    '<a class="cloud_strong">${_(u'autor')}:</a></td><td>' +
-                    '<a class="cloud_header" href="/account/${place.user.nickname}">${place.user.nickname}</a></td></tr>' +
-                    '<tr><td><a class="cloud_strong">${_(u'modificado')}:</a></td>' +
-                    '<td><a class="cloud_strong">${place.last_update}</a></td>' +
-                    '<tr><td><a class="cloud_strong">${_(u'pH')}:</a></td>' +
-                    '<td><a class="cloud_sub">${place.ph}</a></td></tr>' +
-                    '<tr><td><a class="cloud_strong">${_(u'Cloro')}:</a></td>' +
-                    '<td><a class="cloud_sub">${place.chlorine}</a></td></tr></table>';
-
-                var drop_marker = ${GetDrop(place.ph, place.chlorine)};
-                var marker = create_marker({
-                    position: new google.maps.LatLng(${place.latitude}, ${place.longitude}),
-                    icon: drop_marker,
-                    map: map
-                }, infowindow, html);
-            % endfor
-        }
-    </script>
-</%def>
-
 <%def name="GetDrop(ph,chlorine)">
 <%
     ph = float(ph or 0)
@@ -52,8 +21,9 @@
             <div id="description">
                 <h4><a href="/places/${item.place_id}">${_(u'Muestra')}</a></h4>
                     
-                <br><a href="/places/${item.place_id}/comments/${item.id}">${_(u'Título')}:           ${item.title}</a>
-                <br> ${_(u'Usuario')}:          
+                <br><a href="/places/${item.place_id}/comments/${item.id}">${_(u'Título')}:${item.title}</a>
+                <br> ${_(u'Usuario')}:          ${item.user.nickname}
+                <br> ${_(u'Muestra')}:          ${item.place.name}
                 <br> ${_(u'Contenido')}:        ${item.content}
                 <br> ${_(u'Fecha Creación')}:   ${item.created_on}
             </div>
@@ -88,8 +58,9 @@
 %endif
 </%def>
 <%def name="list_places(places)">
-% if places:
-    % for place in places:
+    % if places:
+
+        % for place in places:
         <div id="muestra_item">
             <div class="imagen">                                                                                                                                   
             <a href="/places/${place.id}"><img src="/images/${GetDrop(ph=place.ph, chlorine=place.chlorine)}.png"/></a>
@@ -97,11 +68,10 @@
             <br> ${_(u'Cl')}:  ${place.chlorine}  
         </div>                            
         <div class="description">
-            <h4><a href="/places/${place.id}">${place.name}</a></h4>                                                                                                  
-            <p>${_(u'Descripción')}: ${place.comments[0].content}</p>                                                                                                                 
+            <h4><a href="/places/${place.id}">${place.name}</a></h4> 
+            <p>${_(u'Descripción')}: ${place.description}</p>
             <p>${_(u'Ultima actualización')}:${place.last_update}</p>   
-            <p><% comments = len(place.comments)-1 %>                
-               ${_(u'Comentarios')}:   ${comments}
+               ${_(u'Comentarios')}:   ${ len(place.comments)}
                ${_(u'Visitas')}: ${place.visits}                      
                ##${_(u'Me gusta')}:
             </p>                                                                                                                                                             

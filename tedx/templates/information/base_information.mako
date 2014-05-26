@@ -5,6 +5,7 @@
     ${next.title()}
 </%def>
 
+<%def name="javascript()"></%def>
 <%def name="head()">
     <link rel="stylesheet" type="text/css" href="/css/my_account.css" />
 

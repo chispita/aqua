@@ -1,44 +1,7 @@
-<%inherit file="../common.mako"/>
+<%inherit file="../base.mako"/>
 <%namespace name="functions"  file="/functions.mako"/>
 
 <%def name="title()"> ${_(u'Home')}</%def>
-
-<%def name="head()">
-    <script type="text/javascript">
-        function map_load() {
-            // Acercamos el zoom lo mas cerca posible
-            % for place in c.MapPlaces :
-                html =  '<table>' +
-                    '<tr><td><a class="cloud_strong">${_(u'lugar')}:</a></td>' +
-                    '<td><a class="estiloAzul" href="/places/${place.id}">${place.name}</a>'+
-                    '</td></tr><tr><td>' + 
-                    '<a class="cloud_strong">${_(u'autor')}:</a></td><td>' +
-                    '<a class="cloud_header" href="/account/${place.user.nickname}">${place.user.nickname}</a></td></tr>' +
-                    '<tr><td><a class="cloud_strong">${_(u'modificado')}:</a></td>' +
-                    '<td><a class="cloud_strong">${place.last_update}</a></td>' +
-                    '<tr><td><a class="cloud_strong">${_(u'pH')}:</a></td>' +
-                    '<td><a class="cloud_sub">${place.ph}</a></td></tr>' +
-                    '<tr><td><a class="cloud_strong">${_(u'Cloro')}:</a></td>' +
-                    '<td><a class="cloud_sub">${place.chlorine}</a></td></tr></table>';
-
-                var drop_marker = ${functions.GetDrop(place.ph, place.chlorine)};
-                var marker = create_marker({
-                    position: new google.maps.LatLng(${place.latitude}, ${place.longitude}),
-                    icon: drop_marker,
-                    map: map
-                }, infowindow, html);
-            % endfor
-        }
-    </script>
-</%def>
-
-
-<%def name="init()"></%def>
-
-<%def name="extra_body()">
-    <body onload="map_load()">
-</%def>
-
 
 <%def name="MainContent()">
     %if not c.user:
