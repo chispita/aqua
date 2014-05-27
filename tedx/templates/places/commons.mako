@@ -20,13 +20,13 @@
             </div>
 
             <div class="dataVision">
-                <label>${_(u'Creado')}:
-                    <strong>${place.created_on}</strong>
-                </label>
                 <label>${_(u'Tomada')}:
-                    <strong>${place.take_on}</strong>
+                    <strong>${place.take_on.strftime('%H:%M - %d/%m/%y')}</strong></br>
                 </label>
 
+                <label>${_(u'Creada')}:
+                    <strong>${place.created_on.strftime('%H:%M - %d/%m/%y')}</strong></br>
+                </label>
             </div>
 
             <div class="dataVision">
