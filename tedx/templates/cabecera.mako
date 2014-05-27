@@ -2,7 +2,7 @@
 <div id="contenedor">
     <div id="cabecera">
         <div id="logotipo" style="float:left; margin; border-style:solid;border-color:#0000ff;">
-            ##<a href="/"><img src="/images/aguagrifo.png" alt="aqua ibercivis"  /></a>
+            <a href="/"><img src="/images/aguagrifo.png" alt="aqua ibercivis"  /></a>
         </div>
 
         <div id="barra_login">
