@@ -152,6 +152,8 @@ class PlacesController(BaseController):
     def _basedetail(self,id):
         c.place  = Place.find_by_id(id)
 
+        c.places_map = getAllPlaces()
+
         if c.place is None:
             abort(404)
 
