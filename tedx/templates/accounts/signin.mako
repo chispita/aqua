@@ -12,10 +12,10 @@
 
         <h2>${_(u'Entrar')}</h2>
         ${ h.form(h.url_for(), method='post') }
-            <a class="text">${_(u'Email')}</a>
+            <a class="text">${_(u'Email')}</a></br>
             ${ h.text('person.email', size=30) }</br>
                    
-            <a class="text">${_(u'Contraseña')}</a>
+            <a class="text">${_(u'Contraseña')}</a></br>
             ${ h.password('person.password') }</br>
 
             </br></br>
