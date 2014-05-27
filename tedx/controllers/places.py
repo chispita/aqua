@@ -169,6 +169,8 @@ class PlacesController(BaseController):
         function = 'index'
         log.debug(function)
 
+        c.top_places = getTopPlaces()
+
         self._base()
         return render('/places/index.mako')
 
