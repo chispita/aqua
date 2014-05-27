@@ -3,7 +3,7 @@
     <label for="srch" style="float:left;padding:5px 0px;">
         <input type="text" id="search_string" placeholder="${_(u'Encuentra una muestra')}" onkeydown="if ((event.which && event.which == 13) || (event.keyCode && event.keyCode == 13)) {search_query();}"></input>
     </label>
-    <a href="javascript:void(0);" onclick="search_query();" class="left accion bordeSoft">${_(u'Buscar')}</a>
+    <a href="/search" class="left accion bordeSoft">${_(u'Buscar')}</a>
     <a href="javascript:void(0);" onclick="get_current_position(on_position_success, on_position_error);" class="left accion bordeSoft" id="geo">${_(u'Geoposicioname')}</a>
     %if c.user:
         <div class="derecha">
