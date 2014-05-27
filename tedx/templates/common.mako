@@ -94,7 +94,7 @@
     </head>
 
     <body>
-
+        <%include file="ga.mako"/>
         <%include file="messages.mako"/>
         <%include file="cabecera.mako"/>
 
