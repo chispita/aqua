@@ -14,7 +14,9 @@
         %for place in c.TopUser:
             <% counter +=1 %>
             <a class="text">${counter} - </a>
-            <a class="text" href="${place.user.nickname}"> ${ place.user.nickname }</a></br>
+            <a class="text" href="${place[0].user.nickname}"> ${ place[0].user.nickname }</a>
+            <a class="text">(${place[1]})</a>
+            </br>
         %endfor
     </div>
 </%def>  
