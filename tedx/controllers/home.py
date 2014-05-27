@@ -92,7 +92,7 @@ class HomeController(BaseController):
     def search(self):
         function = 'def search'
 
-        self._base(     self._base())
+        self._base())
         log.debug(function)
 
         return render('/home.mako')
