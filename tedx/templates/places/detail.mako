@@ -11,10 +11,11 @@
 </%def>
 
 <%def name="content()">
-    <h3>${_(u'Comentarios')}</h>
+    <h3>${_(u'Comentarios')}</h3>
 
     %if not c.user:
-        ${_(u'login_first_to_comment')} <!-- Para hacer un comentario hace falta hacer login primero -->
+        </br>
+        <a class="text">${_(u'Debes de estar logeado para poder escribir comentarios')}</a>
     %else:
         <div class="centerize">
             <a href="/places/${c.place.id}/comments/new" class="accion bordeSoft" id="new-instant-btnSend">${_(u'Añadir comentario')}</a>
