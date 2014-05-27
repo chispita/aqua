@@ -23,7 +23,7 @@
 </%def>  
                 
 <%def name="content()">
-    <h3>${_(u'Mestras enviadas')}</h3>
+    <h3>${_(u'Muestras enviadas')}</h3>
     ${c.AllPlaces}
     ${functions.list_places(c.ListPlaces)}    
 
