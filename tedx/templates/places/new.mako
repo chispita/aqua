@@ -4,7 +4,6 @@
 
 <%def name="MainContent()">
     <div id="queMapa">
-
         <div align="right"><a href="/" class="close-icon"></a></div>
         <h2 class="mom">${_(u'Nueva Muestra')}</h2>	    
         ${ h.form(url=h.url_for(), multipart=True) }
