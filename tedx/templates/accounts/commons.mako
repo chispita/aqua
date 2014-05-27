@@ -39,16 +39,18 @@
             %endif
 
             <div class="dataVision">
-                <label>${_(u'Fecha Creación')}:                    
-                    <strong>${user.created_on}</strong>
+                <label>${_(u'Activo desde')}:                   
+                    <strong>${user.created_on.strftime('%d/%m/%y')}</strong></br>
                 </label>
             </div>
 
+            <!--
             <div class="dataVision">
                 <label>${_(u'Última Actividad')}:
-                    <strong>${user.last_activity}</strong>
+                    ##<strong>${user.last_activity | n}</strong></br>
                 </label>
             </div>
+            -->
 
             <h3>${_(u'Actividad')}</h3>
             <div class="dataVision">
