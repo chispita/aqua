@@ -71,6 +71,13 @@ def getProfileComments(nickname):
     return meta.Session.query(Comment).\
         filter(and_(Comment.user.has(User.nickname == nickname),Place.deleted_on==None ))
 
+def getTopPlaces():
+    ''' Get the last drops saved '''
+    return meta.Session.query(Place).\
+        filter(and_(Place.empty==False,Place.deleted_on==None)).\
+        order_by(desc(Place.last_update)).\
+        limit(5).all()
+
 ''' Places '''
 def getAllPlaces():
     ''' Get the all drops saved '''
