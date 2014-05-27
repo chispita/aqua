@@ -91,7 +91,11 @@ class HomeController(BaseController):
 
     def search(self):
         function = 'def search'
-        #log.debug(function)
+
+        self._base(     self._base())
+        log.debug(function)
+
+        return render('/home.mako')
 
         #date = datetime.datetime.now()
         mode = 'map'

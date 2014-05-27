@@ -29,6 +29,7 @@ def make_map(config):
 
     map.connect('/',                            controller='home',  action='index')
 
+    map.connect('/search',                      controller='home',     action='search')
     map.connect('/register_new',                controller='register', action='new')
     map.connect('/signin',                      controller='account', action='signin')
     map.connect('/signout',                     controller='account', action='signout')
