@@ -13,7 +13,7 @@ import datetime
 import logging
 log = logging.getLogger(__name__)
 
-from sqlalchemy import and_
+from sqlalchemy import and_, func
 
 from geopy import geocoders
 from pygeocoder import Geocoder
@@ -56,56 +56,64 @@ def getAllUsers():
 
 def getTopUsers():
     ''' Get all the users active '''
-    return meta.Session.query(Place).group_by(Place.user_id).limit(5).all()
+    return meta.Session.query(Place, func.count(Place.user_id)).\
+            group_by(Place.user_id). \
+            limit(5).all()
 
 ''' Profile '''
 def getProfilePlaces(nickname):
     ''' Get places of the user '''
-    return meta.Session.query(Place).filter(and_(Place.user.has(User.nickname == nickname),Place.deleted_on==None))
+    return meta.Session.query(Place). \
+            filter(and_(Place.user.has(User.nickname == nickname),Place.deleted_on==None))
 
 def getProfileComments(nickname):
     ''' Get Comments of the user '''
-    return meta.Session.query(Comment).filter(and_(Comment.user.has(User.nickname == nickname),Place.deleted_on==None ))
+    return meta.Session.query(Comment).\
+        filter(and_(Comment.user.has(User.nickname == nickname),Place.deleted_on==None ))
 
 ''' Places '''
 def getAllPlaces():
     ''' Get the all drops saved '''
-    return meta.Session.query(Place).filter(and_(Place.empty==False,Place.deleted_on==None)).all()
+    return meta.Session.query(Place).\
+        filter(and_(Place.empty==False,Place.deleted_on==None)).all()
 
 def getLastPlaces():
     ''' Get the last drops saved '''
-    return meta.Session.query(Place).filter(and_(Place.empty==False,Place.deleted_on==None)).order_by(desc(Place.last_update))
+    return meta.Session.query(Place).\
+        filter(and_(Place.empty==False,Place.deleted_on==None)).\
+        order_by(desc(Place.last_update))
 
 ''' Comments '''
 def getAllComments():
     ''' Get all comments saved '''
-    return meta.Session.query(Comment).filter(Comment.deleted_on==None).order_by(desc(Comment.last_update))
+    return meta.Session.query(Comment).\
+        filter(Comment.deleted_on==None).\
+        order_by(desc(Comment.last_update))
 
 def getCommentsPlace(id):
     ''' Get Comments in a place '''
-    return meta.Session.query(Comment).filter(and_(Comment.place_id==id,Comment.deleted_on==None)).order_by(desc(Comment.last_update))
+    return meta.Session.query(Comment).\
+        filter(and_(Comment.place_id==id,Comment.deleted_on==None)).\
+        order_by(desc(Comment.last_update))
 
 
 def CheckEmailUser(email):
     ''' Check if exits
     '''
-    function = 'CheckEmailUser'
     if (email.lower() == c.user.email.lower()):
         return None
 
-    return meta.Session.query(User).filter(User.email!=email).first()
+    return meta.Session.query(User).\
+        filter(User.email!=email).first()
 
 def CheckNicknameUser(nickname):
     ''' Check if exits
     '''
-    function = 'CheckNicknamelUser'
-    log.debug(function)
-
-    log.debug('%s: %s %s' % ( function, nickname, c.user.nickname))
-
     if (nickname.lower() == c.user.nickname.lower()):
         return None
-    return meta.Session.query(User).filter(User.nickname==nickname).first()
+
+    return meta.Session.query(User).\
+        filter(User.nickname==nickname).first()
 
 def UploadFile(db_comment, attachment):
     ''' Save attachment in the system
