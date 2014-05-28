@@ -3,7 +3,7 @@
 <%def name="extra_body()"/>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <title>AQUA - ${next.title()}</title>
+        <title>AQUA Ibercivis - ${next.title()}</title>
         <%include file="meta.mako"/>
 
         ##<%namespace name="functions"  file="functions.mako"/>
@@ -51,8 +51,6 @@
                 return map;
             };
 
-            ##${next.javascript()}
-
 	     $(document).ready( function() {
             %if not "app_message" in session:
                 <%
@@ -89,12 +87,10 @@
 
         </script>
 
-        ##${next.javascript()}
-
+        <%include file="ga.mako"/>
     </head>
 
     <body>
-        <%include file="ga.mako"/>
         <%include file="messages.mako"/>
         <%include file="cabecera.mako"/>
 
