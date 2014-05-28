@@ -1,13 +1,11 @@
 ## meta.mako ##
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<meta name="Keywords" content="quality, water, geotagging, geolocalización, social network, red social, mapa"/>
-<meta name="Description" content="Aqua ibercivis lets you tag water quality places and sharing them with your friends.\
-        by selecting a place in a map  \
-        With this app you can share water qualitys, images and videos as well as comment \
-        on other people posts."/> 
-<meta name="Author" content="Ibercivis"/>
-                                                                                                                                                <meta name="Identifier" scheme="URI" content="http://aqua.ibercivis.es"/>
-<meta name="page-topic" content="water,quality,geotagging, geolocalización, social network, red social,mapa"/>
-<meta name="audience" content="All"/>
-<meta name="Rating" content="General"/>
-<meta name="Distribution" content="Global"/>
+<title>Aqua Ibercivis: Analisis de la calidad del agua gracias a la ciencia ciudadana</title>
+<meta name="description" content="La Fundación Ibercivis realiza un experimento sobre la calidad del agua de nuestras ciudades mediante la participación ciudadana. Queremos que nos ayudes a controlar si los niveles de cloro en nuestros grifos son los adecuados para el consumo. Aquí puedes compartir el resultado de analizar el agua de tu casa, o el de la fuente de tu parque, el que encuentre en tus viajes... ¿Quieres subir tu propia medida de análisis?" />
+<link rel="canonical" href="http://aqua.ibercivis.es" />
+<meta property="og:locale" content="es_ES" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Aqua Ibercivis: Ciencia Ciudadana y Computacion Voluntaria" />
+
+<meta name="og:description" content="La Fundación Ibercivis realiza un experimento sobre la calidad del agua de nuestras ciudades, mediante la participación ciudadana. Queremos que nos ayudes a controlar si los niveles de cloro en nuestros grifos son los adecuados para el consumo. Aquí puedes compartir el resultado de analizar el agua de tu casa, o el de la fuente de tu parque, el que encuentre en tus viajes... ¿Quieres subir tu propia medida de análisis?" />
+<meta property="og:url" content="http://aqua.ibercivis.es/" />
+<meta property="og:site_name" content="Aqua Ibercivis" />
