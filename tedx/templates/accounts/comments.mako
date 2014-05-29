@@ -14,9 +14,13 @@
 </%def>
 
 <%def name="content()">
-    <a name="muestras">    
-        <h3>${_(u'Comentarios realizados')} ${_(u'por')}: ${c.nickname}</h3>
-        ${functions.list_comments(c.Comments)}
-        ${c.Comments.pager('Page $page: $link_previous $link_next ~4~')}
-    </a>
+    <a name="muestras"/>    
+    <h3>${_(u'Comentarios realizados')} ${_(u'por')}: ${c.nickname}</h3>
+    ${functions.list_comments(c.Comments)}
+
+    </br>
+    ${c.Comments.pager(
+        link_attr = {'class':'accion bordeSoft'},
+        curpage_attr = {'class': 'seleccion bordeSoft'},
+        dotdot_attr = {'class': 'accion bordeSoft'})}
 </%def>

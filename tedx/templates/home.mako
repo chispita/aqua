@@ -27,5 +27,9 @@
 <%def name="content()">
     <h3>${_(u'Ultimas muestras enviadas')}</h3>
     ${functions.list_places(c.places_list)}
-    ${c.places_list.pager('Page $page: $link_previous $link_next ~4~')}
+    </br>
+    ${c.places_list.pager(
+        link_attr = {'class':'accion bordeSoft'},
+        curpage_attr = {'class': 'seleccion bordeSoft'},
+        dotdot_attr = {'class': 'accion bordeSoft'})}
 </%def>

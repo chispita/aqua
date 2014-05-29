@@ -24,6 +24,10 @@
 <%def name="content()">
     <h3>${_(u'Usuarios Registrados')}</h3>
     ${functions.list_users(c.Users)}
-    ${c.Users.pager('Page $page: $link_previous $link_next ~4~')}
+    </br>
+    ${c.Users.pager(
+        link_attr = {'class':'accion bordeSoft'},
+        curpage_attr = {'class': 'seleccion bordeSoft'},
+        dotdot_attr = {'class': 'accion bordeSoft'})}
 </%def>
 

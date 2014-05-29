@@ -12,9 +12,12 @@
 </%def>
 
 <%def name="content()">
-    <a name="muestras"></a>
-        <h3>${_(u'Muestra de Agua Analizadas')} ${_(u'por')}: ${c.nickname}</h3>
-        ${functions.list_places(c.places)}
-        ${c.places.pager('Page $page: $link_previous $link_next ~4~')}
-    </a>
+    <a name="muestras"/>
+    <h3>${_(u'Muestra de Agua Analizadas')} ${_(u'por')}: ${c.nickname}</h3>
+    ${functions.list_places(c.places)}
+    </br>
+    ${c.places.pager(
+        link_attr = {'class':'accion bordeSoft'},
+        curpage_attr = {'class': 'seleccion bordeSoft'},
+        dotdot_attr = {'class': 'accion bordeSoft'})}
 </%def>

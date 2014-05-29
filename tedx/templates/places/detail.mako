@@ -17,11 +17,17 @@
         </br>
         <a class="text">${_(u'Debes de estar logeado para poder escribir comentarios')}</a>
     %else:
+        </br>
         <div class="centerize">
+
             <a href="/places/${c.place.id}/comments/new" class="accion bordeSoft" id="new-instant-btnSend">${_(u'Añadir comentario')}</a>
         </div>
     %endif
 
     ${functions.list_comments(c.ListComments)}
-    ${c.ListComments.pager('Page $page: $link_previous $link_next ~4~')}
+    </br>
+    ${c.ListComments.pager(
+        link_attr = {'class':'accion bordeSoft'},
+        curpage_attr = {'class': 'seleccion bordeSoft'},
+        dotdot_attr = {'class': 'accion bordeSoft'})}
 </%def>

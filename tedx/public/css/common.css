@@ -615,9 +615,7 @@ a.estiloBlanco {
      border-radius:5px;
 }
 
-
 .accion {
-	/*height: 10px;*/ 
 	padding: 5px 10px; 
 	margin:0 0 5px 15px;
 	color: #fff;
@@ -625,22 +623,33 @@ a.estiloBlanco {
 	double #87b8f4;;
 	font-weight: bold; 
 	font-size: 12px;
-	/*float:right; */
-	/*background: #87b8f4;*/
     background: #1a5eb2;
     text-decoration:none;
-	/*background-image: -moz-linear-gradient(top, #3E7988, #2A5762); 
-	background-image: -webkit-gradient(linear, center top, center bottom, from(#3E7988), to(#2A5762));*/
 }
 
 .accion:hover {
 	color: #fff; 
 	border: 2px double #3E7988; 
 	background: #54B4C5;  
-	/*background-image: -moz-linear-gradient(top, #54B4C5, #2A5762);
-	background-image: -webkit-gradient(linear, center top, center bottom, from(#54B4C5), to(#2A5762));*/
 }
 
+.seleccion {
+	padding: 5px 10px; 
+	margin:0 0 5px 15px;
+	color: #fff;
+	border: 2px 
+	double #87b8f4;;
+	font-weight: bold; 
+	font-size: 12px;
+    background: #89c704;
+    text-decoration:none;
+}
+
+.seleccion:hover {
+	color: #fff; 
+	border: 2px double #3E7988; 
+	background: #54B4C5;  
+}
 .edit {margin:10px 0; width: 40px !important; border-bottom:1px solid #369;}
 
 .registro {

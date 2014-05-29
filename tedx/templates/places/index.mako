@@ -16,6 +16,9 @@
     <h3>${_(u'Muestras enviadas')}</h3>
     ${c.AllPlaces}
     ${functions.list_places(c.ListPlaces)}
-
-    ${c.ListPlaces.pager('Page $page: $link_previous $link_next ~4~')}
+    </br>
+    ${c.ListPlaces.pager(
+        link_attr = {'class':'accion bordeSoft'},
+        curpage_attr = {'class': 'seleccion bordeSoft'},
+        dotdot_attr = {'class': 'accion bordeSoft'})}
 </%def>
