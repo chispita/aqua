@@ -11,8 +11,10 @@
                         <a href="/places/${place.id}" class="text"><img src="/images/${functions.GetDrop(ph=place.ph, chlorine=place.chlorine)}.png"/></a>
                     </div>
                     <div class="description">
-                        <a class="text">${_(u'Descripción')}:</a> <a href="/places/${place.id}" class="text">${place.name}</a></br>
-                        <a class="text">${_(u'Enviado por')}:</a> <a href="/account/${place.user.nickname}" class="text">${place.user.nickname}</a></br>
+                        ##<a class="text">${_(u'Descripción')}:</a> 
+                        <a href="/places/${place.id}" class="text">${place.name}</a></br>
+                        ##<a class="text">${_(u'Enviado por')}:</a> 
+                        <a href="/account/${place.user.nickname}" class="text">${place.user.nickname}</a></br>
                         <a class="text"> ${place.created_on.strftime('%H:%M - %d/%m/%y')}
                     </div>
                     </br>
