@@ -35,7 +35,8 @@ class ContentController(BaseController):
         log.debug( function)
 
         if request.params.get('place'):
-            place = meta.Session.query(Place).filter(Place.id==request.params.get('place')).first()
+            place = Places.find_by_id(request.params.get('place'))
+
             if place:
                 if place.user == c.user:
                     c.place = place
