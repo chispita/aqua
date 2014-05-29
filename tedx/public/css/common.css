@@ -804,8 +804,8 @@ a.estiloBlanco {
 	width : 250px;
 	float:left;
 }
-.sidebarIzq                                                     {width: 250px; margin-left: 15px; float:left;z-index:0;}
-.sidebarDer                                                     {width: 208px; float:left;}
+.sidebarIzq                                                             {width: 250px; margin-left: 15px; float:left;z-index:0;}
+.sidebarDer                                                             {width: 208px; float:left;}
 .content_center															{width:450px; float:left; margin:0 30px 0 25px;}
 .content_center .item                                                   {padding: 15px 5px; width: 407px; height:auto;  border-bottom: 1px solid #999;}
 .content_center .item a                                                 {font-weight: bold; font-size: 12px; color:#369; text-trasnform:lowercase; font-weight:normal;}
@@ -819,13 +819,23 @@ a.estiloBlanco {
 .content_center .momentoCont li a, .content_center #detalleItem li a            { font-weight: normal; font-size: 11px;}
 .content_center .momentoCont li a:hover, .content_center #detalleItem li a:hover {border-bottom: 1px solid #369;}
 .content_center .momentoCont li:nth-child(2), .content_center #detalleItem li:nth-child(2){width:61px;border-right: 2px solid #369 !important; padding-left: 5px; padding-right: 5px; border-left: 2px solid #369 !important;}
-.sidebarDer img                                                 {margin:5px 0;}
-.sidebarDer .social                                             {margin:15px 5px 10px 5px !important;}
+.sidebarDer  img                                                 {margin:5px 0;}
+.sidebarDer social                                             {margin:15px 5px 10px 5px !important;}
 .sidebarDer ul                                                  {margin:25px 0; padding-left: 10px;}
 .sidebarDer li                                                  {list-style: none; font-size: 12px; line-height: 18px;}
 .sidebarDer li a                                                {color:#369;}
 .sidebarDer li a:hover                                          {color:#ccc;}
 .sidebarDer h3                                                  {clear: both;}
+
+
+.sidebarIzq  img                                                 {margin:5px 0;}
+.sidebarIzq social                                             {margin:15px 5px 10px 5px !important;}
+.sidebarIzq ul                                                  {margin:25px 0; padding-left: 10px;}
+.sidebarIzq li                                                  {list-style: none; font-size: 12px; line-height: 18px;}
+.sidebarIzq li a                                                {color:#369;}
+.sidebarIzq li a:hover                                          {color:#ccc;}
+.sidebarDer h3                                                  {clear: both;}
+
 .item                                                           {float:left; padding: 15px 5px; width: 240px; height:auto;  border-bottom: 1px solid #999;}
 .item a                                                         {font-weight: bold; font-size: 12px; color:#369;text-decoration:none;}
 .item p                                                         {font-size: 11px; line-height: 14px;}

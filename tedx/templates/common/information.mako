@@ -12,7 +12,6 @@
 
 <ul>
     <li>${ _(u'Responsabilidades')}</br></li>
-    ##<li>${_(u'Declaración')}</li>
     <li><a href="/information/team" class="logolink">${_(u'Equipo')}</a></li>
 </ul>
 </ul>
@@ -20,7 +19,6 @@
 <ul>
     <li>${_(u'Disponible en')}</br></li>
     <li><a class="logolink">${_(u'Android')}</a></li>
-    <!--<a href="http://itunes.apple.com/app/feelicity/id452958224?mt=8" target="_blank"><img src="/images/imovil.png" class="left" /></a>-->
 </ul>
 
 <ul>

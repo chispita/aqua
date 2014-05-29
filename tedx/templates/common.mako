@@ -125,6 +125,7 @@
         </div>
 
         <div class="clear"></div>
+        </br></br>
         <%include file="common/logos.mako"/>
 
 
