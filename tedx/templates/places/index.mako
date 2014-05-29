@@ -7,7 +7,7 @@
 <%def name="MainContent()">
     <div id="queMapa">
         <div align="right"><a href="/" class="close-icon"></a></div>
-        <h2>${_(u'Últimas')}</h2>
+        <h2>${_(u'Últimas Muestras')}</h2>
         ${commons.show_places( c.top_places )}
     </div>
 </%def>

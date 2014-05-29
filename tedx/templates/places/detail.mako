@@ -19,7 +19,6 @@
     %else:
         </br>
         <div class="centerize">
-
             <a href="/places/${c.place.id}/comments/new" class="accion bordeSoft" id="new-instant-btnSend">${_(u'Añadir comentario')}</a>
         </div>
     %endif

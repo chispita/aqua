@@ -76,7 +76,7 @@ def getTopPlaces():
     return meta.Session.query(Place).\
         filter(and_(Place.empty==False,Place.deleted_on==None)).\
         order_by(desc(Place.last_update)).\
-        limit(5).all()
+        limit(3).all()
 
 ''' Places '''
 def getAllPlaces():

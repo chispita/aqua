@@ -11,11 +11,12 @@
                         <a href="/places/${place.id}" class="text"><img src="/images/${functions.GetDrop(ph=place.ph, chlorine=place.chlorine)}.png"/></a>
                     </div>
                     <div class="description">
-                        ##<a class="text">${_(u'Descripción')}:</a> 
                         <a href="/places/${place.id}" class="text">${place.name}</a></br>
-                        ##<a class="text">${_(u'Enviado por')}:</a> 
-                        <a href="/account/${place.user.nickname}" class="text">${place.user.nickname}</a></br>
-                        <a class="text"> ${place.created_on.strftime('%H:%M - %d/%m/%y')}
+                        <a class="text">
+                            ${place.address}</br>
+                            ${place.city}</br>
+                            ${place.created_on.strftime('%H:%M-%d/%m/%y')}</br>
+                        </a>
                     </div>
                     </br>
                     <div class="clear">
@@ -45,23 +46,24 @@
                     <strong>${place.take_on.strftime('%H:%M - %d/%m/%y')}</strong></br>
                 </label>
 
-                <label>${_(u'Creada')}:
-                    <strong>${place.created_on.strftime('%H:%M - %d/%m/%y')}</strong></br>
-                </label>
+                ## <label>${_(u'Creada')}:
+                ##    <strong>${place.created_on.strftime('%H:%M - %d/%m/%y')}</strong></br>
+                ##</label>
             </div>
 
-            <div class="dataVision">
-                <label>${_(u'Descripción')}: 
-                    <strong>${place.description}</strong>
-                </label>
-            </div>
+            %if place.description:
+                <div class="dataVision">
+                    <label>${_(u'Descripción')}: 
+                        <strong>${place.description}</strong>
+                    </label>
+                </div>
+            %endif
 
             <h3>${_(u'Dirección')}</h3>
             <div class="dataVision">
                 <label>${place.address}</label><br>
                 <label>${place.postalcode} ${place.city}</label>
             </div>
-
 
             <h3>${_(u'Medidas de la muestra')}</h3>
             <div class="dataVision">
@@ -72,8 +74,8 @@
             <h3>${_(u'Actividad')}</h3>
             <div class="dataVision">
                 <label>${_(u'Comentarios')}:<strong> ${len(place.comments)}</strong>
-                |${_(u'Visitas')}:
-                <strong>${place.visits}</strong>
+                ##|${_(u'Visitas')}:
+                 ##<strong>${place.visits}</strong>
                 </label>
             </div>
     
@@ -98,6 +100,11 @@
                         </a>
                     </div>
                 %endif
+
+                </br>
+                <div class="centerize">
+                    <a href="/places/${c.place.id}/comments/new" class="accion bordeSoft" id="new-instant-btnSend">${_(u'Añadir comentario')}</a>
+                </div>
             %endif
 
             <br/><br/>

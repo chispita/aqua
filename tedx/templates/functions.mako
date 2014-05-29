@@ -25,7 +25,7 @@
                 <br> ${_(u'Usuario')}:          ${item.user.nickname}
                 <br> ${_(u'Muestra')}:          ${item.place.name}
                 <br> ${_(u'Contenido')}:        ${item.content}
-                <br> ${_(u'Fecha Creación')}:   ${item.created_on}
+                <br> ${_(u'Fecha Creación')}:   ${item.created_on.strftime('%H:%M-%d/%m/%y')}
             </div>
         </div>
     % endfor
@@ -41,7 +41,7 @@
             <h4><a href="/account/${user.nickname}">${user.nickname}</a></h4>
             <br> ${_(u'Descrición')}:       ${user.description}
             <br> ${_(u'Fecha Creación')}:   ${user.created_on}
-            <br> ${_(u'Última Actividad')}: ${user.last_activity}
+            ##<br> ${_(u'Última Actividad')}: ${user.last_activity.strftime('%H:%M-%d/%m/%y')}
             <br> ${_(u'Muestras')}:         ${len(user.places)}
             <br> ${_(u'Comentarios')}:      ${len(user.comments)}
             <br>
@@ -59,7 +59,6 @@
 </%def>
 <%def name="list_places(places)">
     % if places:
-
         % for place in places:
         <div id="muestra_item">
             <div class="imagen">                                                                                                                                   
@@ -69,12 +68,20 @@
         </div>                            
         <div class="description">
             <h4><a href="/places/${place.id}">${place.name}</a></h4> 
-            <p>${_(u'Descripción')}: ${place.description}</p>
-            <p>${_(u'Ultima actualización')}:${place.last_update}</p>   
-               ${_(u'Comentarios')}:   ${ len(place.comments)}
-               ${_(u'Visitas')}: ${place.visits}                      
+            <a class="text">
+                %if place.description:
+                    ${_(u'Descripción')}: ${place.description}</br>
+                %endif
+                ${place.address}</br>
+                ${place.city}</br>
+                ${place.created_on.strftime('%H:%M-%d/%m/%y')}</br>
+                %if len(place.comments):
+                    ${_(u'Comentarios')}:   ${ len(place.comments)}
+                %endif
+                </br>
+                ##${_(u'Visitas')}: ${place.visits}                      
                ##${_(u'Me gusta')}:
-            </p>                                                                                                                                                             
+            </a>                                                                                                                                                             
         </div>                                                                                                                                                               
         <div class="clear"></div>  
         </div>
