@@ -15,13 +15,13 @@
         % for place in c.places_map :
                 console.log('pinto');
                  html =  '<table>' +
-                    '<tr><td><a class="cloud_strong">${_(u'lugar')}:</a></td>' +
+                    '<tr><td><a class="cloud_strong">${_(u'Nombre')}:</a></td>' +
                     '<td><a class="estiloAzul" href="/places/${place.id}">${place.name}</a>'+
                     '</td></tr><tr><td>' + 
-                    '<a class="cloud_strong">${_(u'autor')}:</a></td><td>' +
+                    '<a class="cloud_strong">${_(u'Autor')}:</a></td><td>' +
                     '<a class="cloud_header" href="/account/${place.user.nickname}">${place.user.nickname}</a></td></tr>' +
-                    '<tr><td><a class="cloud_strong">${_(u'modificado')}:</a></td>' +
-                    '<td><a class="cloud_strong">${place.last_update}</a></td>' +
+                    '<tr><td><a class="cloud_strong">${_(u'Creada')}:</a></td>' +
+                    '<td><a class="cloud_sub">${place.created_on.strftime('%H:%M-%d/%m/%y')}</a></td>' +
                     '<tr><td><a class="cloud_strong">${_(u'pH')}:</a></td>' +
                     '<td><a class="cloud_sub">${place.ph}</a></td></tr>' +
                     '<tr><td><a class="cloud_strong">${_(u'Cloro')}:</a></td>' +
