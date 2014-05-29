@@ -15,7 +15,7 @@
         </br></br>
         <b>${_(u'Natividad Miguel Salcedo')}</b>, ${_(u'ccolaboradora en este proyecto de ciencia ciudadana y personal docente e investigador de la Universidad de Zaragoza. Perteneciente al Grupo de Investigación Aplicada "Calidad y Tratamiento de Aguas" que forma parte del Instituyo Universitario de Ciencias Ambientales de Aragón')}
         </br></br>
-        <b>${_(u'Yolanda Vergara Larrayad')}<b>, ${_(u'actualmente es técnico de proyectos en el BIFI, con amplia experiencia investigadora y docente en sectores relacionados con el agua entre otros')}.
+        <b>${_(u'Yolanda Vergara Larrayad')}</b>, ${_(u'actualmente es técnico de proyectos en el BIFI, con amplia experiencia investigadora y docente en sectores relacionados con el agua entre otros')}.
         </br></br>
         <b>${_(u'Francisco Sanz')}</b>, ${_(u'tiene relación directa con la comunidad científica para brindarles la plataforma Ibercivis que permite contactar  con la ciudadanía y la ciencia ciudadana. Desarrollador de herramientas para este nuevo tipo de ciencia. Divulgador en distintos foros acerca    de computación y ciencia ciudadana')}.
         </br></br>
