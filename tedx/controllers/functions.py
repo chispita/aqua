@@ -58,6 +58,8 @@ def getTopUsers():
     ''' Get all the users active '''
     return meta.Session.query(Place, func.count(Place.user_id)).\
             group_by(Place.user_id). \
+            having(Place.deleted_on==None). \
+            order_by(desc(func.count(Place.user_id))). \
             limit(5).all()
 
 ''' Profile '''
