@@ -349,7 +349,7 @@ a.estiloBlanco {
 .map_legend {z-index:20;position: absolute; }
 
 #MsgOverMap { 
-    height:450px; 
+    height:550px; 
     width: 910px;  
     position:absolute; 
     top:15px; 
