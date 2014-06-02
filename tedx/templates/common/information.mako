@@ -8,6 +8,7 @@
     <li><a href="/information/analysis" class="logolink">${_(u'Analisis')}</a></li>
     <li><a href="/information/stabilizer" class="logolink">${_(u'Potablización')}</a></li>
     <li><a href="/information/process" class="logolink">${_(u'Como realizar la toma')}</a></li>
+    <li><a href="/news/video_tutorial_01" class="logolink">${_(u'Video Tutorial')}</a></li>
 </ul>
 
 <ul>

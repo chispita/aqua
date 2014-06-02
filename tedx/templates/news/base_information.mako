@@ -14,7 +14,6 @@
 
 <%def name="MainContent()">
     <div id="MsgOverMap">
-
         <div align="right"><a href="/" class="close-icon"></a></div>
         ${next.contain()}
     </div>
