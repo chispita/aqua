@@ -8,7 +8,7 @@
 <%def name="MainContent()">
 
     <div id="queMapa">
-        ${commons.show_user(c.user_search)}
+        ${commons.show_user(c.user_search,False)}
     </div>
 </%def>
 
