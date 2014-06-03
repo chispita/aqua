@@ -3,7 +3,9 @@
 <ul>
     <li> ${_(u'Últimas noticias')}...</br></li>
     <li><a href="/news/unizar_boletin_30_5_2014" class="logolink">${_(u'Boletín Unizar')}</a></li>
-    <li><a href="/news/video_tutorial_01" class="logolink">${_(u'Video Tutorial')}</a></li>
+    <li><a href="/information/video01" class="logolink">${_(u'Video Tutorial - Información')}</a></li>
+    <li><a href="/information/video02" class="logolink">${_(u'Video Tutorial - Toma de Muestras')}</a></li>
+
 </ul>
 
 <h3>${ _(u'Enlaces')}</strong></h3>
